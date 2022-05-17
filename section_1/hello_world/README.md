@@ -370,40 +370,46 @@ Without `Line 1`, building the executable will fail with an unresolved symbol er
 
 ### Line 2
 
-In `Line 1` we told the assembler to publish the location of the label `main`. In `Line 2` we're actually specifying the value of `main`. Contrast `main` with `top` and `bottom`. The difference between them is that only `main` is made visible outside this source code. Again, in the case of `main`, the label must be specified as `global` so that the linker will find it. `top` and `bottom` are also labels but they are not published outside this one source file.
+In `Line 1` we told the assembler to publish the location of the label `main`. In `Line 2` we're actually specifying the value of `main`. Contrast `main` with `top` and `bottom`. The difference between them is that only `main` is made visible outside this file.
+
+Again, in the case of `main`, the label must be specified as `global` so that the linker will find it. `top` and `bottom` are also labels but they are not published outside this one source file.
 
 ### Line 3
 
 This instruction copies the value in two *registers* onto your *stack*. There's a lot of new information here.
 
-*Registers* are ultra highspeed storage locations built into the circuitry of the processor. On the ARM, all computation takes place in the registers (with very few exceptions). In a higher level language, when you say:
+*Registers* are ultra high speed storage locations built into the circuitry of the processor. On the ARM, all computation takes place in the registers (with very few exceptions). Memory, with very few exceptions, is used to persist data (and hold instructions). In a higher level language, when you say:
 
 ```c++
 x = x + 1;
 ```
 
-the assembly language to implement this looks like:
+the assembly language this looks like:
 
 ```text
-1. Load the address of x into a register.
-2. Go to that address and fetch what it contains into a register.
+1. Load the memory address of x into a register.
+2. Go out to that memory address and fetch what it contains into a register.
 3. Add one to that value (in the register).
 4. Store the value back to memory using the address loaded on line 1.
 ```
 
 The thing to note here is that the increment of x didn't happen in memory - it happened in a register. The value in x had to be loaded into a register, incremented in the register and finally written back to memory.
 
-The *stack* is a region of memory used to store local variables as well as the trail of breadcrumbs which allows functions to return from whence they were invoked. In a high level language, you don't manage the stack yourself. Values go onto the stack (push) and leave the stack (pop) passively by virtue of having made function calls. In assembly language *you* manage the stack.
+The *stack* is a region of memory used to store *local* variables as well as the trail of breadcrumbs which allows functions to return from whence they were invoked. In a high level language, you don't manage the stack yourself. Stack happens.
 
-`Line 3` `st`ores a `p`air of registers on the stack. `stp` means *store pair*. The registers being copied to the stack are `x21` and `x30`. `x30` is special as it contains the address that this function to which this function should return. If your function makes any function calls itself (`main` does - it calls `puts`) then `x30` gets overwritten with each function call. If we don't *save* `x30` on the stack when `main` initially enters, our ability to properly return to whoever called `main` would be broken. In all likelihood when this program ended it would crash.
+Values go onto the stack (push) and leave the stack (pop) passively by virtue of having made function calls. In assembly language *you* manage the stack.
+
+`Line 3` `st`ores a `p`air of registers on the stack. `stp` means *store pair*. The registers being copied to the stack are `x21` and `x30`. `x30` is special as it contains the address to which this function should return. `x30` gets overwritten every time a function call is made. If `main()` made no function calls itself, `x30` would not have to be backed up. However, this `main()` does make function calls (to `puts()`).
+
+If we don't *save* `x30` on the stack when `main` initially enters, our ability to properly return to whoever called `main` would be broken by the function call to `puts()`. In all likelihood when this program ended it would crash.
 
 `x21` is also being saved on the stack. *Calling conventions* specify some registers can be blown away (used as scratch) while some registers must be preserved and restored to their previous values upon leaving the function. `x21` will be used in `main` so its original value must be preserved.
 
 Finally let's look at `[sp, -16]!`. There's a lot going on here.
 
-First, the `[` and `]` serve the same purpose of the asterisk in C and C++ indicating "dereference." It means use what's inside the brackets as an address. Next, `sp` means use the stack pointer - a register which keeps track of where your stack currently is,. The `-16` subtracts 16 from the current value of the stack register. `x` registes like `x21` and `x30` are each 8 bytes (64 bits) wide. This accounts for the value 16 (i.e. 2 \* 8). Lastly, the exclamation point means that the stack pointer should be changed (i.e. the -16 applied to it) before the value of the stack pointer is used as the address in memory to which the registers will be copied.
+First, the `[` and `]` serve the same purpose of the asterisk in C and C++ indicating "dereference." It means use what's inside the brackets as an address for going out to memory. Next, `sp` means use the stack pointer - a register which keeps track of where your stack currently is. The `-16` subtracts 16 from the current value of the stack register. `x` registers like `x21` and `x30` are each 8 bytes (64 bits) wide. This accounts for the value 16 (i.e. 2 \* 8). Lastly, the exclamation point means that the stack pointer should be changed (i.e. the -16 applied to it) *before* the value of the stack pointer is used as the address in memory to which the registers will be copied.
 
-The stack pointer in ARM V8 can only be manipulated in multiples of 16.
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
 
 In a higher level language `Line 3` would look like this:
 
@@ -412,7 +418,7 @@ In a higher level language `Line 3` would look like this:
 *(--sp) = x30;
 ```
 
-That is, subtract 8 from the stack pointer and put `x21` at that location. Then, subtract 8 from the stack pointer and put `x30` at that location.
+That is, subtract 8 from the stack pointer and copy `x21` to that location. Then, subtract 8 from the stack pointer and copy `x30` to that location.
 
 ### Line 4
 
@@ -424,7 +430,7 @@ main(int argc, char ** argv)
 
 `argc` is the first parameter. It shows up to the function in register `x0`. This is a slight oversimplification because `x` registers are 64 bits wide and `int` is 32 bits wide. The simplification isn't relevant here so let's continue.
 
-`argv` is the second parameter to `main`. Being second, it shows up in `main` in register `x1`. `x0` through `x7` are truly scratch registers - they can be overwritten with new values at any time when calling other functions (like `main` will call `puts`). Because of this, `argv` that arrives in `x1` is preserved in `x21` (whose original value we already preserved on the stack).
+`argv` is the second parameter to `main`. Being second, it shows up in `main` in register `x1`. `x0` through `x7` are truly scratch registers - they can be overwritten with new values at any time by you or when calling other functions (like `main` will call `puts`). Because of this, `argv` that arrives in `x1` is preserved in `x21` (whose original value we already preserved on the stack).
 
 ```asm
 mov   x21, x1
@@ -454,21 +460,21 @@ These three lines are implemented on `lines 7, 8 and 9` in the assembly language
 9)   bl    puts
 ```
 
-The action of the assembly language statement differs slight in the order in which the C++ operates.
+The action of the assembly language statement differs slightly in the order in which the C++ operates.
 
 In both cases, `argv` is dereferenced first. In C++ this is done with `*argv`. In the assembly language, this is done with `[x21]` (recall, we put `x1` into `x21`).
 
 In C++ the increment of `argv` is done on line 7 - the `++` post increment. In the assembly language, the post increment is done on `line 7` which is the *first* instruction of the three whereas in C++ the post increment happens on the *last* line of three.
 
-This difference is OK because the older value of `argv` is preserved in `x0`. As long as we can get at the value of `argv` before the increment, it doesn't matter where the increment is done.
+This difference is OK because the older value of `argv` is preserved in `x0`. As long as we can get at the value of `argv` before the increment, it doesn't matter when the increment is done.
 
-The *if* happens on the first line of the C++ but done on the middle line of the assembly language. `cbz` stands for *`C`onditional `B`ranch if `Z`ero*.
+The *if* happens on the first line of the C++ but done on the middle line of the assembly language. `cbz` stands for *`C`onditionally `B`ranch if `Z`ero*.
 
 The `goto` or branch happens on the middle line (`line 8`) of the assembly language. Very economical in terms of code!
 
-`puts` is called with the un-incremented version of argv in the C++ version - again notice the use of post increment. In the assembly language version this is also the case. How? `argv` before the increment was put in `x0`. That value is still sitting in `x0` when the function call (`bl`) is made.
+`puts` is called with the un-incremented version of `argv` in the C++ version - again notice the use of post increment. In the assembly language version this is also the case. How? `argv` before the increment was put in `x0`. That value is still sitting in `x0` when the function call (`bl`) is made.
 
-A word about `bl`. That instruction puts the address of the *next* (`line 10`) instruction into `x30` behind the scenes. This is why we backed up `x30` on `line 3`. When `puts` executes its return (`ret`), control will branch to `line 10`.
+A word about `bl`: `B`ranch with `L`ink puts the address of the *next* (`line 10`) instruction into `x30` behind the scenes. This is why we backed up `x30` on `line 3`. When `puts` executes its return (via `ret`), control will branch to `line 10`.
 
 ## Line 10
 
@@ -480,4 +486,37 @@ A word about `bl`. That instruction puts the address of the *next* (`line 10`) i
 
 ## Summary
 
-Assembly language is scary to a lot of people. It doesn't need to be. We have shown one small example of how close C is to assembly language. With a little practice, one can code in assembly language at pretty much the same speed as C. We are not advocating the ditching of your high level languages rather... always use the *right* tool for the *right* job. We do maintain that understanding assembly language principles will likely improve your higher level language coding.
+Assembly language is scary to a lot of people. It doesn't need to be. We have shown one small example of how close C is to assembly language. With a little practice, one can code in assembly language at pretty much the same speed as C. We are not advocating the ditching of your high level languages rather... always use the *right* tool for the *right* job.
+
+We do maintain that understanding assembly language principles will improve your higher level language coding.
+
+## Questions
+
+### 1
+
+(T | F) It is the compiler's job to reduce a higher level language to assembly language.
+
+Answer: True
+
+### 2
+
+(T | F) Failing to mark `main` as a `global` will result in a syntax error.
+
+Answer: False - a linker error will happen, not a syntax error.
+
+### 3
+
+\___ and ___ implement the braces in C and C++.
+
+Answer: labels and branches.
+
+### 4
+
+(T | F) The `cbz` instruction implements the following pseudocode:
+
+```text
+if a_register has value 0
+    then goto label
+```
+
+Answer: True

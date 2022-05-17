@@ -1,6 +1,10 @@
 {
 	"cSpell.words": [
 		"argc",
-		"argv"
-	]
+		"argv",
+		"pseudocode"
+	],
+	"markdownlint.config": {
+		"MD024":false
+	}
 }
