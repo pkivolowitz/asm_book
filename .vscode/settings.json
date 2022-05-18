@@ -1,7 +1,11 @@
 {
 	"cSpell.words": [
+		"AARCH",
 		"argc",
 		"argv",
+		"asciz",
+		"cout",
+		"iostream",
 		"pseudocode"
 	],
 	"markdownlint.config": {

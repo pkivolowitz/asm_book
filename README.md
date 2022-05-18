@@ -13,14 +13,15 @@ those wishing to master the rich instruction set of the 64 bit ARM processors.
 
 ## Can This Book Be Used In Courses Covering Assembly Language?
 
-Yes, absolutely. In fact, we would argue that the study of assembly language is extremely important to the
-building of competent software engineers. Further, we would argue that teaching the x86 instruction set is
-sadistic and cruel as that ISA was born in the 1970s and has simply gotten more muddled with age. 
+Yes, absolutely. 
 
-The MIPS
-instruction set is another ISA that is often covered in College level courses. While far kinder and gentler
-than the x86 ISA, the MIPS processor isn't nearly as relevant as the ARM family. Phones, tablets, laptops and
-even desktops contain ARM V8 processors making the study of the ARM ISA far more topical.
+In fact, we would argue that the study of assembly language is extremely important to the
+building of competent software engineers. Further, we would argue that teaching the x86 instruction set is sadistic and cruel as that ISA was born in the 1970s and has simply gotten more muddled with age.
+
+The MIPS instruction set is another ISA that is often covered in College level courses. While far kinder and gentler than the x86 ISA, the MIPS processor isn't nearly as relevant as the ARM family.
+
+Phones, tablets, laptops and even desktops contain ARM V8 processors making the study of
+the ARM ISA far more topical.
 
 ## Calling Convention Used In This Book
 
@@ -32,11 +33,19 @@ this book we will use the ARM LINUX conventions. This means:
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based Windows machines.
 * You will need to run an ARM Linux VM on x86-based Windows machines.
 
+## A Lot of Names
+
+As commendable as the ARM designs are, ARM's naming conventions for their Intellectual
+Properties are that horrid. In this book, AARCH64 and ARM V8 are taken to be synonyms for
+the 64 bit ARM Instruction Set Architecture (ISA).
+
 ## Section 1 - Bridging from C / C++ to Assembly Language
 
 | Chapter | Content |
 | ------- | ------- |
 | 1 | [Hello World](./section_1/hello_world/README.md) |
+| 2 | [If Statements](./section_1/if/README.md) |
+
 
 ## Section 2 - Stuff
 
