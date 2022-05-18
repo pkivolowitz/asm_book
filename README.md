@@ -46,7 +46,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | ------- | ------- |
 | 1 | [Hello World](./section_1/hello_world/README.md) |
 | 2 | [If Statements](./section_1/if/README.md) |
-
+| 3 | [While Loops](./section_1/while/README.md) |
 
 ## Section 2 - Stuff
 
