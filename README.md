@@ -1,6 +1,7 @@
 # Assembly Language Programming Made Not So Scary
 
-This text book provides a fairly thorough examination of the ARM V8 ISA. It begins from the perspective of
+This text book provides a fairly thorough examination of the ARM V8 ISA (Instruction Set Architecture). 
+It begins from the perspective of
 a person knowledgeable in the C or C++ programming languages (or similar languages, of which there are many).
 Early chapters bridge your knowledge of C or C++ backwards into assembly language driving home a very sharp
 point: C is a high level assembly language. Further, assembly language is nothing to be scared about.
