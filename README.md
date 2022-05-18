@@ -1,4 +1,4 @@
-# ARM V8 Assembly Language Programming Made Not So Scary
+# Assembly Language Programming Made Not So Scary
 
 This text book provides a fairly thorough examination of the ARM V8 ISA. It begins from the perspective of
 a person knowledgeable in the C or C++ programming languages (or similar languages, of which there are many).
