@@ -496,7 +496,8 @@ We do maintain that understanding assembly language principles will improve your
 
 (T | F) It is the compiler's job to reduce a higher level language to assembly language.
 
-Answer: True
+Answer: True - The "compiler" is just one step in the "compilation" process. In fact it
+is step 2. Invoking the "preprocessor" is step 1.
 
 ### 2
 
@@ -508,7 +509,8 @@ Answer: False - a linker error will happen, not a syntax error.
 
 \___ and ___ implement the braces in C and C++.
 
-Answer: labels and branches.
+Answer: labels and branches - the closing brace of a `while` loop for example,
+is a branch instruction.
 
 ### 4
 
@@ -519,7 +521,8 @@ if a_register has value 0
     then goto label
 ```
 
-Answer: True
+Answer: True - `cbz` stands for "compare and branch if zero". There is also
+a `cbnz` instruction. To test for other Boolean conditions, use `cmp`.
 
 ### 5
 

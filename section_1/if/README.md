@@ -1,4 +1,4 @@
-# The `if` statement
+# Section 1 / Chapter 2 / The `if` Statement
 
 We will begin with the `if` statement followed by a discussion of the `if / else`.
 
@@ -175,9 +175,11 @@ T:  .asciz  "TRUE"                                                      // 24
 In this case, the label `T` corresponds to the address to the first
 letter of the C string "TRUE".
 
-The occurrences of `.asciz` are invocations of an *assembler directive*
-the creates a C string. Recall that C strings are NULL terminated. The
-NULL termination is indicated by the `z` which ends `.asciz`.
+The occurrences of `.asciz` on `line 23` and `line 24` are invocations of
+an *assembler directive* the creates a C string. Recall that C strings are NULL
+terminated. The NULL termination is indicated by the `z` which ends `.asciz`.
+There is a similar directive `.ascii` that *does not NULL terminate* the 
+string.
 
 ## Summary
 
@@ -197,7 +199,18 @@ allow a branch to that code block, such as the beginning of an `else`.
 
 ### 1
 
+(T | F) If statements in assembly language always test for the opposite condition
+as the equivalent `if` statement in a high level language.
+
+Answer: False - it is a matter of style but you may be able to
+save an instruction or two by doing so. 
+
 ### 2
+
+(T | F) `cmp` isn't a "real" instruction but rather is an alias for a subtraction.
+
+Answer: True - `cmp` is an alias for `subs` which is a subtract that discards the
+resulting value but does set the condition bits.
 
 ### 3
 
