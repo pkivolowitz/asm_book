@@ -14,7 +14,7 @@ those wishing to master the rich instruction set of the 64 bit ARM processors.
 
 ## Can This Book Be Used In Courses Covering Assembly Language?
 
-Yes, absolutely. 
+Yes, absolutely.
 
 In fact, we would argue that the study of assembly language is extremely important to the
 building of competent software engineers. Further, we would argue that teaching the x86 instruction set is sadistic and cruel as that ISA was born in the 1970s and has simply gotten more muddled with age.
@@ -47,6 +47,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 1 | [Hello World](./section_1/hello_world/README.md) |
 | 2 | [If Statements](./section_1/if/README.md) |
 | 3 | [While Loops](./section_1/while/README.md) |
+| 4 | [For Loops](./section_1/for/README.md) |
 
 ## Section 2 - Stuff
 
