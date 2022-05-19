@@ -520,3 +520,28 @@ if a_register has value 0
 ```
 
 Answer: True
+
+### 5
+
+While this chapter is entitled "Hello World," the example used isn't actually "Hello World." Here is a "Hello World" for you to complete:
+
+```text
+   .global main                                                       
+main:                                                                 
+    str     x30, [sp, -16]!         // Preserve x30
+    ldr     x0, =HW                 // Load address of string for puts
+    WHAT GOES HERE?                 // puts(HW)                    
+    ldr     x30, [sp], 16           // Restore x30
+    mov     x0, xzr                 // return 0                        
+    ret                                                                
+
+    .data
+HW: .asciz  "Hello, World"                                                                       
+    .end                                                              
+```
+
+Answer:
+
+```text
+    bl      puts
+```
