@@ -1,0 +1,31 @@
+(gdb) b main
+Breakpoint 1 at 0x740: file c.s, line 5.
+(gdb) run
+Starting program: a.out 
+
+Breakpoint 1, main () at c.s:5
+5	main:   mov     x0, -1
+(gdb) n
+6	        ldr     x1, =ram
+(gdb) n
+7	        ldrb    w0, [x1]
+(gdb) p/x $x0
+$1 = 0xffffffffffffffff
+(gdb) n
+9	        mov     x0, -1
+(gdb) p/x $x0
+$2 = 0x1
+(gdb) n
+10	        mov     x1, 1
+(gdb) n
+11	        mov     w0, w1
+(gdb) n
+13	        mov     x0, -1
+(gdb) p/x $x0
+$3 = 0x1
+(gdb) n
+14	        movk    w0, 1
+(gdb) n
+17	        mov     x0, xzr
+(gdb) p/x $x0
+$4 = 0xffff0001
