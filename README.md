@@ -48,6 +48,9 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 2 | [If Statements](./section_1/if/README.md) |
 | 3 | [While Loops](./section_1/while/README.md) |
 | 4 | [For Loops](./section_1/for/README.md) |
+| 5 | [Interlude - Registers](./section_1/regs/README.md) |
+| 6 | [Interlude - Load and Store](./section_1/regs/ldr.md) |
+| 7 | [Calling and Returning From Functions](./section_1/funcs/README.md) |
 
 ## Section 2 - Stuff
 

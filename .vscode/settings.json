@@ -5,8 +5,13 @@
 		"argv",
 		"asciz",
 		"cout",
+		"csel",
+		"Formulus",
 		"iostream",
-		"pseudocode"
+		"memcpy",
+		"pseudocode",
+		"struct",
+		"structs"
 	],
 	"markdownlint.config": {
 		"MD024":false
