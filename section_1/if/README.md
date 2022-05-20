@@ -173,7 +173,8 @@ T:  .asciz  "TRUE"                                                      // 24
 
 `Line 11` is one way of loading the address represented by a label.
 In this case, the label `T` corresponds to the address to the first
-letter of the C string "TRUE".
+letter of the C string "TRUE". `Line 15` loads the address of the C
+string containing "FALSE".
 
 The occurrences of `.asciz` on `line 23` and `line 24` are invocations of
 an *assembler directive* the creates a C string. Recall that C strings are NULL
@@ -213,5 +214,15 @@ Answer: True - `cmp` is an alias for `subs` which is a subtract that discards th
 resulting value but does set the condition bits.
 
 ### 3
+
+We claim `if05.s` (the complete program given above) is too long! By two instructions,
+that is. Copy `if05.s` to make `if06.s`. Then, modify `if06.s` to be two instructions
+shorter.
+
+To do so, notice that there are two occurrences of `bl puts` in `if05.s`. Refactor
+the code to have only one.
+
+Answer: The shorter version is found [here](./if06.s). It is well documented and
+should be studied.
 
 ### 4
