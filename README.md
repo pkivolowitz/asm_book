@@ -1,6 +1,6 @@
 # Assembly Language Programming Made Not So Scary
 
-This text book provides a fairly thorough examination of the ARM V8 ISA (Instruction Set Architecture). 
+This text book provides a fairly thorough examination of the ARM V8 ISA (Instruction Set Architecture).
 It begins from the perspective of
 a person knowledgeable in the C or C++ programming languages (or similar languages, of which there are many).
 Early chapters bridge your knowledge of C or C++ backwards into assembly language driving home a very sharp
@@ -51,6 +51,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 5 | [Interlude - Registers](./section_1/regs/README.md) |
 | 6 | [Interlude - Load and Store](./section_1/regs/ldr.md) |
 | 7 | [Calling and Returning From Functions](./section_1/funcs/README.md) |
+| 8 | [Passing Parameters To Functions](./section_1/funcs/README2.md) |
 
 ## Section 2 - Stuff
 
