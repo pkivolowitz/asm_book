@@ -4,7 +4,7 @@ Up to 8 parameters can be passed directly via registers. Each parameter can be u
 
 For the purposes of the present discussion, we assume all parameters are `long int` and are therefore stored in `x` registers.
 
-Up to 8 parameters are passed in the scratch registers (of which there are 8). These are `x0` through `x7`. *Scratch* means the value of the register can be changed at will without any need to backup or restore their values. 
+Up to 8 parameters are passed in the scratch registers (of which there are 8). These are `x0` through `x7`. *Scratch* means the value of the register can be changed at will without any need to backup or restore their values.
 
 **This also means that you cannot count on the contents of the scratch registers maintaining their value if your function makes any function calls itself.**
 
