@@ -20,7 +20,6 @@ For simplicity, let us assume that both `a` and `b` are defined as
 language. If `a` or `b` are not pointers and are not longs, `w` registers would sneak
 in somewhere. See [Interlude - Registers](./section_1/regs/README.md) for more information.
 
-
 ## `if` in `AARCH64`
 
 Here is the above `if` statement rendered into ARM V8 assembly language:
@@ -67,9 +66,10 @@ Handling of `>=` and `<=` follow from the above.
 Using the state of the condition bits (which are set by the faux subtraction of `x1`
 from `x0` performed by `cmp`), branch (a jump or goto) if the previous computation shows
 `less than or equal to` zero. Notice
-the use of the *opposite* condition as found in the `C` code. This use of the opposite condition is not a hard and fast rule. In this case, it allows the body of the `if`
+the use of the *opposite* condition as found in the `C` code.
+This use of the opposite condition is not a hard and fast rule. In this case, it allows the body of the `if`
 statement to be written directly below the branch so as to emulate the skipping of
-the code block contained between the `if` statement's braces. 
+the code block contained between the `if` statement's braces.
 
 This is a matter of
 style.
@@ -211,7 +211,7 @@ allow a branch to that code block, such as the beginning of an `else`.
 as the equivalent `if` statement in a high level language.
 
 Answer: False - it is a matter of style but you may be able to
-save an instruction or two by doing so. 
+save an instruction or two by doing so.
 
 ### 2
 

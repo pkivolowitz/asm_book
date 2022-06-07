@@ -65,7 +65,7 @@ There are other reasons to specify a `using namespace` and even some reasons *no
 
 `Line 5` is a function declaration declaring `main`. In command line
 programs (and indeed in many non-command line programs), a function
-called `main` is necessary. 
+called `main` is necessary.
 
 In all respects save one, `main` is an
 ordinary user-written function. What makes `main` special is its name
@@ -201,7 +201,7 @@ This marks the end of the `while` loop's *body*. The `}` causes a **jump**
 back to evaluating what is pointed to by argv to see if it is now null (which
 exits the loop). A synonym for **jump** is **branch** - remember this.
 
-Also remember that braces in a higher level language can mean a branch or jump in 
+Also remember that braces in a higher level language can mean a branch or jump in
 assembly language. A brace in a higher level language can also mean a *target* or landing place
 for a jump / branch elsewhere in the code.
 
@@ -462,7 +462,6 @@ That is, subtract 8 from the stack pointer and copy `x21` to that location. Then
 **The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
 
 **The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
-
 
 ### Line 4
 
