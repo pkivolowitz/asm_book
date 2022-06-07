@@ -1,14 +1,3 @@
-```asm
-    // Assume value of a is in x0                                       // 1 
-    // Assume value of b is in x1                                       // 2 
-                                                                        // 3 
- 1: cmp     x0, x1                                                      // 4 
-    b       2f                                                          // 5 
-    // CODE BLOCK                                                       // 6 
-    b       1b                                                          // 7 
-                                                                        // 8 
-2:                                                                      // 9 
-```
 # Assembly Language Programming Made Not So Scary
 
 This text book provides a fairly thorough examination of the ARM V8 ISA (Instruction Set Architecture).
