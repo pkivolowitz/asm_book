@@ -16,7 +16,10 @@ if (a > b)                                                              // 1
 ```
 
 For simplicity, let us assume that both `a` and `b` are defined as
-`long int`. Being 64 bits in width, this means `x` registers will be used in the assembly language.
+`long int`. Being 64 bits in width, this means `x` registers will be used in the assembly
+language. If `a` or `b` are not pointers and are not longs, `w` registers would sneak
+in somewhere. See [Interlude - Registers](./section_1/regs/README.md) for more information.
+
 
 ## `if` in `AARCH64`
 
@@ -48,7 +51,7 @@ was less than, equal to or greater than zero.
 
 The second operand is subtracted from the first.
 
-This means that the condition bits (status of the previous `cmp`) are formed using
+This means that the condition bits (status of a previous `cmp`) are formed using
 `x0 - x1`.
 
 If `a > b` then `x0 - x1` will be *greater than zero*.
@@ -66,7 +69,9 @@ from `x0` performed by `cmp`), branch (a jump or goto) if the previous computati
 `less than or equal to` zero. Notice
 the use of the *opposite* condition as found in the `C` code. This use of the opposite condition is not a hard and fast rule. In this case, it allows the body of the `if`
 statement to be written directly below the branch so as to emulate the skipping of
-the code block contained between the `if` statement's braces. This is a matter of
+the code block contained between the `if` statement's braces. 
+
+This is a matter of
 style.
 
 **In the higher level language, you want to *enter* the following code block if the
@@ -74,11 +79,12 @@ condition is true. In assembly language, you want to *avoid* the following code 
 
 ### Use of temporary labels
 
-The target of the branch instruction is given as `1f`. This is an example of a temporary label.
+The target of the branch instruction is given as `1f`. This is an example of a
+*temporary label*.
 
 **There are a lot of braces
 used in C and C++. Since labels frequently function as equivalents to `{` and `}`,
-there are a lot of labels used in assembly language.
+there can be a lot of labels used in assembly language.
 **
 
 A temporary label is a label made using just a number. Such labels can appear over and over
@@ -86,8 +92,8 @@ again (i.e. they can be reused). They are made unique by virtue of their placeme
 
 ### Line 6
 
-This line acts in place of the `if` statement's closing `}`. Notice it is the target of the `ble` found on
-`Line 4`.
+This line acts in place of the `if` statement's closing `}`. Notice it is the target of the
+`ble` found on `Line 4`.
 
 ## `if` / `else`
 
@@ -179,7 +185,8 @@ string containing "FALSE".
 The occurrences of `.asciz` on `line 23` and `line 24` are invocations of
 an *assembler directive* the creates a C string. Recall that C strings are NULL
 terminated. The NULL termination is indicated by the `z` which ends `.asciz`.
-There is a similar directive `.ascii` that *does not NULL terminate* the 
+
+There is a similar directive `.ascii` that *does not NULL terminate* the
 string.
 
 ## Summary
@@ -224,5 +231,3 @@ the code to have only one.
 
 Answer: The shorter version is found [here](./if06.s). It is well documented and
 should be studied.
-
-### 4

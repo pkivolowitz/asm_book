@@ -19,14 +19,12 @@ Yes, absolutely.
 In fact, we would argue that the study of assembly language is extremely important to the
 building of competent software engineers. Further, we would argue that teaching the x86 instruction set is sadistic and cruel as that ISA was born in the 1970s and has simply gotten more muddled with age.
 
-The MIPS instruction set is another ISA that is often covered in College level courses. While far kinder and gentler than the x86 ISA, the MIPS processor isn't nearly as relevant as the ARM family.
-
-Phones, tablets, laptops and even desktops contain ARM V8 processors making the study of
+The MIPS instruction set is another ISA that is often covered in College level courses. While far kinder and gentler than the x86 ISA, the MIPS processor isn't nearly as relevant as the ARM family. Phones, tablets, laptops and even desktops contain ARM V8 processors making the study of
 the ARM ISA far more topical.
 
 ## Calling Convention Used In This Book
 
-Assembly language programming is quite closely intertwined with both the underlying hardware architecture and
+Assembly language programming is quite closely intertwined with both the underlying hardware architecture and the host
 operating system. A "calling convention" refers to how functions are called and how parameters are passed. In
 this book we will use the ARM LINUX conventions. This means:
 
@@ -37,7 +35,7 @@ this book we will use the ARM LINUX conventions. This means:
 ## A Lot of Names
 
 As commendable as the ARM designs are, ARM's naming conventions for their Intellectual
-Properties are that horrid. In this book, AARCH64 and ARM V8 are taken to be synonyms for
+Properties are horrid. In this book, AARCH64 and ARM V8 are taken to be synonyms for
 the 64 bit ARM Instruction Set Architecture (ISA).
 
 ## Section 1 - Bridging from C / C++ to Assembly Language

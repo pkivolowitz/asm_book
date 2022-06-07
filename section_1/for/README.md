@@ -1,10 +1,5 @@
 # Section 1 / Chapter 4 / For Loops
 
-## Attribution
-
-This work is created by Perry Kivolowitz, Professor and Chair of Computer Science at Carthage College. It is copyright © 2021 and may be freely
-shared for educational purposes.
-
 ## Overview
 
 We have already covered the [`if`](./if.md) and [`while`](./while.md) statements. We demonstrated that a `while` loop is nothing more than an `if` statement with one additional label preceding and one unconditional branch following the code for an `if` statement.

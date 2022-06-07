@@ -14,7 +14,7 @@ changed from version to version so that little background is assumed.
 
 Here is the code to a program that prints to the console, the contents
 of `argv`, that is: the command line arguments specified when the
-program is run from the shell.
+program is run from the shell (command line).
 
 ```c++
 #include <iostream>                                                     // 1 
@@ -42,7 +42,7 @@ three plus four
 % 
 ```
 
-As you can see in the output, the program printed each of the command line parameters in the order in which they were specified. These come to your program stored in an array called
+As you can see in the output, the program printed each of the command line parameters (arguments) in the order in which they were specified. These come to your program stored in an array called
 (by convention) `argv` as the second parameter to `main()`.
 
 ### Line 1
@@ -59,11 +59,15 @@ For an explanation of what an `include` file is and how it fits into the compila
 std::cout << *(argv++) << std::endl;
 ```
 
+There are other reasons to specify a `using namespace` and even some reasons *not* to specify a `using namespace`. These however, are not relevant to this discussion.
+
 ### Line 5
 
 `Line 5` is a function declaration declaring `main`. In command line
 programs (and indeed in many non-command line programs), a function
-called `main` is necessary. In all respects save one, `main` is an
+called `main` is necessary. 
+
+In all respects save one, `main` is an
 ordinary user-written function. What makes `main` special is its name
 and its parameters (typically called `argc` and `argv`). A function named
 `main` is special because by default it is the function at which your
@@ -73,12 +77,12 @@ code will begin execution.
 arguments found by following the *pointers* contained in in `argv`. We will
 explain *non-null* and *pointers* later.
 
-In the case of the execution portrayed above, `argv` would have the value
+In the case of the execution portrayed above, `argc` would have the value
 of `4`. `argc` **always** has a value of at least 1. This is because the
 first command line argument accessible via `argv` is the *path* to the
 program being executed. For our purposes, think of the *path* as like the *name* of the program.
 
-`argv` is declared as a *pointer to zero or more pointers to chars*. The
+`argv` is declared as a *pointer to one or more pointers to chars*. The
 concept of a *pointer* is essential to understanding assembly language.
 *Pointers* are scary for new programmers. They don't have to be. When
 you see the word *pointer* used, think *address of* something.
@@ -86,7 +90,7 @@ you see the word *pointer* used, think *address of* something.
 *"pointer to a pointer"* sounds even more scary but if you think of pointers as *address of*, then *"pointer to a pointer"* means something which contains the address of something else which itself hold the address of a thing.
 
 In this case, the first *something* is `argv`. It contains the address of
-an array holding 1 or more addresses of strings.
+an array holding 1 or more addresses of null terminated strings.
 
 Here is a picture depicting this:
 
@@ -102,7 +106,7 @@ Looking at the array pointed to by
 of memory locations. The last is filled with a 0 or `NULL`. The first 4 entries are non-null (i.e. they contain a value other than 0).
 
 The last element in the array contains a `NULL` in C (or
-`nullptr` in C++) is not counted by `argc` because it is, in fact, null.
+`nullptr` in C++) is not counted by `argc` because it is, in fact, a null.
 
 Be reminded that null is the value of `0`. We will use this
 fact (that the last value in the array is `0` to our advantage).
@@ -147,11 +151,12 @@ for (int index = 0; index < argc; index++)
 ```
 
 Using this approach will result in more assembly language code being
-generated along with the introduction of an otherwise unneeded variable
+generated including the introduction of an otherwise unneeded variable
 `index`. `index` will range from `0` to `3` (stopping when index ceases
 to be less than `4`). `index` would be used in figuring out which
 member of `argv` is examined in each loop. We claim `index` is unneeded in
-this case as we have a different way of moving through the `argv` array.
+this case as we have a different way of moving through the `argv` array and,
+most importantly, knowing when to stop.
 
 ### Line 7
 
@@ -185,7 +190,7 @@ incrementing it.
 
 `argv` contains the address of something.
 Dereferencing `argv` means "go fetch what is found at the address specified
-by `argv`". 
+by `argv`".
 
 That, dear reader, is the address of the string of characters to be printed.
 
@@ -195,6 +200,10 @@ That, dear reader, is the address of the string of characters to be printed.
 This marks the end of the `while` loop's *body*. The `}` causes a **jump**
 back to evaluating what is pointed to by argv to see if it is now null (which
 exits the loop). A synonym for **jump** is **branch** - remember this.
+
+Also remember that braces in a higher level language can mean a branch or jump in 
+assembly language. A brace in a higher level language can also mean a *target* or landing place
+for a jump / branch elsewhere in the code.
 
 ### Line 9
 
@@ -246,7 +255,7 @@ This line is a `label`. This is not an instruction, rather it is a way of specif
 The `while` loop has been removed. It has been replaced with explicit use of
 an `if` statement at what was the top of the loop and a `goto` branch at what
 was the bottom. This is how `while` loops are implemented - now we're
-explicitly making this visible. For more information on `while` loops 
+explicitly making this visible. For more information on `while` loops
 see [here](../while/README.md)
 
 ### Line 9
@@ -258,7 +267,8 @@ followed by the label to which control should transfer. `goto` is an example of 
 
 ## V3
 
-In version 3 we eliminate the C++'ism of `cout`. `cout` doesn't exist in assembly language so we'll use `puts` instead to implement the same behavior
+In version 3 we eliminate the C++'ism of `cout`. `cout` doesn't exist in assembly language so
+we'll use `puts` instead to implement the same behavior
 of the use of `cout` - namely the printing out of what is pointed to by
 `*argv` *and* printing out a new line (done internally for us by `puts`).
 
@@ -283,10 +293,13 @@ int main(int argc, char * argv[]) {                                     // 3
 
 `puts` as described above takes the address of a C string and prints it out with the addition of a trailing new line. What's going on inside the parentheses is identical to the previous versions.
 
-For review, the current value of `argv` is put aside for reuse in a moment.
-Then `argv` is incremented. Recall that `argv` is "the address of a variable holding the address of a string." Incrementing `argv` has the effect of moving on to the next string for the *next* iteration of the loop.
+To review, the current value of `argv` is put aside for reuse in a moment.
+Then `argv` is incremented. Recall that `argv` is "the address of a variable holding the address
+of a string." Incrementing `argv` has the effect of moving on to the next string for the *next*
+iteration of the loop.
 
-Then, the *previous* value of `argv` which we set aside, is dereferenced. `*argv` is the address of a string. That string is emitted by `puts` followed
+Then, the *previous* value of `argv` which we set aside, is dereferenced. `*argv` is the address
+of a string. That string is emitted by `puts` followed
 by a new line.
 
 ## Version 4
@@ -322,6 +335,9 @@ previous version.
 In the previous version, we call `puts` only if the value of `*argv` is not
 null. By flipping the sense of the `if` statement, it means "if the value of
 `*argv` **is** null, skip calling `puts`."
+
+This isn't a requirement. In this case, flipping the sense of the `if` statement
+results in fewer lines of assembly language.
 
 ### Line 6
 
@@ -364,15 +380,21 @@ version and perform the same roles.
 
 ### Line 1
 
-`main` is a function that is specially named. `Line 1` instructs the assembler to make the name and location of `main` visible to the *linker*. To refresh your knowledge of the linker, see [here](https://youtu.be/Iv3psS4n9j8).
+`main` is a function that is specially named. `Line 1` instructs the assembler to make the name
+and location of `main` visible to the *linker*. To refresh your knowledge of the linker, see
+[here](https://youtu.be/Iv3psS4n9j8).
 
-Without `Line 1`, building the executable will fail with an unresolved symbol error - namely that the linker could not find `main`.
+Without `Line 1`, building the executable will fail with an unresolved symbol error -
+namely that the linker could not find `main`.
 
 ### Line 2
 
-In `Line 1` we told the assembler to publish the location of the label `main`. In `Line 2` we're actually specifying the value of `main`. Contrast `main` with `top` and `bottom`. The difference between them is that only `main` is made visible outside this file.
+In `Line 1` we told the assembler to publish the location of the label `main`. In `Line 2` we're
+actually specifying the value of `main`. Contrast `main` with `top` and `bottom`. The difference
+between them is that only `main` is made visible outside this file.
 
-Again, in the case of `main`, the label must be specified as `global` so that the linker will find it. `top` and `bottom` are also labels but they are not published outside this one source file.
+Again, in the case of `main`, the label must be specified as `global` so that the linker can find
+it. `top` and `bottom` are also labels but they are not published outside this one source file.
 
 ### Line 3
 
@@ -388,26 +410,41 @@ the assembly language this looks like:
 
 ```text
 1. Load the memory address of x into a register.
-2. Go out to that memory address and fetch what it contains into a register.
+2. Go out to that memory address and fetch what it contains into a register (a dereference).
 3. Add one to that value (in the register).
 4. Store the value back to memory using the address loaded on line 1.
 ```
 
-The thing to note here is that the increment of x didn't happen in memory - it happened in a register. The value in x had to be loaded into a register, incremented in the register and finally written back to memory.
+The thing to note here is that the increment of x didn't happen in memory - it happened in a register. The value in x had to be loaded into a register, incremented in the register and finally written back to memory. By careful design, use of memory for persisting data
+can be avoided completely. This makes for very fast execution because registers are
+one or more orders of magnitude faster than RAM.
 
-The *stack* is a region of memory used to store *local* variables as well as the trail of breadcrumbs which allows functions to return from whence they were invoked. In a high level language, you don't manage the stack yourself. Stack happens.
+The *stack* is a region of memory used to store *local* variables as well as the trail of breadcrumbs which allows functions to return from whence they were invoked. In a high level language, you don't manage the stack yourself. Stacks happen.
 
-Values go onto the stack (push) and leave the stack (pop) passively by virtue of having made function calls. In assembly language *you* manage the stack.
+In a higher level language, values go onto the stack (push) and leave the stack (pop) passively
+by virtue of having made function calls. In assembly language *you* manage the stack!
 
-`Line 3` `st`ores a `p`air of registers on the stack. `stp` means *store pair*. The registers being copied to the stack are `x21` and `x30`. `x30` is special as it contains the address to which this function should return. `x30` gets overwritten every time a function call is made. If `main()` made no function calls itself, `x30` would not have to be backed up. However, this `main()` does make function calls (to `puts()`).
+`Line 3` `st`ores a `p`air of registers on the stack. `stp` means *store pair*. The registers being copied to the stack are `x21` and `x30`. `x30` is special as it contains the address to which this function should return. It is the "breadcrumb" mentioned before.
 
-If we don't *save* `x30` on the stack when `main` initially enters, our ability to properly return to whoever called `main` would be broken by the function call to `puts()`. In all likelihood when this program ended it would crash.
+`x30` gets overwritten every time a function call is made. If `main()` made no function calls itself, `x30` would not have to be backed up. However, this `main()` does make function calls (to `puts()`).
 
-`x21` is also being saved on the stack. *Calling conventions* specify some registers can be blown away (used as scratch) while some registers must be preserved and restored to their previous values upon leaving the function. `x21` will be used in `main` so its original value must be preserved.
+If we don't *save* `x30` on the stack when `main` initially enters, our ability to properly return to whoever called `main` would be broken by the function call to `puts()`. In all likelihood when this program ended it would cause a crash.
+
+`x21` is also being saved on the stack. *Calling conventions* specify some registers can be blown away (used as scratch) while some registers must be preserved and restored to their previous values upon leaving the function. `x21` is one of those registers.
+
+`x21` will be used in `main` so its original value must be preserved.
 
 Finally let's look at `[sp, -16]!`. There's a lot going on here.
 
-First, the `[` and `]` serve the same purpose of the asterisk in C and C++ indicating "dereference." It means use what's inside the brackets as an address for going out to memory. Next, `sp` means use the stack pointer - a register which keeps track of where your stack currently is. The `-16` subtracts 16 from the current value of the stack register. `x` registers like `x21` and `x30` are each 8 bytes (64 bits) wide. This accounts for the value 16 (i.e. 2 \* 8). Lastly, the exclamation point means that the stack pointer should be changed (i.e. the -16 applied to it) *before* the value of the stack pointer is used as the address in memory to which the registers will be copied.
+First, the `[` and `]` serve the same purpose of the asterisk in C and C++ indicating "dereference." It means use what's inside the brackets as an address for going out to memory.
+
+Next, `sp` means use the stack pointer - a register which keeps track of where your stack currently is. The `-16` subtracts 16 from the current value of the stack register. `x` registers like `x21` and `x30` are each 8 bytes (64 bits) wide. This accounts for the value 16 (i.e. 2 \* 8.
+
+Lastly, the exclamation point means that the stack pointer should be changed (i.e. the -16 applied to it) *before* the value of the stack pointer is used as the address in memory to which the registers will be copied. Again, this is a predecrement.
+
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
+
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
 
 **The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
 
@@ -420,9 +457,16 @@ In a higher level language `Line 3` would look like this:
 
 That is, subtract 8 from the stack pointer and copy `x21` to that location. Then, subtract 8 from the stack pointer and copy `x30` to that location.
 
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
+
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
+
+**The stack pointer in ARM V8 can only be manipulated in multiples of 16.**
+
+
 ### Line 4
 
-When a function is passed parameters, up to 8 of them can be found in the first 8 scratch registers (`x0` through `x7`). Recall:
+When a function is passed parameters, up to 8 of them can be found in the first 8 scratch registers (`x0` through `x7`). For example, recall:
 
 ```c++
 main(int argc, char ** argv)
@@ -430,13 +474,15 @@ main(int argc, char ** argv)
 
 `argc` is the first parameter. It shows up to the function in register `x0`. This is a slight oversimplification because `x` registers are 64 bits wide and `int` is 32 bits wide. The simplification isn't relevant here so let's continue.
 
-`argv` is the second parameter to `main`. Being second, it shows up in `main` in register `x1`. `x0` through `x7` are truly scratch registers - they can be overwritten with new values at any time by you or when calling other functions (like `main` will call `puts`). Because of this, `argv` that arrives in `x1` is preserved in `x21` (whose original value we already preserved on the stack).
+`argv` is the second parameter to `main`. Being second, it shows up in `main` in register `x1`.
+
+`x0` through `x7` are truly scratch registers - they can be overwritten with new values at any time by you or when calling other functions (like `main` will call `puts`). Because of this, `argv` that arrives in `x1` is preserved in `x21` (whose original value we already preserved on the stack).
 
 ```asm
 mov   x21, x1
 ```
 
-can be read as `copy what is in x1 into x21`.
+can be read as `copy what is in x1 into x21`. I.e. read the register use from right to left.
 
 ## Line 6
 
@@ -466,15 +512,19 @@ In both cases, `argv` is dereferenced first. In C++ this is done with `*argv`. I
 
 In C++ the increment of `argv` is done on line 7 - the `++` post increment. In the assembly language, the post increment is done on `line 7` which is the *first* instruction of the three whereas in C++ the post increment happens on the *last* line of three.
 
-This difference is OK because the older value of `argv` is preserved in `x0`. As long as we can get at the value of `argv` before the increment, it doesn't matter when the increment is done.
+This difference is OK because the older value of `argv` is preserved in `x0` for the call to
+`puts()`. As long as we can get at the value of `argv` before the increment, it doesn't
+matter when the increment is done.
 
 The *if* happens on the first line of the C++ but done on the middle line of the assembly language. `cbz` stands for *`C`onditionally `B`ranch if `Z`ero*.
 
 The `goto` or branch happens on the middle line (`line 8`) of the assembly language. Very economical in terms of code!
 
-`puts` is called with the un-incremented version of `argv` in the C++ version - again notice the use of post increment. In the assembly language version this is also the case. How? `argv` before the increment was put in `x0`. That value is still sitting in `x0` when the function call (`bl`) is made.
+`puts` is called with the un-incremented version of `argv` in the C++ version - again notice the use of post increment. In the assembly language version this is also the case. How? `argv` before
+the increment was put in `x0`.
+That value is still sitting in `x0` when the function call (`bl`) is made.
 
-A word about `bl`: `B`ranch with `L`ink puts the address of the *next* (`line 10`) instruction into `x30` behind the scenes. This is why we backed up `x30` on `line 3`. When `puts` executes its return (via `ret`), control will branch to `line 10`.
+A word about `bl`: `B`ranch with `L`ink puts the address of the *next* (`line 10`) instruction into `x30` behind the scene. This is why we backed up `x30` on `line 3`. When `puts` executes its return (via `ret`), control will branch to `line 10`.
 
 ## Line 10
 
@@ -486,9 +536,14 @@ A word about `bl`: `B`ranch with `L`ink puts the address of the *next* (`line 10
 
 ## Summary
 
-Assembly language is scary to a lot of people. It doesn't need to be. We have shown one small example of how close C is to assembly language. With a little practice, one can code in assembly language at pretty much the same speed as C. We are not advocating the ditching of your high level languages rather... always use the *right* tool for the *right* job.
+Assembly language is scary to a lot of people. It doesn't need to be.
 
-We do maintain that understanding assembly language principles will improve your higher level language coding.
+We have shown one small example of how close C is to assembly language. With a little practice,
+one can code in assembly language at pretty much the same speed as C. We are not advocating the
+ditching of your high level languages rather... always use the *right* tool for the *right* job.
+
+We do maintain that understanding assembly language principles will improve your higher level
+language coding.
 
 ## Questions
 
@@ -510,7 +565,7 @@ Answer: False - a linker error will happen, not a syntax error.
 \___ and ___ implement the braces in C and C++.
 
 Answer: labels and branches - the closing brace of a `while` loop for example,
-is a branch instruction.
+is a branch instruction. The opening brace of a `while` is a label.
 
 ### 4
 
