@@ -98,7 +98,7 @@ Here is what we would need to write to support a `continue` if the "conventional
 1:  cmp x0, 10                                                          // 5 
     bge 3f                                                              // 6 
                                                                         // 7 
-    // CODE BLOCK "A"			                                        // 8 
+    // CODE BLOCK "A".                                                  // 8 
                                                                         // 9 
     // if (i == 5)                                                      // 10 
     //      continue                                                    // 11 
