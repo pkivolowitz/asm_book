@@ -71,7 +71,6 @@ The next set of assembly language corresponds to the flow chart on the right, ab
     add     x0, x0, 1                                                   // 10 
 2:  cmp     x0, 10                                                      // 11 
     blt     1b                                                          // 12 
-                                                                        // 13 
 ```
 
 Notice this contains one fewer lines of assembly language within the loop itself (3 lines versus 4). Again, the contents of the code block are not counted.
@@ -87,6 +86,7 @@ for (long i = 0; i < 10; i++) {
 		continue;
 	// CODE BLOCK "B"
 }
+```
 
 Here is what we would need to write to support a `continue` if the "conventional" ordering were used with the decision evaluation at the top:
 
