@@ -1,4 +1,4 @@
-# Section 1 / Chapter 4 / For Loops
+# Section 1 / Chapter 4 / For Loops, Continue and Break
 
 ## Overview
 
@@ -78,7 +78,15 @@ Notice this contains one fewer lines of assembly language within the loop itself
 
 ## Implementing a `continue`
 
-Now let's add a `continue` to the code block, dividing it in two. 
+Now let's add a `continue` to the code block, dividing it in two.
+
+```c
+for (long i = 0; i < 10; i++) {
+	// CODE BLOCK "A"
+	if (i == 5)
+		continue;
+	// CODE BLOCK "B"
+}
 
 Here is what we would need to write to support a `continue` if the "conventional" ordering were used with the decision evaluation at the top:
 
@@ -90,7 +98,7 @@ Here is what we would need to write to support a `continue` if the "conventional
 1:  cmp x0, 10                                                          // 5 
     bge 3f                                                              // 6 
                                                                         // 7 
-    // FIRST PART OF CODE BLOCK                                         // 8 
+    // CODE BLOCK "A"			                                        // 8 
                                                                         // 9 
     // if (i == 5)                                                      // 10 
     //      continue                                                    // 11 
@@ -98,7 +106,7 @@ Here is what we would need to write to support a `continue` if the "conventional
     cmp x0, 5                                                           // 13 
     beq 2f                                                              // 14 
                                                                         // 15 
-    // REMAINDER OF CODE BLOCK                                          // 16 
+    // CODE BLOCK "B"                                                   // 16 
                                                                         // 17 
 2:  add x0, x0, 1                                                       // 18 
     b   1b                                                              // 19 
@@ -118,7 +126,7 @@ Below, is how a `for` loop is **typically** implemented.
                                                                         // 5 
 1:                                                                      // 6 
                                                                         // 7 
-    // FIRST PART OF CODE BLOCK                                         // 8 
+    // CODE BLOCK "A"                                                   // 8 
                                                                         // 9 
     // if (i == 5)                                                      // 10 
     //      continue                                                    // 11 
@@ -126,7 +134,7 @@ Below, is how a `for` loop is **typically** implemented.
     cmp x0, 5                                                           // 13 
     beq 2f                                                              // 14 
                                                                         // 15 
-    // REMAINDER OF CODE BLOCK                                          // 16 
+    // CODE BLOCK "B"                                                   // 16 
                                                                         // 17 
 2:  add x0, x0, 1                                                       // 18 
 3:  cmp x0, 10                                                          // 19 
@@ -136,6 +144,10 @@ Below, is how a `for` loop is **typically** implemented.
 [Here](./for06.s) is the original code.
 
 Once again, the code moving the post step and decision evaluation to the bottom is one fewer instruction inside the loop.
+
+## Implementing a `break`
+
+LEFT OFF HERE
 
 ## Summary
 

@@ -5,7 +5,7 @@
 1:  cmp x0, 10
     bge 3f
 
-    // FIRST PART OF CODE BLOCK
+    // CODE BLOCK "A"
 
     // if (i == 5)
     //      continue
@@ -13,7 +13,7 @@
     cmp x0, 5
     beq 2f
 
-    // REMAINDER OF CODE BLOCK
+    // CODE BLOCK "B"
 
 2:  add x0, x0, 1
     b   1b
