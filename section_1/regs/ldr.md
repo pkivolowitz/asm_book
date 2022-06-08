@@ -1,6 +1,6 @@
 # Section 1 / Chapter 6 / Interlude - Load and Store
 
-In this section we will review the `ldr` family of instructions. By extension, this section covers `ldp`, `str` and `stp` instructions indirectly.
+In this section we will review the `ldr` and `str` families of instructions.
 
 Several example programs will be presented.
 
@@ -9,9 +9,9 @@ modified. If modified and desirable, the changed value might be stored from a re
 
 ## Loading Data From RAM into Registers
 
-The instructions most commonly used to retrieve information from memory are `ldr` and `ldp`. The characters `ld` in these mnemonics bring to mind `load`. `ldr` is "load a register" while `ldp` is "load a pair of registers".
+The instructions used to retrieve information from memory are `ldr` and `ldp`. The characters `ld` in these mnemonics bring to mind `load`. `ldr` is "load a register" while `ldp` is "load a pair of registers".
 
-Both of these instructions possess many variations, only a few of which will be described here. In common to all variations of the `ldr` and `ldp` instructions are the notions of *where to fetch from* and *where to store what's been fetched*.
+Both of these instructions possess many variations, only a few of which will be described here. Common to all variations of the `ldr` and `ldp` instructions are the notions of *where to fetch from* and *where to store what's been fetched*.
 
 Like many AARCH64 instructions, the most basic form of the load instructions are read right to left as in:
 
@@ -27,7 +27,9 @@ Similarly,
     ldp    x0, x1, [sp]
 ```
 
-loads a *pair* of registers from RAM at the address specified by the stack pointer.
+loads a *pair* of registers from RAM at the address specified by the stack pointer. Any `x` register could also have been used, the `sp` is shown here to demonstrate that it too can be used.
+
+What goes inside the `[]` is always a pointer so must be a 64 bit wide animal such as any `x` register or the stack *pointer*.
 
 ## Offsets
 
@@ -62,6 +64,20 @@ Concerning the restrictions placed on the offsets:
 `w` registers are used for `int`, `short` and `char`. When working with `int`, `simm` must be a multiple of 4. When working with `short`, `simm` must be even.
 
 ## Examples
+
+### Loading (Storing) Various Sizes of Integers
+
+| Instruction | Meaning |
+| ----------- | ------- |
+| `ldr    x0, [x1]` | Fetches a 64 bit value from the address specified by `x1` and places it in `x0` |
+| `ldr    w0, [x1]` | Fetches a 32 bit value from the address specified by `x1` and places it in `w0` |
+| `ldrh    w0, [x1]` | Fetches a 16 bit value from the address specified by `x1` and places it in `x0` |
+| `ldrb    w0, [x1]` | Fetches an 8 bit value from the address specified by `x1` and places it in `x0` |
+
+Notice the following:
+
+* Pointers and longs use `x` registers. 
+* All other integer sizes use `w` registers where the instruction itself specifies the size.
 
 ### Array Indexing 1 - Wasteful
 
@@ -115,7 +131,7 @@ Here is a hand translation of the above `C` code for function `Sum()`:
 ```asm
     .global Sum                                                         // 1 
     .text                                                               // 2 
-    .align  2                                                           // 3 
+    .align  4                                                           // 3 
                                                                         // 4 
 //  x0 is the pointer to data                                           // 5 
 //  x1 is the length and is reused as `end`                             // 6 
@@ -148,8 +164,9 @@ Recall that `Sum(long * values, long length)` means that `x0` has the address of
 * We know it is an `x` register because it is a `long`.
 * We know it is the `1` register because it is the second argument.
 
-`Line 11` shows the first use of a "zero register," in this case `xzr`. Reading from a zero register always 
-returns zero. Writing to a zero register is ignored.
+`Line 11` shows the first use of a "zero register," in this case `xzr`. Reading from a
+zero register always returns zero. Writing to a zero register is ignored. There also exists
+`wzr` for other integer sizes.
 
 `Line 12` is the first really interesting line. It implements `line 4` of the higher level language. That is:
 
@@ -186,7 +203,23 @@ is implemented by both `lines 15` and `16` in the assembly language.
 
 `Line 20` copies the accumulated sum into `x0` where values returned from functions are expected to be found.
 
-### Fast Memory Copy
+`Lines 5 through 8` are an example of what we call a "dictionary" that serves as a memory aid
+to remember which register is being used for what purpose. Nothing introduces bugs faster then
+forgetting this information and using a register for a purpose other than that for which it was
+intended.
+
+`Line 1` makes `Sum` available to the linker so that this function can be called from other
+source code files.
+
+`Line 2` tells the assembler (and linker) that what follows is code. Code sections are marked
+as read / execute only so that self-modifying code is disallowed. Self-modifying code was
+really fun to write but really dangerous. We miss the ability to write such dangerous code. :(
+
+`Line 4` isn't strictly necessary. All instructions in the ARM 64 bit ISA are 32 bits (4 bytes) in length. The ARM processor likes it when something is located at a multiple of its size. For
+example, the preferred alignment for a `long int` in a `struct` is at an address that is a
+multiple of 8. This will become apparent when we discuss `structs`.
+
+### Faster Memory Copy
 
 This is a heavily contrived example. In reality it is a fun challenge to write an optimal general purpose `memcpy` function. Or, you can just use `memcpy`.
 
@@ -195,7 +228,7 @@ For the purposes of this discussion, ignore issues relating to alignment.
 Suppose you needed to copy 16 bytes of memory from one place to another. You might do it like this:
 
 ```c++
-void SillyMove16(uint8_t * dest, uint8_t * src)
+void SillyCopy16(uint8_t * dest, uint8_t * src)
 {
     for (int i = 0; i < 16; i++)
         *(dest++) = *(src++);
@@ -220,7 +253,7 @@ bytes, we have no need to increment the pointers.
 In assembly language, this could be written:
 
 ```asm
-SillyCopy16:
+SillyCopy16:              // 1
     ldr    x2, [x0], 8    // 2
     str    x2, [x1], 8    // 3
     ldr    x2, [x0]       // 4
@@ -295,7 +328,7 @@ int main()                                                              /* 36 */
     struct Person array[LENGTH];                                        /* 38 */
     for (int i = 0; i < LENGTH; i++)                                    /* 39 */
     {                                                                   /* 40 */
-        array[i].age = rand() & 5000;                                   /* 41 */
+        array[i].age = rand() % 5000;                                   /* 41 */
     }                                                                   /* 42 */
     struct Person * oldest = FindOldestPerson(array, LENGTH);           /* 43 */
     for (int i = 0; i < LENGTH; i++)                                    /* 44 */
@@ -308,9 +341,37 @@ int main()                                                              /* 36 */
 }                                                                       /* 51 */
 ```
 
-`FindOldestPerson()` will march through the array of `struct Person` to find the oldest individual returning a pointer to that `struct`. In case of a tie, the first person found will be returned. The array is checked against `NULL` and if found to be so, `NULL` is returned.
+This program defines a `struct` called `Person`. See `line 3`.
+
+It will create an array of these `structs` with length 20. See `line 38`.
+
+It will initialize the `age` data member of each instance with a random value between
+0 and 5000 (Biblical people maybe?). See `lines 39 to 42`. Note that the pointers to
+first name and last name are indeed left uninitialized because these values are unimportant
+to this demo. They serve only to move the location of the `age` member away from offset 0.
+
+`Line 11` tells us that somewhere else, there is a function called `FindOldestPerson`. That
+function must have a `.global` specifying the same name so that the linker can reconcile the
+reference to `FindOldestPerson`.
+
+`OriginalFindOldestPerson` takes a pointer to an instance of `struct Person`. Being a pointer,
+this can be used as a way of finding just one instance or, as in our case, an array of these
+`structs`.
+
+The function finds the largest value in the `age` member using the expected algorithm. It
+initializes an `oldest_age` found so far with 0 and a pointer to that instance.
+It marches through the array at most `length` times. If it finds an instance with an
+age older than the oldest found so far, it updates both values.
+
+Upon reaching the end of the array, it will return a pointer to the instance containing the
+oldest age. If there is a tie, it will return the first oldest instance.
+
+`Line 18` is **defensive programming**. It ensures that no search is performed if the 
+function is handed a null pointer.
 
 `gcc` with `-O2` or `-O3` optimization rendered `OriginalFindOldestPerson()` into 18 lines of assembly language.
+
+Here is an assembly language implementation.
 
 This example is more "real world" in that it offers us the chance to work with `w` registers (`int`). It also demonstrates `csel` which is like the `C` and `C++` `ternary operator`.
 
@@ -356,15 +417,15 @@ p.pad:  .skip   4                                                       // 37
         .end                                                            // 39 
 ```
 
-Before we get to the explanation, permit us a small pat on the back. The above version, written by us humans, rendered `FindOldestPerson()` in 15 lines.
+Before we get to the explanation, permit us a small pat on the back. The above version, written by us humans, rendered `FindOldestPerson()` in 15 lines of actual code.
 
-LEFT OFF HERE
-
-`Lines 5` through `11` are vitally important comments. You should always write comments like these as they will serve as your "dictionary" to help you keep track of what particular registers will be used for.
+`Lines 5` through `11` are vitally important comments. You should always write comments like these as they will serve as your "dictionary" to help you keep track of what particular registers will be used for. Notice this is the second time we have suggested this. It isn't that we forgot
+that we suggested it above. Rather we suggest it a second time, and belabor the point, because
+it is *that* important.
 
 `x0` begins as the pointer to `struct Person` being passed to us. `x0` is also used for returning values from a function so we'll copy `x0` to `x3` on `line 16`. This will save us an instruction later as we won't have to copy the intended return value back to `x0` prior to the `ret` on `line 30`.
 
-`w1` is passed to us as the length of the array. It is in a `w` register because we defined it as an `int`.
+`w1` is passed to us as the length of the array. It is in a `w` register because we defined it as an `int`. This is the first time you're seeing a `w` register in actual use.
 
 `w2` will hold the oldest age found so far. It is a `w` register because we defined age as an `int`.
 
@@ -386,28 +447,39 @@ says "Check `x0`. If it is zero, branch forward to temporary label 99." The `cbz
 
 The `cbz` and `cbnz` instructions exist because testing against zero is so common.
 
-This instruction is the same as:
+Our choice of naming a temporary label `99` is a matter of personal *style*. We use `99`
+to indicate from where a function is going to exit. This is an aid to remembering and
+understanding the code.
+
+The `cbz` instruction is the same as:
 
 ```asm
         cmp    x0, xzr
         beq    99f
 ```
 
-We did not choose the value 99 at random. This line was written at a time when we did not yet know what other temporary labels we might be needing. 99 is a large number that we would be unlikely to run into with other temporary labels. You might establish the habit of using a value like 99 to be your favorite value for the last label in a function.
-
-`Line 14` implements `line 18` of the `C` code.
+`Line 14` implements `line 18` of the `C` code. It ensures we will handle being passed
+a null pointer as input. This is an example of **defensive programming**. Without this
+check, we would crash if handed a null pointer. Crashing is what experts call **Bad**.
 
 The closing brace found on `line 30` of the `C` code is implemented on `line 30` of the assembly language code. A coincidence, surely.
 
-`Line 15` establishes the oldest age found so far as being 0.
+`Line 15` establishes the oldest age found so far as being 0. It makes use of the `wzr` zero
+register. We use `w` because the destination is `w` register.
 
-`Line 16` copies the base address of the array to `x3` from `x0`. The value arrives in `x0` because it is the first parameter to the function. It must be an `x` register because it is a pointer. We need a pointer to march through the array. `x0` serves double duty as holding the first parameter but also as the place where function return values are found.
+`Line 16` copies the base address of the array to `x3` from `x0`. The value arrives in `x0` because it is the first parameter to the function. It must be an `x` register because it is a pointer. We need a pointer to march through the array. `x0` serves double duty as holding the first parameter but also is the place where function return values are found.
 
 We copy `x0` out to `x3` so that we can use `x0` to store a pointer to the array element representing the oldest person found so far. If we iterated over the array using `x0`, we would still a) need another `x` register to hold the pointer to the oldest person so far and b) have to copy this register to `x0` before we return anyway. Doing the marching through the array is a register *other* than `x0` saves us one instruction.
 
 `Line 17` initializes `x0` after we've preserved its original value in `x3`.
 
-`Line 18` puts the value of 24 into `w5`. This register is used for scratch or intermediate calculation purposes. We're setting up the calculation which ends with the pointer to just beyond the end of the array. The size of the `struct Person` is 24 bytes (not 20). We considered allowing the assembler to compute this for us but chose instead of hard code the value.
+`Line 18` puts the value of 24 into `w5`. This register is used for scratch or intermediate calculation purposes. We're setting up the calculation which ends with the pointer to just beyond the end of the array. The size of the `struct Person` is 24 bytes (not 20). We considered allowing the assembler to compute this for us but chose instead to hard code the value.
+
+There's the beginning of a lesson here. Notice that the apparent length of `Person` is 20 bytes, being two pointers plus an int. But the actual length is 24 bytes. This is because the natural
+alignment of data is at addresses which are multiples of their width. The first data member of
+the struct is a pointer (8 bytes). Therefore, the alignment of the struct must be a multiple
+of 8. Four wasted bytes are added to the `struct` to make its length come out as a multiple
+of 8.
 
 `Line 19` is a mouthful. The mnemonic `smaddl` means *signed multiply add long*. Here is the instruction:
 
@@ -415,11 +487,18 @@ We copy `x0` out to `x3` so that we can use `x0` to store a pointer to the array
         smaddl  x4, w1, w5, x3      // initialize end_ptr               // 19 
 ```
 
-`w1` (the length) will be multipled by `w5` (the size of each array member), added to `x3` (the base address of the array) and the result will be placed into `x4`. This assembly language instruction implements this:
+`w1` (the length) will be multipled by `w5` (the size of each array member), added to `x3` (the base address of the array) and the result will be placed into `x4`. This assembly language instruction implements this in C:
 
 ```c
         struct Person * end_ptr = people + length;                      /* 20 */
 ```
+
+The compiler itself knows the true length of a `Person` (it is 24). When doing "address
+arithmetic" the compiler automatically scales the computation by the actual size of the thing
+being calculated. In this case, `line 19` says:
+
+"Take the value in length. Multiply it by the size of one `Person` (24). Then add this
+value to the address contained in `people`."
 
 `Line 20` branches to the `while` loop's decision test. Putting the decision test of a loop at the loop's bottom rather than the top has previously been shown to save one instruction.
 
@@ -454,3 +533,20 @@ These are identical to this:
 `Line 28` will branch to the next iteration of the loop if `x3` has not yet advanced as far as `x4` sitting past the end of the array.
 
 `Line 30` is simply a `ret` without no other bookkeeping because the value we want to return has been sitting in `x0` all along! A reminder that we did not need to preserve the value of `x30`, for example, because this function makes no function calls. `x30`, our return address, remains safely unchanged.
+
+## What Did We Learn?
+
+In the preceding example we saw:
+
+* Use of `w` registers.
+* Use of `cbz`, a special case of a compare and branch in one.
+* `smaddl` for doing address arithmetic.
+* `csel` for efficiently choosing one of two values like the C and C++ ternary operator.
+* Use of a `struct`.
+* Brief discussion of alignment within `structs`.
+
+**WOW!**
+
+## Questions
+
+TO COME LATER
