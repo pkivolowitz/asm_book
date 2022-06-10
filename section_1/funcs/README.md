@@ -1,4 +1,4 @@
-# Section 1 / Chapter 7 / Calling and Returning From Functions
+# Section 1 / Chapter 6 / Calling and Returning From Functions
 
 Calling functions, passing parameters to them and receiving back return values is basic to using `C` and and `C++`. Calling methods (which are functions connected to classes) is similar but with enough differences to warrant its own discussion to be provided later in the chapter on [structs](../struct/structs.md).
 

@@ -1,4 +1,4 @@
-# Section 1 / Chapter 6 / Interlude - Load and Store
+# Section 1 / Chapter 5 / Interlude - Load and Store
 
 In this section we will review the `ldr` and `str` families of instructions.
 

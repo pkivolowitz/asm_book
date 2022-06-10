@@ -1,4 +1,4 @@
-# Section 1 / Chapter 8 / Passing Parameters To Functions
+# Section 1 / Chapter 7 / Passing Parameters To Functions
 
 Up to 8 parameters can be passed directly via registers. Each parameter can be up to the size of an address, long or double (8 bytes). If you need to pass more than 8 parameters or you need to pass parameters which are larger than 8 bytes or are `structs`, you would use a different technique described later.
 

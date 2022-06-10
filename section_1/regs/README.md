@@ -1,4 +1,4 @@
-# Section 1 / Chapter 5 / Interlude - Registers
+# Section 1 / Chapter 4 / Interlude - Registers
 
 We have discussed and used registers in the previous chapters without explanation. This chapter
 introduces the concept of registers and explains why registers are critical.
