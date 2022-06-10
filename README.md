@@ -53,6 +53,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 5 | [Interlude - Load and Store](./section_1/regs/ldr.md) |
 | 6 | [Calling and Returning From Functions](./section_1/funcs/README.md) |
 | 7 | [Passing Parameters To Functions](./section_1/funcs/README2.md) |
+| 8 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
 
 ## Section 2 - Stuff
 
