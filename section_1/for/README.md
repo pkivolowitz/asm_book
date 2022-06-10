@@ -1,4 +1,4 @@
-# Section 1 / Chapter 4 / For Loops, Continue and Break
+# Section 1 / Chapters 3 b, c and d / For Loops, Continue and Break
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# Section 1 / Chapter 3 / While Loops
+# Section 1 / Chapter 3 a / While Loops
 
 ## Overview
 
