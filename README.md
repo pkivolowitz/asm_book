@@ -52,6 +52,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 4 | Interludes |
 | .... a | [.... Registers](./section_1/regs/README.md) |
 | .... b | [.... Load and Store](./section_1/regs/ldr.md) |
+| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) |
 | 5 | Functions |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) |
 | .... b | [.... Passing Parameters](./section_1/funcs/README2.md) |
