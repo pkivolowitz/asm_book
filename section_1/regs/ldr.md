@@ -1,4 +1,4 @@
-# Section 1 / Chapter 5 / Interlude - Load and Store
+# Section 1 / Chapter 4 b / Interlude - Load and Store
 
 In this section we will review the `ldr` and `str` families of instructions.
 
@@ -53,7 +53,7 @@ Lines 2 and 3 says you can specify a *change* to the dereferenced register eithe
 
 Assume `ptr` is a pointer to a `long`:
 
-* Line 2 corresponds to: `*(ptr++)`. 
+* Line 2 corresponds to: `*(ptr++)`.
 * Line 3 corresponds to: `*(++ptr)`.
 
 Concerning the restrictions placed on the offsets:
@@ -76,7 +76,7 @@ Concerning the restrictions placed on the offsets:
 
 Notice the following:
 
-* Pointers and longs use `x` registers. 
+* Pointers and longs use `x` registers.
 * All other integer sizes use `w` registers where the instruction itself specifies the size.
 
 ### Array Indexing 1 - Wasteful
@@ -366,7 +366,7 @@ age older than the oldest found so far, it updates both values.
 Upon reaching the end of the array, it will return a pointer to the instance containing the
 oldest age. If there is a tie, it will return the first oldest instance.
 
-`Line 18` is **defensive programming**. It ensures that no search is performed if the 
+`Line 18` is **defensive programming**. It ensures that no search is performed if the
 function is handed a null pointer.
 
 `gcc` with `-O2` or `-O3` optimization rendered `OriginalFindOldestPerson()` into 18 lines of assembly language.
@@ -487,7 +487,7 @@ of 8.
         smaddl  x4, w1, w5, x3      // initialize end_ptr               // 19 
 ```
 
-`w1` (the length) will be multipled by `w5` (the size of each array member), added to `x3` (the base address of the array) and the result will be placed into `x4`. This assembly language instruction implements this in C:
+`w1` (the length) will be multiplied by `w5` (the size of each array member), added to `x3` (the base address of the array) and the result will be placed into `x4`. This assembly language instruction implements this in C:
 
 ```c
         struct Person * end_ptr = people + length;                      /* 20 */

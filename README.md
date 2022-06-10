@@ -45,15 +45,16 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 1 | [Hello World](./section_1/hello_world/README.md) |
 | 2 | [If Statements](./section_1/if/README.md) |
 | 3 | Loops |
-| 3 a | [&nbsp;&nbsp;&nbsp;While Loops](./section_1/while/README.md) |
-| 3 b | [&nbsp;&nbsp;&nbsp;For Loops](./section_1/for/README.md) |
-| 3 c | [&nbsp;&nbsp;&nbsp;Implementing Continue](./section_1/for/README.md#implementing-a-continue)
-| 3 d | [&nbsp;&nbsp;&nbsp;Implementing Break](./section_1/for/README.md#implementing-a-break)
-| 4 | [Interlude - Registers](./section_1/regs/README.md) |
-| 5 | [Interlude - Load and Store](./section_1/regs/ldr.md) |
-| 6 | [Calling and Returning From Functions](./section_1/funcs/README.md) |
-| 7 | [Passing Parameters To Functions](./section_1/funcs/README2.md) |
-| 8 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
+| 3 a | [....While Loops](./section_1/while/README.md) |
+| 3 b | [....For Loops](./section_1/for/README.md) |
+| 3 c | [....Implementing Continue](./section_1/for/README.md#implementing-a-continue)
+| 3 d | [....Implementing Break](./section_1/for/README.md#implementing-a-break)
+| 4 | Interludes |
+| 4 a | [....Registers](./section_1/regs/README.md) |
+| 4 b | [....Load and Store](./section_1/regs/ldr.md) |
+| 5 | [Calling and Returning From Functions](./section_1/funcs/README.md) |
+| 6 | [Passing Parameters To Functions](./section_1/funcs/README2.md) |
+| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
 
 ## Section 2 - Stuff
 

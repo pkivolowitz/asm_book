@@ -1,4 +1,4 @@
-# Section 1 / Chapter 4 / Interlude - Registers
+# Section 1 / Chapter 4 a / Interlude - Registers
 
 We have discussed and used registers in the previous chapters without explanation. This chapter
 introduces the concept of registers and explains why registers are critical.
@@ -62,7 +62,7 @@ In the next image, the relative latencies within a computer are expressed in a d
 
 Resist the urge to cling tightly to the idea of data being only found in RAM.
 
-In order to manipulate data, the data must be loaded into registers. 
+In order to manipulate data, the data must be loaded into registers.
 
 **YOU ARE THE HUMAN!** With planning and forethought YOU can arrange for the data you need most to be resident in registers rather than in RAM. In fact, ideally, you can organize your code and algorithms to minimize the dependence upon RAM and in some cases, you can write whole sophisticated programs using RAM for little more than a place to store string literals.
 

@@ -1,21 +1,35 @@
 {
 	"cSpell.words": [
-		"AARCH",
-		"argc",
-		"argv",
-		"asciz",
-		"cout",
-		"csel",
-		"Formulus",
-		"iostream",
-		"memcpy",
-		"pseudocode",
-		"stringstream",
-		"strncpy",
-		"struct",
-		"structs"
-	],
+        "AARCH",
+        "argc",
+        "argv",
+        "asciz",
+        "cbnz",
+        "cout",
+        "csel",
+        "fizzbuzz",
+        "fname",
+        "Formulus",
+        "funcs",
+        "iostream",
+        "ldrb",
+        "ldrh",
+        "lname",
+        "memcpy",
+        "pimm",
+        "pseudocode",
+        "regs",
+        "simm",
+        "smaddl",
+        "stringstream",
+        "strncpy",
+        "struct",
+        "structs"
+    ],
 	"markdownlint.config": {
 		"MD024":false
-	}
+    },
+    "cSpell.ignoreWords": [
+        "foov"
+    ]
 }
