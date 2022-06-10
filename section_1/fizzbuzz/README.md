@@ -1,4 +1,4 @@
-# Section 1 / Chapter 7 / FizzBuzz
+# FizzBuzz
 
 In this chapter we build the classic tech interview question: FizzBuzz.
 

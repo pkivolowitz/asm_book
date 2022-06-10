@@ -1,4 +1,4 @@
-# Section 1 / Chapter 1 / Hello World
+# Hello World
 
 ## Overview
 
