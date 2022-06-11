@@ -171,6 +171,12 @@ Now watch what happens the the program is actually launched:
 
 Suddenly all the address change to much larger values.
 
+**In fact, the addresses all seem to be six bytes long! OK, so they aren't
+eight bytes long but this can be explained by choices about how much of the
+full "virtual" address space that will be used. The salient point is that
+even six bytes is far too large to fit in a four byte instruction. GDB is
+masking the pseudo instruction and showing what the effective addresses are.**
+
 Now lets step forward to see the results of the first `ldr` of the 
 `printf()` template / format string into `x0`.
 
@@ -193,7 +199,21 @@ Finally:
 ![5](./5_confirm_x2_is_correct.png)
 
 At the outset of this discussion we said that this program will crash on source code `line 15`.
-See if you can work out why.
+See if you can work out why. Take a moment before reading further.
+
+Now that you have a hypothesis in mind, take a look at this screenshot showing
+the state of `x1` after this instruction: `ldr  x1, q` is executed.
+
+![6](./after_bad_load.png)
+
+Notice that what is in `x1` this time looks very different from the previous attempt
+at printing. Notice still more that the value now in `x1` is the value of `q`, not
+its address.
+
+Naturally, the next instruction which tries to dereference the value of `q` rather
+than its address, causes a crash.
+
+![7](./after_crash.png)
 
 ## Summary
 
@@ -201,9 +221,18 @@ We have learned how the addresses corresponding to labels
 can be found. We also have learned how the contents of
 memory at those labels can be retrieved.
 
+| Instruction | Meaning |
+| ----------- | ------- |
+| ldr r, =label | Load the address of the label into r |
+| ldr r, label | Load the value found at the label into r |
+
+In both cases, the assembler will likely do some magical translation of your
+simple `ldr` instruction into something involving offsets so that the resulting
+offset can fit into an instruction where the full address cannot.
+
 To store a value back to memory at the address given by a label, the address
 corresponding to the label will have first been loaded as
-is described above. Then, once the address is in a register, an `str` 
+is described above. Then, once the address is in a register, an `str`
 instruction can be used to properly locate the values to be written.
 
 ## Questions
