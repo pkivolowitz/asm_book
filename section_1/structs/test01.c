@@ -1,7 +1,7 @@
 struct Foo {
-	long a;
-	short b;
-	int c;
+    long a;
+    short b;
+    int c;
 };
 
 struct Foo Bar = { 0xaaaaaaaaaaaaaaaa, 0xbbbb, 0xcccccccc };
