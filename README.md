@@ -61,7 +61,8 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | .... a | [.... Alignment](./section_1/structs/alignment.md) |
 | .... b | [.... Defining](./section_1/structs/defining.md) |
 | .... c | [.... Using](./section_1/structs/using.md) |
-| 8 | [Casting](./section_1/casting/README.md) |
+| 8 | [`const`](./section1/const/README.md)
+| 9 | [Casting](./section_1/casting/README.md) |
 
 ## Section 2 - Stuff
 
