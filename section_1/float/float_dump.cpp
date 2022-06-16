@@ -12,6 +12,9 @@
 
 using namespace std;
 
+const int BIASD = 1023;
+const int BIASF = 127;
+
 const int FRAC_SIZD = 52;
 const int FRAC_SIZF = 23;
 
@@ -47,8 +50,8 @@ double DeBinary(bool is_double, unsigned long frac) {
 	int bits = (is_double ? FRAC_SIZD : FRAC_SIZF);
 
 	for (int i = 0; i < bits; i++) {
-		if (frac & ((unsigned long)1 << (bits - 1 - i))) {
-			f += 1.0f / double(1 << (i + 1));
+		if (frac & ((unsigned long)(1) << (bits - 1 - i))) {
+			f += 1.0f / double((unsigned long)(1) << (i + 1));
 		}
 	}
 	return f;
@@ -57,8 +60,8 @@ double DeBinary(bool is_double, unsigned long frac) {
 template<class T>
 string MakeEquation(T & u, int bias) {
 	stringstream ss;
-	bool is_double = (bias == 1023);
-	ss << (u.sign ? "-" : "") << 1.0 + DeBinary(is_double, u.frac) << " x 2^" << (u.expo - bias);
+	bool is_double = (bias == BIASD);
+	ss << (u.sign ? "-" : "") << dec << setprecision(11) << 1.0 + DeBinary(is_double, u.frac) << " x 2^" << (u.expo - bias);
 	return ss.str();
 }
 
@@ -94,8 +97,8 @@ int main(int argc, char ** argv) {
 	cout << endl;
 
 	cout << setw(fore_space) << "De-biased (dec):";
-	cout << setw(field_space) << dec << d.D.expo - 1023;
-	cout << setw(field_space) << dec << f.F.expo - 127;
+	cout << setw(field_space) << dec << d.D.expo - BIASD;
+	cout << setw(field_space) << dec << f.F.expo - BIASF;
 	cout << endl;
 
 	cout << setw(fore_space) << "Fraction (hex):";
@@ -134,8 +137,8 @@ int main(int argc, char ** argv) {
 	cout << endl;
 
 	cout << setw(fore_space) << "Equation:";
-	cout << setw(field_space) << dec << MakeEquation<DP>(d.D, 1023);
-	cout << setw(field_space) << dec << MakeEquation<SP>(f.F, 127);
+	cout << setw(field_space) << dec << MakeEquation<DP>(d.D, BIASD);
+	cout << setw(field_space) << dec << MakeEquation<SP>(f.F, BIASF);
 	cout << endl;
 
 	return 0;
