@@ -25,7 +25,7 @@ This performs a bitwise and of the `imm` value with the source register
 
 There are limits to the bit width of `imm` because it has to fit within
 the `and` instruction. If you exceed the allowable width of `imm`, the
-assembler will be glad to insult you. 
+assembler will be glad to insult you.
 
 It is possible that a `mov`
 instruction will allow your immediate value. You'd follow up with an
@@ -72,8 +72,45 @@ conditional branch to follow the instruction.
 
 ## `bfi`
 
+This instruction mnemonic stands for Bit Field Insert. The word *Insert* should
+really be copy. The official ARM [documentation](https://developer.arm.com/documentation/dui0801/g/A64-General-Instructions/BFI) explains this instruction
+very well so we'll repeat it here:
+
+*Bit Field Insert copies any number of low-order bits from a source register into the same number of adjacent bits at any position in the destination register, leaving other bits unchanged.*
+
+The instruction has the following format:
+
+```asm
+    bfi    rd, rs, lsb, width
+```
+
+Starting at bit 0 of `rs`, `width` bits are copied to `rd` starting at bit
+`lsb`.
+
+The `bfi` instruction replaces as many as three instructions: likely a shift,
+an `and` and an `orr`.
 
 ## `mvn`
+
+This instruction takes only takes two operands (but permits an optional shift
+to be explained below).
+
+The basic syntax is:
+
+```asm
+    mvn    rd, rs
+```
+
+This flips all the bits in the source and copies them to the destination.
+
+In addition to the basic instruction, there is also:
+
+```asm
+    mvn    rd, rs, *shift* num_bits
+```
+
+The *shift* and `num_bits` function the same way as described above including
+the option to use `*shift*` as one of `lsl`, `lsr`, `asr` or `ror`.
 
 ## `lsl`
 
