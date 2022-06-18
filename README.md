@@ -74,7 +74,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 11 | Bit Fields |
 | .... a | [.... Without Bit Fields](./section_2/bitfields/README.md) |
 | .... b | [.... With Bit Fields](./section_2/bitfields/with.md) |
-| .... c | [.... Review of Newly Described Instruction](./NOT WRITTEN YET)
+| .... c | [.... Review of Newly Described Instruction](./section_2/bitfields/review.md)
 
 ## Section 3 - More Stuff
 
