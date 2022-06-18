@@ -1,129 +1,151 @@
-	.section	__TEXT,__text,regular,pure_instructions
-	.build_version macos, 12, 0	sdk_version 12, 3
-	.globl	_ClearA                         ; -- Begin function ClearA
-	.p2align	2
-_ClearA:                                ; @ClearA
+	.arch armv8-a
+	.file	"test.c"
+	.text
+	.align	2
+	.p2align 3,,7
+	.global	ClearA
+	.type	ClearA, %function
+ClearA:
+.LFB23:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	and	w8, w8, #0xfe
-	strb	w8, [x0]
+	ldrb	w1, [x0]
+	and	w1, w1, -2
+	strb	w1, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_SetA                           ; -- Begin function SetA
-	.p2align	2
-_SetA:                                  ; @SetA
+.LFE23:
+	.size	ClearA, .-ClearA
+	.align	2
+	.p2align 3,,7
+	.global	SetA
+	.type	SetA, %function
+SetA:
+.LFB24:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	orr	w8, w8, #0x1
-	strb	w8, [x0]
+	ldrb	w1, [x0]
+	orr	w1, w1, 1
+	strb	w1, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_ClearB                         ; -- Begin function ClearB
-	.p2align	2
-_ClearB:                                ; @ClearB
+.LFE24:
+	.size	SetA, .-SetA
+	.align	2
+	.p2align 3,,7
+	.global	ClearB
+	.type	ClearB, %function
+ClearB:
+.LFB25:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	and	w8, w8, #0xfffffff9
-	strb	w8, [x0]
+	ldrb	w1, [x0]
+	and	w1, w1, -7
+	strb	w1, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_SetB                           ; -- Begin function SetB
-	.p2align	2
-_SetB:                                  ; @SetB
+.LFE25:
+	.size	ClearB, .-ClearB
+	.align	2
+	.p2align 3,,7
+	.global	SetB
+	.type	SetB, %function
+SetB:
+.LFB26:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	and	w8, w8, #0xfffffff9
-	ubfiz	w9, w1, #1, #2
-	orr	w8, w8, w9
-	strb	w8, [x0]
+	ldrb	w2, [x0]
+	bfi	w2, w1, 1, 2
+	strb	w2, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_ClearC                         ; -- Begin function ClearC
-	.p2align	2
-_ClearC:                                ; @ClearC
+.LFE26:
+	.size	SetB, .-SetB
+	.align	2
+	.p2align 3,,7
+	.global	ClearC
+	.type	ClearC, %function
+ClearC:
+.LFB27:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	and	w8, w8, #0x7
-	strb	w8, [x0]
+	ldrb	w1, [x0]
+	and	w1, w1, 7
+	strb	w1, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_SetC                           ; -- Begin function SetC
-	.p2align	2
-_SetC:                                  ; @SetC
+.LFE27:
+	.size	ClearC, .-ClearC
+	.align	2
+	.p2align 3,,7
+	.global	SetC
+	.type	SetC, %function
+SetC:
+.LFB28:
 	.cfi_startproc
-; %bb.0:
-	ldrb	w8, [x0]
-	bfi	w8, w1, #3, #8
-	strb	w8, [x0]
+	ldrb	w2, [x0]			// load *byte into w2
+	ubfiz	w1, w1, 3, 5		// put zeros in bit 3 to 7 of value
+	and	w2, w2, 7				// blank bits 3 to 7 in *byte
+	orr	w2, w2, w1				
+	strb	w2, [x0]
 	ret
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_main                           ; -- Begin function main
-	.p2align	2
-_main:                                  ; @main
+.LFE28:
+	.size	SetC, .-SetC
+	.section	.rodata.str1.8,"aMS",@progbits,1
+	.align	3
+.LC0:
+	.string	"noBF should be 0x3A - value: 0x%X\n"
+	.align	3
+.LC1:
+	.string	"bf   should be 0x1D - value: 0x%X\n"
+	.section	.text.startup,"ax",@progbits
+	.align	2
+	.p2align 3,,7
+	.global	main
+	.type	main, %function
+main:
+.LFB29:
 	.cfi_startproc
-; %bb.0:
-	sub	sp, sp, #48
-	stp	x20, x19, [sp, #16]             ; 16-byte Folded Spill
-	stp	x29, x30, [sp, #32]             ; 16-byte Folded Spill
-	add	x29, sp, #32
-	.cfi_def_cfa w29, 16
-	.cfi_offset w30, -8
-	.cfi_offset w29, -16
-	.cfi_offset w19, -24
-	.cfi_offset w20, -32
-	ldrb	w8, [sp, #15]
-	orr	w8, w8, #0x1
-	strb	w8, [sp, #15]
-	ldrb	w8, [sp, #15]
-	and	w8, w8, #0xfffffff9
-	orr	w8, w8, #0x4
-	strb	w8, [sp, #15]
-	ldrb	w8, [sp, #15]
-	mov	w19, #24
-	bfxil	w19, w8, #0, #3
-	strb	w19, [sp, #15]
-	mov	w8, #58
-	adrp	x9, _noBF@PAGE
-	strb	w8, [x9, _noBF@PAGEOFF]
-	str	x8, [sp]
-Lloh0:
-	adrp	x0, l_.str@PAGE
-Lloh1:
-	add	x0, x0, l_.str@PAGEOFF
-	bl	_printf
-	str	x19, [sp]
-Lloh2:
-	adrp	x0, l_.str.1@PAGE
-Lloh3:
-	add	x0, x0, l_.str.1@PAGEOFF
-	bl	_printf
-	mov	w0, #0
-	ldp	x29, x30, [sp, #32]             ; 16-byte Folded Reload
-	ldp	x20, x19, [sp, #16]             ; 16-byte Folded Reload
-	add	sp, sp, #48
+	stp	x29, x30, [sp, -32]!
+	.cfi_def_cfa_offset 32
+	.cfi_offset 29, -32
+	.cfi_offset 30, -24
+	mov	w5, 2
+	mov	w4, 3
+	mov	x29, sp
+	ldrb	w0, [sp, 24]
+	adrp	x2, .LANCHOR0
+	adrp	x1, .LC0
+	add	x1, x1, :lo12:.LC0
+	orr	w0, w0, 1
+	strb	w0, [sp, 24]
+	mov	w0, 58
+	strb	w0, [x2, #:lo12:.LANCHOR0]
+	ldrb	w3, [sp, 24]
+	mov	w2, 58
+	mov	w0, 1
+	bfi	w3, w5, 1, 2
+	strb	w3, [sp, 24]
+	ldrb	w3, [sp, 24]
+	bfi	w3, w4, 3, 5
+	strb	w3, [sp, 24]
+	bl	__printf_chk
+	ldrb	w2, [sp, 24]
+	adrp	x1, .LC1
+	mov	w0, 1
+	add	x1, x1, :lo12:.LC1
+	bl	__printf_chk
+	mov	w0, 0
+	ldp	x29, x30, [sp], 32
+	.cfi_restore 30
+	.cfi_restore 29
+	.cfi_def_cfa_offset 0
 	ret
-	.loh AdrpAdd	Lloh2, Lloh3
-	.loh AdrpAdd	Lloh0, Lloh1
 	.cfi_endproc
-                                        ; -- End function
-	.globl	_noBF                           ; @noBF
-.zerofill __DATA,__common,_noBF,1,0
-	.section	__TEXT,__cstring,cstring_literals
-l_.str:                                 ; @.str
-	.asciz	"noBF should be 0x3A - value: 0x%X\n"
-
-l_.str.1:                               ; @.str.1
-	.asciz	"bf   should be 0x1D - value: 0x%X\n"
-
-.subsections_via_symbols
+.LFE29:
+	.size	main, .-main
+	.global	noBF
+	.bss
+	.set	.LANCHOR0,. + 0
+	.type	noBF, %object
+	.size	noBF, 1
+noBF:
+	.zero	1
+	.ident	"GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0"
+	.section	.note.GNU-stack,"",@progbits

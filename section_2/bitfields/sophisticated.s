@@ -14,7 +14,8 @@ ClearA: ldrb    w1, [x0]
         ret
 
 ClearB: ldrb    w1, [x0]
-        and     w1, w1, 0xF9
+		mov		w2, 0xF9
+        and     w1, w1, w2
         strb    w1, [x0]
         ret
 
@@ -30,27 +31,15 @@ SetA:   ldrb    w1, [x0]
 
 
 SetB:   ldrb    w3, [x0]
-        and     w1, w1, 3           // value &= 3
-        lsl     w1, w1, 1
-        mov     w2, 6
-        mvn     w2, w2
-        and     w3, w3, w2          // B is cleared
-        orr     w3, w3, w1
+		bfi		w3, w1, 1, 2    // copy bit 0..1 in w1 to bit 1..2 in w3
         strb    w3, [x0]
         ret
 
-SetC:   ldrb    w3, [x0]
-
-        mov     w2, 0x1F
-        and     w1, w1, w2
-        lsl     w1, w1, 3
-
-        lsl     w2, w2, 3
-        mvn     w2, w2
-        and     w3, w3, w2
-
-        orr     w3, w3, w1
-        strb    w3, [x0]
+SetC:   ldrb    w2, [x0]        // put *byte into w2
+        ubfiz   w1, w1, 3, 5    // zero new w1, copy bits 0..4 to 3..7
+        and     w2, w2, 7       // preserve only 1st 3 bits in *byte
+        orr     w2, w2, w1		// or in value into *byte
+        strb    w2, [x0]
         ret
 
         .end 

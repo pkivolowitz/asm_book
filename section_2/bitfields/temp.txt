@@ -1,10 +1,5 @@
 SetB:   ldrb    w3, [x0]
-        and     w1, w1, 3           // value &= 3
-        lsl     w1, w1, 1
-        mov     w2, 6
-        mvn     w2, w2
-        and     w3, w3, w2          // B is cleared
-        orr     w3, w3, w1
+		bfi		w3, w1, 1, 2    // copy bit 0..1 in w1 to bit 1..2 in w3
         strb    w3, [x0]
         ret
 		

@@ -8,7 +8,8 @@ struct BF {
 
 unsigned char noBF = 0;
 
-#define  C
+//#define	C
+#undef  C
 #ifdef  C
 /*  Note the absence of defensive programming such as checking
     to ensure that byte is not null and that bit_number is not
@@ -59,11 +60,11 @@ int main() {
     bf.b = 2;
     bf.c = 3;
 
-    ClearA(&noBF);
-    SetB(&noBF, 1);
-    SetC(&noBF, 7);
+    SetA(&noBF);
+    SetB(&noBF, 2);
+    SetC(&noBF, 3);
 
-    printf("noBF should be 0x3A - value: 0x%X\n", (unsigned int) noBF);
+    printf("noBF should be 0x1D - value: 0x%X\n", (unsigned int) noBF);
     printf("bf   should be 0x1D - value: 0x%X\n", (unsigned int) *((unsigned char *) &bf));
     return 0;
 }

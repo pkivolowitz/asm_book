@@ -212,12 +212,72 @@ side effect to changing this order.
 `lsl` means "left shift logical" which fills the right side recently
 vacated bits with zero.
 
+Now, we present a more sophisticated version of `SetB`:
+
+```asm
+SetB:   ldrb    w3, [x0]                                                // 1 
+        bfi     w3, w1, 1, 2 // copy bit 0..1 in w1 to bit 1..2 in w3   // 2 
+        strb    w3, [x0]                                                // 3 
+        ret                                                             // 4 
+```
+
+Whoa. Nine instructions down to four! What the heck is `bfi`?
+
+`bfi dst, src, start, width` copies `width` bits starting at 0 in `src`
+to bits starting at `start` in `dst`. It obviates the need for `line 2` in
+the naive code because it plucks only bits 0 and 1 from the original value
+of `w1`. The `bfi` then internally does the shift appropriate to move
+bit 0 of the original `w1` to bit `start` along with `width - 1`
+subsequent bits.
+
+Some might argue that instructions like `bfi` (and `ubfiz` described
+below) is an example of `ISA creep` where ISA's get
+more and more cumbersome with the latest instructions du jure. This is
+definitely true in the x86 ISA. Perhaps this is true in the AARCH64 ISA
+as well, but certainly not to the extent of the x86. Remember that the ARM
+family of processors are examples of RISC machines - *reduced instruction
+set* architectures.
+
+UBFIZ	dest, src, start, width
+
+zeros dest
+copies src starting at 0 to bits start to start + width - 1.
+
+Notice this version is two instructions shorter. 
+
+Part of the savings is the use of `ubfiz`.
+
+
+
+`ubfiz` stands for Unsigned Bit Field Insert in Zeros. Wow.
+
+This instruction does the following:
+
+* zeros the entire destination register
+* copies the indicated source register bits to the destination
+
+
+Finally, we come to handling field `c`. Recall `c` is 5 bits long starting
+at bit 3.
+
+Clearing the bits in `c` is easily accomplished:
 
 ```c
 void ClearC(unsigned char * byte) {
     *byte &= 7;             // squashes bits 3 to 7 to 0
 }
+```
 
+This is optimally implemented using:
+
+```asm
+ClearC: ldrb    w1, [x0]                                                // 1 
+        and     w1, w1, 7                                               // 2 
+        strb    w1, [x0]                                                // 3 
+        ret                                                             // 4 
+```
+
+```c
 void SetC(unsigned char * byte, unsigned char value) {
     value &= 0x1F;          // ensures only bits 0 to 4 can be set
     *byte &= ~(0x1F << 3);  // squashes correct bits in byte
@@ -228,7 +288,23 @@ void SetC(unsigned char * byte, unsigned char value) {
 In naive assembly language, these functions would look like this:
 
 ```asm
+SetC:   ldrb    w3, [x0]                                                // 1 
+        mov     w2, 0x1F                                                // 2 
+        and     w1, w1, w2                                              // 3 
+        lsl     w1, w1, 3                                               // 4 
+        lsl     w2, w2, 3                                               // 5 
+        mvn     w2, w2                                                  // 6 
+        and     w3, w3, w2                                              // 7 
+        orr     w3, w3, w1                                              // 8 
+        strb    w3, [x0]                                                // 9 
+        ret                                                             // 10 
 ```
 
-
-
+```asm
+SetC:   ldrb    w2, [x0]        // put *byte into w2                    // 1 
+        ubfiz   w1, w1, 3, 5    // zero new w1, copy bits 0..4 to 3..7  // 2 
+        and     w2, w2, 7       // preserve only 1st 3 bits in *byte    // 3 
+        orr     w2, w2, w1      // or in value into *byte               // 4 
+        strb    w2, [x0]                                                // 5 
+        ret                                                             // 6 
+```
