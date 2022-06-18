@@ -1,8 +1,8 @@
-# Section 2 / Bit Fields
+# Section 2 / Without Bit Fields
 
 ## Overview
 
-Many C and C++ programmers have never seen bit fields. 
+Many C and C++ programmers have never seen bit fields.
 
 Bit fields are a
 feature of the C and C++ language which completely hide what is often
@@ -11,8 +11,8 @@ called "bit bashing".
 Bit bashing is the manipulation of individual bits. Bit
 bashing goes to the very core of the C language. Remember that C is a
 high level assembly language, as we argue in Section 1 of this book.
-And C is the (later) language in which Unix was implemented and indeed, 
-C was 
+And C is the (later) language in which Unix was implemented and indeed,
+C was
 developed specifically to implement Unix. 
 
 Since an operating system directly
@@ -60,11 +60,15 @@ value. In the best case, 8 bytes collapse to 1 byte. In a worse case,
 
 ## Without Bit Fields
 
+Before we examine using bit fields, let's look at what life would be
+like without them.
+
 Let's assume we're working with a byte that is comprised of three
 fields layed out as in `struct BF` above. That is, a one, two and
 five bit field inside one byte.
 
-Without bit fields, we would have to write this code:
+Without bit fields, we would have to write this code to clear `a`
+to zero:
 
 ```c
 void ClearA(unsigned char * byte) {
@@ -113,7 +117,8 @@ ClearA: ldrb    w1, [x0]                                                // 1
 ```
 
 Here, the `0xFE` literal takes the place of `lines 2 and 3` in the previous
-version.
+version. We do this by pre-computing what the `mov` and `mvn` would have
+produced.
 
 For setting the `a` bit, we would do this:
 
@@ -125,8 +130,13 @@ void SetA(unsigned char * byte) {
 
 This is an anomaly for bit bashing. In almost all cases when setting
 bit values, the bits must be cleared first because an *or* instruction
-is responsible for setting any 1 bits to 1. In the case, it is a single
-bit we're setting so we can just or it in.
+is responsible for setting any 1 bits to 1.
+
+It is important you get that when needing to set a number of bits to a
+specific value, those bit must be cleared first so that an `orr` can do
+the right thing.
+
+In this case, it is a single bit we're setting so we can just or it in.
 
 In assembly language:
 
@@ -173,7 +183,7 @@ ClearB: ldrb    w1, [x0]                                                // 1
 
 Turning to setting `b`, the code gets a little more complicated as for
 the first time, we have to accept a parameter for the value to place into
-`b`.
+`b`. And, `b` is more than one bit.
 
 ```c
 void SetB(unsigned char * byte, unsigned char value) {                  // 1 
@@ -186,7 +196,7 @@ void SetB(unsigned char * byte, unsigned char value) {                  // 1
 `Line 2` is necessary to prevent stray 1's from being or'ed into `*byte`.
 
 `Line 3` is necessary to squash the existing target bits to zero prior
-to being or'ed.
+to being `orr`'ed.
 
 Notice `value` is being shifted left by 1 bit as the `b` field begins at
 bit index 1.
@@ -205,9 +215,9 @@ SetB:   ldrb    w3, [x0]                                                // 1
         ret                                                             // 9 
 ```
 
-The only interesting thing in this code as that we chose to perform the
-left shift by one bit early in the code rather than later. There is no
-side effect to changing this order.
+The only interesting thing in this code is that we chose to perform the
+left shift (`lsl`) by one bit earlier in the code rather than later.
+There is ill no side effect to changing this order.
 
 `lsl` means "left shift logical" which fills the right side recently
 vacated bits with zero.
@@ -224,38 +234,27 @@ SetB:   ldrb    w3, [x0]                                                // 1
 Whoa. Nine instructions down to four! What the heck is `bfi`?
 
 `bfi dst, src, start, width` copies `width` bits starting at 0 in `src`
-to bits starting at `start` in `dst`. It obviates the need for `line 2` in
-the naive code because it plucks only bits 0 and 1 from the original value
-of `w1`. The `bfi` then internally does the shift appropriate to move
-bit 0 of the original `w1` to bit `start` along with `width - 1`
-subsequent bits.
+to bits starting at `start` in `dst`.
+
+It obviates the need for `line 2` in
+the naive code because it plucks only bits 0 and 1 and no others from the
+original value
+of `w1`.
+
+The `bfi` then internally does the shift appropriate to move
+bit 0 of `w1` to bit `start` along with `width - 1`
+subsequent bits. Finally, the shifted bits overwrite the same bits
+in `w3`.
 
 Some might argue that instructions like `bfi` (and `ubfiz` described
 below) is an example of `ISA creep` where ISA's get
 more and more cumbersome with the latest instructions du jure. This is
 definitely true in the x86 ISA. Perhaps this is true in the AARCH64 ISA
-as well, but certainly not to the extent of the x86. Remember that the ARM
+as well, but certainly not to the extent of the x86. 
+
+Remember that the ARM
 family of processors are examples of RISC machines - *reduced instruction
 set* architectures.
-
-UBFIZ	dest, src, start, width
-
-zeros dest
-copies src starting at 0 to bits start to start + width - 1.
-
-Notice this version is two instructions shorter. 
-
-Part of the savings is the use of `ubfiz`.
-
-
-
-`ubfiz` stands for Unsigned Bit Field Insert in Zeros. Wow.
-
-This instruction does the following:
-
-* zeros the entire destination register
-* copies the indicated source register bits to the destination
-
 
 Finally, we come to handling field `c`. Recall `c` is 5 bits long starting
 at bit 3.
@@ -277,6 +276,8 @@ ClearC: ldrb    w1, [x0]                                                // 1
         ret                                                             // 4 
 ```
 
+As for setting the value of `c`, we have this in C / C++:
+
 ```c
 void SetC(unsigned char * byte, unsigned char value) {
     value &= 0x1F;          // ensures only bits 0 to 4 can be set
@@ -285,7 +286,7 @@ void SetC(unsigned char * byte, unsigned char value) {
 }
 ```
 
-In naive assembly language, these functions would look like this:
+In naive assembly language, this function would look like this:
 
 ```asm
 SetC:   ldrb    w3, [x0]                                                // 1 
@@ -300,6 +301,15 @@ SetC:   ldrb    w3, [x0]                                                // 1
         ret                                                             // 10 
 ```
 
+`Lines 1 and 2` in the assembly language performs `line 1` of the C code.
+
+`Line 4` shifts `value` up to where `c` starts. `Line 5` similarly shifts
+the mask up to where `c` starts. Its bits are negated on `line 6`. `Line 7`
+squashes the upper five bits to zero followed by the `orr`ing on `line 8`.
+
+A more sophisticated version of the assembly language, leveraging some
+fancy bit insertion / copying instructions, is far shorter.
+
 ```asm
 SetC:   ldrb    w2, [x0]        // put *byte into w2                    // 1 
         ubfiz   w1, w1, 3, 5    // zero new w1, copy bits 0..4 to 3..7  // 2 
@@ -308,3 +318,54 @@ SetC:   ldrb    w2, [x0]        // put *byte into w2                    // 1
         strb    w2, [x0]                                                // 5 
         ret                                                             // 6 
 ```
+
+`Line 2` uses the instruction `ubfiz` which means Unsigned Bit Field Insert
+Zeroed. This instruction:
+
+* Zeros out a new copy of `value` (`w1`), the destination and
+
+* Copies 5 bits starting at bit 0 of the old `value` to
+bits 3 through 7 in the new version of `value`.
+
+This one instruction does the work of `lines 2, 3 and 4` in the naive version
+of the assembly language.
+
+`Line 3` of the new assembly language replaces `lines 4, 5 and 6` in the naive.
+This works because the enlightened human saw an easier way to zero out *byte
+*except* for the first 3 bits (where `a` and `b` live).
+
+The remainder is as expected.
+
+## Summary
+
+In this chapter we saw was life was like without bit fields. We saw that 
+we had to implement our own bit bashing functions to do things like:
+
+* Ensure parameters are in the right range
+
+* Shift values around to line up with their destination
+
+* Zero out destination fields
+
+* Or in new values, having been shifted to the right position
+
+and more.
+
+We brushed upon the idea that bit bashing and bit fields are critical to
+directly interfacing with hardware but are also useful in decreasing the
+size of data structures in memory and on disc.
+
+## Space Versus Time
+
+In Computer Science there is an eternal between space and time. The
+following is a **law**:
+
+*If you want something to go faster, it will cost more memory.*
+
+*If you want to save memory, what you're doing will take more time.*
+
+This law shows up here... recall the example of where we wanted to save
+memory by collapsing 8 `bool` into 1 byte? To save that memory we will
+slow down because accessing the right bits takes a couple of instructions
+where overwriting a `bool` implemented as an `int` takes just one
+instruction.
