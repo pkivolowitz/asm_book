@@ -8,7 +8,7 @@ struct BF {
 
 unsigned char noBF = 0;
 
-#undef  C
+#define  C
 #ifdef  C
 /*  Note the absence of defensive programming such as checking
     to ensure that byte is not null and that bit_number is not

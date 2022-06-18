@@ -67,30 +67,153 @@ five bit field inside one byte.
 Without bit fields, we would have to write this code:
 
 ```c
-/*  Note the absence of defensive programming such as checking
-    to ensure that byte is not null and that bit_number is not
-    too large.
-*/
-
 void ClearA(unsigned char * byte) {
     *byte &= ~1;
 }
+```
 
+This function takes the address of the byte containing the `a`,
+`b` and `c` portions.
+
+*Good programming practice would check `byte` against `NULL`
+or `nullptr`.*
+
+The `~` operator is a bitwise negation. All the bits in the
+value are flipped from 0 to 1 or 1 to 0. `~1` in an unsigned
+char will produce `0xFE`, or all ones except for bit 0. `and`ing
+this value to `*byte` ensures that its bit 0 is 0 and all other
+bits are left alone.
+
+In assembly language, written *naively*, this would look like
+this:
+
+```asm
+ClearA: ldrb    w1, [x0]                                                // 1 
+        mov     w2, 1                                                   // 2 
+        mvn     w2, w2                                                  // 3 
+        and     w1, w1, w2                                              // 4 
+        strb    w1, [x0]                                                // 5 
+        ret                                                             // 6 
+```
+
+`x30` does not have to be backed up or restored as this function is a "leaf."
+
+`Line 3` uses the instruction `mvn` to flip all the bits in `w2`.
+
+This code completely tracks the C / C++ code.
+
+We have no obligation to follow the C / C++ code exactly. Instead we
+could write:
+
+```asm
+ClearA: ldrb    w1, [x0]                                                // 1 
+        and     w1, w1, 0xFE                                            // 2 
+        strb    w1, [x0]                                                // 3 
+        ret                                                             // 4 
+```
+
+Here, the `0xFE` literal takes the place of `lines 2 and 3` in the previous
+version.
+
+For setting the `a` bit, we would do this:
+
+```c
 void SetA(unsigned char * byte) {
-    *byte &= ~1;
     *byte |= 1;
 }
+```
 
+This is an anomaly for bit bashing. In almost all cases when setting
+bit values, the bits must be cleared first because an *or* instruction
+is responsible for setting any 1 bits to 1. In the case, it is a single
+bit we're setting so we can just or it in.
+
+In assembly language:
+
+```asm
+SetA:   ldrb    w1, [x0]                                                // 1 
+        orr     w1, w1, 1                                               // 2 
+        strb    w1, [x0]                                                // 3 
+        ret                                                             // 4 
+```
+
+`orr` is one of several or instructions in AARCH64. It is the one that maps
+most closely to `|` in C and C++.
+
+Moving onto the `b` field, things begin to get a little more interesting.
+To clear the `b` field we might do this in C | C++.
+
+```c
 void ClearB(unsigned char * byte) {
     *byte &= ~6;
 }
+```
 
-void SetB(unsigned char * byte, unsigned char value) {
-    value &= 3;             // ensures only bits 0 and 1 can be set
-    *byte &= ~6;            // clears bits 1 and 2 in byte
-    *byte |= (value << 1);  // stores bits 0 and 1 into bits 2 and 3
-}
+This could *naively* be written as:
 
+```asm
+ClearB: ldrb    w1, [x0]                                                // 1 
+        mov     w2, 6                                                   // 2 
+        mvn     w2, w2                                                  // 3 
+        and     w1, w1, w2                                              // 4 
+        strb    w1, [x0]                                                // 5 
+        ret                                                             // 6 
+```
+
+This code is essentially the same as the *naive* version of `ClearA` given
+above. Once again, we can pre-compute the results of `lines 2 and 3` to
+make:
+
+```asm
+ClearB: ldrb    w1, [x0]                                                // 1 
+        and     w1, w1, 0xF9                                            // 2 
+        strb    w1, [x0]                                                // 3 
+        ret                                                             // 4 
+```
+
+Turning to setting `b`, the code gets a little more complicated as for
+the first time, we have to accept a parameter for the value to place into
+`b`.
+
+```c
+void SetB(unsigned char * byte, unsigned char value) {                  // 1 
+    value &= 3;             // ensures only bits 0 and 1 can be set     // 2 
+    *byte &= ~6;            // clears bits 1 and 2 in byte              // 3 
+    *byte |= (value << 1);  // stores bits 0 and 1 into bits 2 and 3    // 4 
+}                                                                       // 5 
+```
+
+`Line 2` is necessary to prevent stray 1's from being or'ed into `*byte`.
+
+`Line 3` is necessary to squash the existing target bits to zero prior
+to being or'ed.
+
+Notice `value` is being shifted left by 1 bit as the `b` field begins at
+bit index 1.
+
+In *naive* assembly language we could write this:
+
+```asm
+SetB:   ldrb    w3, [x0]                                                // 1 
+        and     w1, w1, 3           // value &= 3                       // 2 
+        lsl     w1, w1, 1                                               // 3 
+        mov     w2, 6                                                   // 4 
+        mvn     w2, w2                                                  // 5 
+        and     w3, w3, w2          // B is cleared                     // 6 
+        orr     w3, w3, w1                                              // 7 
+        strb    w3, [x0]                                                // 8 
+        ret                                                             // 9 
+```
+
+The only interesting thing in this code as that we chose to perform the
+left shift by one bit early in the code rather than later. There is no
+side effect to changing this order.
+
+`lsl` means "left shift logical" which fills the right side recently
+vacated bits with zero.
+
+
+```c
 void ClearC(unsigned char * byte) {
     *byte &= 7;             // squashes bits 3 to 7 to 0
 }
