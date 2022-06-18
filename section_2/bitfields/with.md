@@ -1,4 +1,4 @@
-# Section 2 / With Bit Fields
+# Section 2 / Bit Fields / With Bit Fields
 
 Given how long the previous chapter, describing life without bit fields, was
 this chapter will be a let down.
