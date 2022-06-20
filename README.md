@@ -53,6 +53,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | .... a | [.... Registers](./section_1/regs/README.md) |
 | .... b | [.... Load and Store](./section_1/regs/ldr.md) |
 | .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) |
+| .... d | [.... Register Sizes](./section_1/regs/widths.md) |
 | 5 | Functions |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) |
 | .... b | [.... Passing Parameters](./section_1/funcs/README2.md) |
@@ -64,7 +65,8 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 |  8 | [`const`](./section_1/const/README.md)
 |  9 | [Casting](./section_1/casting/README.md) |
 | 10 | Floating Point |
-| .... a | [ .... What Are Floating Point Numbers? ](./section_1/float/what.md)
+| .... a | [.... What Are Floating Point Numbers?](./section_1/float/what.md)
+| .... b | [.... Working with Floats](./section_1/float/working.md)
 
 
 ## Section 2 - Bit Manipulation

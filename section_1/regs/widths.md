@@ -1,4 +1,4 @@
-# Register Widths
+# Section 1 / Register Sizes
 
 ## Overview
 
