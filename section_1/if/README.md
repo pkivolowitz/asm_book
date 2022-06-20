@@ -1,4 +1,4 @@
-# The `if` Statement
+# Section 1 / The `if` Statement
 
 We will begin with the `if` statement followed by a discussion of the `if / else`.
 
