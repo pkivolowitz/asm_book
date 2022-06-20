@@ -213,9 +213,10 @@ NaN:  1
 Inf:  0
 ```
 
-`Nan` is true (for `float`) when its exponent is 0xFF and the sign
-is 0. So, you'll
-never get a `float` that is 2 raised to the power of 128 because
+`Nan` is true (for `float`) when its exponent is 0xFF and fraction
+is not zero.
+
+You'll never get a `float` that is 2 raised to the power of 128 because
 that value is reserved for `NaN` and `Inf`.
 
 How about `Inf`?
@@ -231,8 +232,8 @@ Inf:  1
 ```
 
 Once again, notice the out-of-bounds value for the exponent: 0xFF.
-Second notice that the sign bit is 1. This stands for `Inf` or
-an infinite result.
+Secondly, the fraction is fully zero. The sign bit specifies negative
+or positive infinity.
 
 ## Testing for Naughty Values
 
@@ -247,4 +248,4 @@ Both of these functions work with `double` and `float`.
 
 Once a variable goes `NaN` or `Inf`, all subsequent operations
 will remain `NaN` or `Inf` until the variable is reset to a
-valid number.
+valid number. That is, 1 + `Inf` is `Inf`, for example.
