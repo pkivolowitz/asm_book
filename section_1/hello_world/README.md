@@ -483,6 +483,8 @@ mov   x21, x1
 
 can be read as `copy what is in x1 into x21`. I.e. read the register use from right to left.
 
+The `mov` instruction doesn't *move* anything anywhere. It *copies*.
+
 ## Line 6
 
 This line contains the label `top`. The instruction that follows (the `ldr`) is stored at some address. The value of `top` is that address. The unconditional branch on `line 10` specifies `top` as the destination of the branch. You can think of `line 10` as the closing brace of the original while loop.
