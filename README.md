@@ -86,4 +86,4 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 
 ## About The Author
 
-Perry Kivolowitz's career in the Computer Sciences spans just under five decades. He launched more than 5 companies, mostly relating to hardware, image processing and visual effects (for motion pictures and television). Perry received Emmy recognition for his work on the The Gathering, the pilot episode of Babylon 5. Later he received the Emmy Award for Engineering along with his colleagues at SilhouetteFX, LLC. Also, Perry received and Academy Award for Scientific and Technical Achievement for his invention of Shape Driven Warping and Morphing.
+Perry Kivolowitz's career in the Computer Sciences spans just under five decades. He launched more than 5 companies, mostly relating to hardware, image processing and visual effects (for motion pictures and television). Perry received Emmy recognition for his work on the The Gathering, the pilot episode of Babylon 5. Later he received the Emmy Award for Engineering along with his colleagues at SilhouetteFX, LLC. Also, Perry received an Academy Award for Scientific and Technical Achievement for his invention of Shape Driven Warping and Morphing.
