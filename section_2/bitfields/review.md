@@ -117,6 +117,8 @@ specified bits from the source. The `u` means don't consider the
 sign bit as special. The `z` is what causes the zero fill first and
 sets it apart from `bfi`.
 
+See bottom for an example.
+
 ## `mvn`
 
 This instruction takes only takes two operands (but permits an optional
@@ -147,6 +149,8 @@ That is, if your goal is to turn a positive integer into a negative
 integer, use `neg`. If your goal is to negate bits for bit bashing
 purposes, use `mvn`.*
 
+See bottom for an example.
+
 ## `lsl`
 
 **Logical Shift Left** moves bits to the left shifting 0 into any
@@ -174,4 +178,41 @@ for bit bashing as it is how bits can be set to 1.
 ```asm
 	orr		rd, rs, rm  # rm is another register
 	orr		rd, rs, imm
+```
+
+## Example
+
+[Here](./ubfiz.s) is the code to an example:
+
+```asm
+        .global        main                                             // 1 
+        .text                                                           // 2 
+        .align        2                                                 // 3 
+/*    This demo should be run from gdb. `layout regs` would be helpful. // 4 
+    This demo shows:                                                    // 5 
+    bfi - bit field insert                                              // 6 
+*/                                                                      // 7 
+main:   mov         w1, wzr        //                                   // 8 
+        mvn         w1, w1         // set w1 to 0xFFFFFFFF              // 9 
+        mov         w3, w1         // save for reuse                    // 10 
+        mov         w2, 3          // set bits 0 and 1                  // 11 
+        bfi         w1, w2, 4, 4                                        // 12 
+        // Look at w1. You will note that the bottom                    // 13 
+        // 4 bits of w2 (0011) have been copied into the second         // 14 
+        // 4 bits of w1 including the zeros.                            // 15 
+        //                                                              // 16 
+        // NEXT DEMO                                                    // 17 
+        mov         w1, w3         // reset w1                          // 18 
+        mov         w2, 3          // set bits 0 and 1                  // 19 
+        ubfiz       w1, w2, 4, 2                                        // 20 
+        // Look at w1. You will note that all the bits were             // 21 
+        // zeroed and then 2 bits from w2 are copied into w1            // 22 
+        // starting at bit 4. Compare this to bfi.                      // 23 
+        //                                                              // 24 
+        // NEXT DEMO                                                    // 25 
+        bfxil       w3, w1, 4, 4                                        // 26 
+        // Look at w3. You will note that 4 bits (0011) from            // 27 
+        // w1 were put into w3 starting at bit 0.                       // 28 
+        mov         w0, wzr                                             // 29 
+        ret                                                             // 30
 ```
