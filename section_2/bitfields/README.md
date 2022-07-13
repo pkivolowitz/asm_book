@@ -12,8 +12,7 @@ Bit bashing is the manipulation of individual bits. Bit
 bashing goes to the very core of the C language. Remember that C is a
 high level assembly language, as we argue in Section 1 of this book.
 And C is the (later) language in which Unix was implemented and indeed,
-C was
-developed specifically to implement Unix. 
+C was developed specifically to implement Unix.
 
 Since an operating system directly
 interfaces with hardware - the C language grew to have features
@@ -45,7 +44,7 @@ Consider a data structure for which there will be potentially millions of
 instances in RAM. Or, perhaps billions of instances on disc. Suppose you
 need 8 boolean members in every instance. The C++ standard does not
 define the size of a `bool` instead leaving it to be implementation
-dependent. Some implementations equate `bool` to `int`, four bytes in 
+dependent. Some implementations equate `bool` to `int`, four bytes in
 length. Some implement `bool` with a `char`, or 1 byte in length.
 
 Let's assume the smallest case and equate a `bool` with `char`. Our
@@ -250,7 +249,7 @@ Some might argue that instructions like `bfi` (and `ubfiz` described
 below) is an example of `ISA creep` where ISA's get
 more and more cumbersome with the latest instructions du jure. This is
 definitely true in the x86 ISA. Perhaps this is true in the AARCH64 ISA
-as well, but certainly not to the extent of the x86. 
+as well, but certainly not to the extent of the x86.
 
 Remember that the ARM
 family of processors are examples of RISC machines - *reduced instruction
@@ -338,7 +337,7 @@ The remainder is as expected.
 
 ## Summary
 
-In this chapter we saw was life was like without bit fields. We saw that 
+In this chapter we saw was life was like without bit fields. We saw that
 we had to implement our own bit bashing functions to do things like:
 
 * Ensure parameters are in the right range
