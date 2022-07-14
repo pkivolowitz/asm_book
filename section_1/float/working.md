@@ -1,34 +1,41 @@
-# Section 1 / Working with Floating Point Numbers
+# Section 1 / Registers (Simplified)
 
 ## Overview
 
-There are four highest level ideas relating to floating point operations on AARCH64.
+There are four highest level ideas relating to floating point operations
+on AARCH64.
 
-* There is another complete register rest for floating point values.
+* There is another complete register set for floating point values.
 
 * There are alternative instructions just for floating point values.
 
-* There are exotic instructions that operate on sets of floating point values (SIMD).
+* There are exotic instructions that operate on sets of floating point
+  values (SIMD).
 
-* There are instructions to go back and forth to and from the integer registers.
+* There are instructions to go back and forth to and from the integer
+  registers.
 
 ## Floating Point Registers
 
-There will be a more detailed discussion of the floating point registers when
-exotic instructions such as SIMD are discussed. For now, it is sufficient to discuss
-the less exotic aliases of the floating point registers.
+There will be a more detailed discussion of the floating point registers
+when exotic instructions such as SIMD are discussed. For now, it is
+sufficient to discuss the less exotic aliases of the floating point
+registers.
 
-We say aliases because, like the integer registers, how you reference a floating
-point register determines how it is interpreted. Yet, the different ways you can
-refer to floating point register 0 (such as `s0` or `d0`) all share the same
-physical register.
+We say aliases because, like the integer registers, how you reference a
+floating point register determines how it is interpreted.
 
-MORE TO COME.
+For example, in the following image, note the overlap of two single
+precision floats within a single double precision floating point 
+register.
 
-## Basic Floating Point Instructions
+![regs](./regs.png)
 
-## Exotic Floating Point Instructions
+It is worth noting early and often that you should not mix dealing
+with different precisions assuming that because of the overlaps in
+space, you'll get a meaningful result.
 
-This section will be a teaser for a more thorough discussion yet to be written.
+The above image does not show the corresponding layout of *half
+precision* floating point registers. `H0` sits in the least
+significant bits of `S0` and so on.
 
-## Type Conversion Instructions

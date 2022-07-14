@@ -2,6 +2,7 @@
 *.d
 
 temp
+.DS_*
 
 # Compiled Object files
 *.slo
