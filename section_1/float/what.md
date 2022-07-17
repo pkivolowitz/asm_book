@@ -193,7 +193,7 @@ represented by `float`. `double` gets it right. The difference
 between the `double` and `float` is the very small number shown
 on the first line of output.
 
-## When a Number if Not a Number and How About Infinity?
+## When a Number is Not a Number and How About Infinity?
 
 `NaN` is an actual value. It means `not a number`.
 
