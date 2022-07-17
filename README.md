@@ -67,7 +67,7 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | 10 | Floating Point |
 | .... a | [.... What Are Floating Point Numbers?](./section_1/float/what.md)
 | .... b | [.... Registers (simplified)](./section_1/float/working.md)
-| .... c | [.... Literals](./section_1/float/)
+| .... c | [.... Literals](./section_1/float/literals.md)
 | .... d | [.... `fmov`](./section_1/float/)
 | .... e | [.... Conversion To / From Integers](./section_1/float/)
 | .... f | [.... Rounding](./section_1/float/)
