@@ -8,6 +8,7 @@
 		"cout",
 		"csel",
 		"FCVTAS",
+		"fcvtz",
 		"fizzbuzz",
 		"fname",
 		"Formulus",
@@ -32,7 +33,11 @@
     },
     "cSpell.ignoreWords": [
 		"Rypo",
+		"dless",
+		"dmore",
 		"foov",
+		"ndless",
+		"ndmore",
 		"rotypo",
 		"rwtypo"
 	]
