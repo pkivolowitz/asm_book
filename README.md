@@ -68,10 +68,10 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | .... a | [.... What Are Floating Point Numbers?](./section_1/float/what.md)
 | .... b | [.... Registers (simplified)](./section_1/float/working.md)
 | .... c | [.... Literals](./section_1/float/literals.md)
-| .... d | [.... `fmov`](./section_1/float/)
+| .... d | [.... `fmov` Not Yet Written](./section_1/float/)
 | .... e | [.... Conversion To / From Integers](./section_1/float/rounding.md)
-| .... f | [.... Four Basic Operations](./section_1/float/)
-| .... g | [.... Selected Additional Operations](./section_1/float/)
+| .... f | [.... Four Basic Operations Not Yet Written](./section_1/float/)
+| .... g | [.... Selected Additional Operations Not Yet Written](./section_1/float/)
 | .... z | [.... Half Precision Floats](./section_1/float/half.md)
 
 ## Section 2 - Bit Manipulation
