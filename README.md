@@ -64,24 +64,29 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 | .... c | [.... Using](./section_1/structs/using.md) |
 |  8 | [`const`](./section_1/const/README.md)
 |  9 | [Casting](./section_1/casting/README.md) |
-| 10 | Floating Point |
-| .... a | [.... What Are Floating Point Numbers?](./section_1/float/what.md)
-| .... b | [.... Registers (simplified)](./section_1/float/working.md)
-| .... c | [.... Literals](./section_1/float/literals.md)
-| .... d | [.... `fmov` Not Yet Written](./section_1/float/)
-| .... e | [.... Conversion To / From Integers](./section_1/float/rounding.md)
-| .... f | [.... Four Basic Operations Not Yet Written](./section_1/float/)
-| .... g | [.... Selected Additional Operations Not Yet Written](./section_1/float/)
-| .... z | [.... Half Precision Floats](./section_1/float/half.md)
 
-## Section 2 - Bit Manipulation
+## Section 2 - Floating Point
+
+| Chapter | Content |
+| ------- | ------- |
+| 10 | Floating Point |
+| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md)
+| .... b | [.... Registers (simplified)](./section_2/float/working.md)
+| .... c | [.... Literals](./section_2/float/literals.md)
+| .... d | [.... `fmov` Not Yet Written](./section_2/float/)
+| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md)
+| .... f | [.... Four Basic Operations Not Yet Written](./section_2/float/)
+| .... g | [.... Selected Additional Operations Not Yet Written](./section_2/float/)
+| .... z | [.... Half Precision Floats](./section_2/float/half.md)
+
+## Section 3 - Bit Manipulation
 
 | Chapter | Content |
 | ------- | ------- |
 | 11 | Bit Fields |
-| .... a | [.... Without Bit Fields](./section_2/bitfields/README.md) |
-| .... b | [.... With Bit Fields](./section_2/bitfields/with.md) |
-| .... c | [.... Review of Newly Described Instructions](./section_2/bitfields/review.md)
+| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) |
+| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) |
+| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md)
 
 ## Section 3 - More Stuff
 
