@@ -90,6 +90,10 @@ the 64 bit ARM Instruction Set Architecture (ISA).
 
 ## Section 3 - More Stuff
 
+| Chapter | Content |
+| ------- | ------- |
+| --- | [Determing string length for C functions](./more/strlen_for_c/README.md) |
+
 ## Projects
 
 [Here](./projects/README.md) are some project specifications to offer a challenge to your growing mastery.

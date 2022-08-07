@@ -24,6 +24,7 @@
 		"simm",
 		"smaddl",
 		"stringstream",
+		"strlen",
 		"strncpy",
 		"struct",
 		"structs"
@@ -39,6 +40,8 @@
 		"ndless",
 		"ndmore",
 		"rotypo",
-		"rwtypo"
+		"rwtypo",
+		"slen",
+		"ssize"
 	]
 }
