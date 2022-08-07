@@ -32,7 +32,7 @@ There is a third option as demonstrated by the
         .align         2                                                // 2 
         .text                                                           // 3 
                                                                         // 4 
-main:    str           x30, [sp, -16]!                                  // 5 
+main:   str           x30, [sp, -16]!                                   // 5 
         mov            w0, 1             // stdout                      // 6 
         ldr            x1, =s            // pointer to string           // 7 
         ldr            x2, =ssize        // pointer to computed length  // 8 
