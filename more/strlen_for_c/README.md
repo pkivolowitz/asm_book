@@ -1,14 +1,12 @@
 # Determining the Length of Strings for C Functions
 
-C string have no soul, is something I like to tell my students. Unlike
-C++ strings, you can't ask them to tell you how long they are. Instead
-you must use another function such as `strlen()`.
+C string have no soul, is something I like to tell my students. For
+example, uUnlike C++ strings, you can't ask them to tell you about
+themselves. Instead you must use other functions such as `strlen()`.
 
-When a string is fixed within your assembly code, you can let the
-assembler itself calculate the length for you.
-
-Here is an example of a C function that requires you to specify a
-string's length:
+When working with APIs that use C strings, you must often tell the
+API the length of those strings (because, well, C string have no
+soul). Here is an example:
 
 ```c
 write(1, "Hello, World!\n", 14);
@@ -16,9 +14,14 @@ write(1, "Hello, World!\n", 14);
 
 This sends the familiar string to `stdout`.
 
-In assembly language, the string would have been placed in a `.data`
-section using the `.asciz` directive. But! How to get the length of the
-string? You could:
+## In Assembly Language
+
+When a string is fixed within your assembly code, you can let the
+assembler itself calculate the length for you.
+
+In assembly language, the string would likely have been placed in a
+`.data` section using the `.asciz` directive. But! How to get the
+length of the string? You could:
 
 * hard code the length as I did above, or
 
@@ -62,7 +65,11 @@ fmt:    .asciz         "str: %slen: %d\n"   // accounts for newline     // 26
 
 `Line 25` is the new learning. The assembler calculates the difference
 between the address of `s` and the address of `ssize` and puts it at the
-location of `ssize`. Then, it is used on `Lines 8` and `9` like any
+location of `ssize`. One is subtracted from the length because of the
+null termination of the string. You might not see the null terminator
+but it takes up space.
+
+An example of using the stored length is on `Lines 8` and `9` like any
 other statically stored data.
 
 Here is the output of the program:
