@@ -135,3 +135,11 @@ ISAs:
 * ARM beginning with AARCH64
 
 This work is dedicated to my wife Sara and sons Ian and Evan.
+
+### Gratuitous Plug
+
+Perry has created a library of about 200 programming projects
+suitable for CS 1, CS 2, Data Structures, Networking, Operating
+Systems and Computer Organization classes. If a publisher of
+CS text books be interested in purchasing the library, please
+reach out.
