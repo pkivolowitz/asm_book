@@ -11,11 +11,11 @@ unsigned int FibonacciInC(unsigned int nthNumber) {
 
 int main() {
 	printf("In C:\n");
-	for (unsigned int n = 0; n < 10; n++) {
+	for (unsigned int n = 0; n < 14; n++) {
 		printf("Fibonacci number %2d is: %d\n", n, FibonacciInC(n));
 	}
 	printf("In assembly language:\n");
-	for (unsigned int n = 0; n < 10; n++) {
+	for (unsigned int n = 0; n < 14; n++) {
 		printf("Fibonacci number %2d is: %d\n", n, Fib(n));
 	}
 	return 0;
