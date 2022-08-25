@@ -13,4 +13,5 @@ main:   str        x30, [sp, -16]!
      
         .data                      
 fmt:    .asciz    "%f\n"           
-        .end                       
+        .end
+           

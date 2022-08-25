@@ -41,9 +41,9 @@ fmt:    .asciz    "%f\n"                                            // 15
 The above code is found [here](./t.s).
 
 `Line 6` puts the translated value of 1.5 into `s0` (since the value
-is a `float` it goes in an `s` register). The assembler performs the
-magic of treating the literal as if it were an address and puts it into
-`s0`.
+is a `float` it goes in an `s` register). The assembler performs some
+magic getting a 32 bit value seemingly fit into a 32 bit instruction.
+See [below](./literals.md#fitting-32-bits-into-a-32-bit-bag).
 
 `Line 7` converts the single precision number into a double precision
 number for printing.
@@ -133,3 +133,103 @@ s1 = fptr[counter];
 ```
 
 Cool huh?
+
+## Fitting 32 bits into a 32 bit bag
+
+AARCH64 instructions are 32 bits in width. Yet, `line 6` from
+[this](./t.s) program reads:
+
+```text
+        ldr        s0, =0x3fc00000                                  // 6 
+```
+
+This appears to show a 32 bit constant being held in an instruction that
+itself is 32 bits wide. Well, the Assembler does some magic. Let's see
+what that magic is.
+
+Build the program with the `-g` option to enable debugging using GDB.
+
+```text
+$ gcc -g t.s
+```
+
+Then launch GDB on the executable:
+
+```text
+$ gdb a.out
+```
+
+Set a breakpoint on line 6.
+
+```text
+(gdb) b 6
+Breakpoint 1 at 0x784: file t.s, line 6.
+(gdb)
+```
+
+Enter a cool GDB layout (one of several cool layouts):
+
+```text
+layout asm
+```
+
+You should see something like this:
+
+![gdb01](./gdb01.png)
+
+We expected `line 6` to read:
+
+```text
+        ldr        s0, =0x3fc00000
+```
+
+Instead we find:
+
+```text
+b+ 0x784 <main+4>          ldr     s0, 0x7a0 <main+32>
+```
+
+Scan downward to find `0x7a0`:
+
+```text
+   0x7a0 <main+32>         .inst   0x3fc00000 ; undefined  
+```
+
+Hey look! Here's our literal float. The `.inst` is an ARM
+specific GNU assembler directive what allows the programmer
+to encode their own instruction. Note, the encoded instruction does not
+have to make any sense - instead the compiler has emitted a make believe
+instruction that happens to have the value of our literal.
+
+What we're seeing the actual `line 6` doing is reaching ahead a short
+distance to load the value of another "instruction" when really it is
+our constant.
+
+Let us take this explanation further. Notice we see:
+
+```text
+   0x78c <main+12>         ldr     x0, 0x7a8 <main+40>
+```
+
+where we expected:
+
+```text
+        ldr        x0, =fmt
+```
+
+Scan down to `0x7a8`:
+
+```text
+  0x7a8 <main+40>         .inst   0x00011010 ; undefined
+```
+
+`x0` is serving as a pointer to the format string of a call to
+`printf()`. Let's follow the pointer...
+
+```text
+(gdb) x/s 0x00011010
+0x11010:        "%f\n"
+(gdb)
+```
+
+Magic.
