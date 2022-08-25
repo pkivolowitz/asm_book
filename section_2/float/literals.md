@@ -125,7 +125,7 @@ d0 = dptr[counter];
 
 `Line 20` is equivalent to:
 
-`counter` is multiplied byb 4 then added to `fptr`.
+`counter` is multiplied by 4 then added to `fptr`.
 
 ```c++
 //   ldr     s1, [fptr, counter, lsl 2]
