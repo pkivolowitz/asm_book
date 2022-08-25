@@ -163,11 +163,17 @@ This image shows `gdb` in `layout regs` at the time our program is loaded.
 ![1](./1_prior_to_running.png)
 
 Notice that all of the addresses match the disassemblies given above.
-For examine `main()` starts at `7a0`.
+For example `main()` starts at `7a0`.
 
 Now watch what happens the the program is actually launched:
 
 ![2](./2_after_b_and_run.png)
+
+NOTE NOTE NOTE NOTE NOTE
+
+THERE IS MUCH HERE THAT SHOULD BE REWRITTEN!!!
+
+COME BACK TO THIS!!!
 
 Suddenly all the address change to much larger values.
 
