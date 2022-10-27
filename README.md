@@ -1,42 +1,58 @@
-# Assembly Language Programming Made Not So Scary
+# A Gentle Introduction to Assembly Language Programming
 
-This text book provides a fairly thorough examination of the ARM V8 ISA (Instruction Set Architecture).
-It begins from the perspective of
-a person knowledgeable in the C or C++ programming languages (or similar languages, of which there are many).
-Early chapters bridge your knowledge of C or C++ backwards into assembly language driving home a very sharp
-point: C is a high level assembly language. Further, assembly language is nothing to be scared about.
+This textbook provides a gentle introduction to assembly language
+programming. What makes this introduction "gentle" is that it assumes
+the reader is already comfortable with C or C++ coding. We use this
+assumed knowledge to **bridge** backward towards the low level ISA
+(Instruction Set Architecture).
+
+We drive home a very sharp point: C **is** a high level assembly
+language *and* assembly language is nothing to be scared about.
 
 ## For Whom Is This Book Intended?
 
-As mentioned, if you are already familiar with C or any language descended from C, this book begins with what
-you know. Later chapters dive deeply into the corners and recesses of the ARM V8 ISA and are suitable for
-those wishing to master the rich instruction set of the 64 bit ARM processors.
+As mentioned, if you are already familiar with C (or languages descended
+from C), this book begins with what you already know. Later chapters
+dive more deeply into the corners and recesses of the ARM V8 ISA and are
+suitable for those wishing to master the rich instruction set of the 64
+bit ARM processors.
 
 ## Can This Book Be Used In Courses Covering Assembly Language?
 
 Yes, absolutely.
 
-In fact, we would argue that the study of assembly language is extremely important to the
-building of competent software engineers. Further, we would argue that teaching the x86 instruction set is sadistic and cruel as that ISA was born in the 1970s and has simply gotten more muddled with age.
+In fact, we would argue that the study of assembly language is extremely
+important to the building of competent software engineers. Further, we
+would argue that teaching the x86 instruction set is cruel
+as that ISA was born in the 1970s and has simply gotten more muddled
+with age.
 
-The MIPS instruction set is another ISA that is often covered in College level courses. While far kinder and gentler than the x86 ISA, the MIPS processor isn't nearly as relevant as the ARM family. Phones, tablets, laptops and even desktops contain ARM V8 processors making the study of
+The MIPS instruction set is another ISA that is often covered in College
+level courses. While  kinder and gentler than the x86 ISA, the MIPS
+processor isn't nearly as relevant as the ARM family. Phones, tablets,
+laptops and even desktops contain ARM V8 processors making the study of
 the ARM ISA far more topical.
 
 ## Calling Convention Used In This Book
 
-Assembly language programming is quite closely intertwined with both the underlying hardware architecture and the host
-operating system. A "calling convention" refers to how functions are called and how parameters are passed. In
-this book we will use the ARM LINUX conventions. This means:
+Assembly language programming is quite closely intertwined with both the
+underlying hardware architecture and the host operating system. A
+"calling convention" refers to how functions are called and how
+parameters are passed. In this book we will use the ARM LINUX
+conventions. This means:
 
-* You will need to run a ARM Linux VM on the Macintosh - even on ARM-based Macs. Why? Apple. That's why.
-* You will need to run WSL (Windows Subsystem for Linux) on ARM-based Windows machines.
+* You will need to run a ARM Linux VM on the Macintosh - even on
+  ARM-based Macs. Why? Apple. That's why.
+* You will need to run WSL (Windows Subsystem for Linux) on ARM-based
+  Windows machines.
 * You will need to run an ARM Linux VM on x86-based Windows machines.
 
 ## A Lot of Names
 
-As commendable as the ARM designs are, ARM's naming conventions for their Intellectual
-Properties are horrid. In this book, AARCH64 and ARM V8 are taken to be synonyms for
-the 64 bit ARM Instruction Set Architecture (ISA).
+As commendable as the ARM designs are, ARM's naming conventions for
+their Intellectual Properties are horrid. In this book, AARCH64 and ARM
+V8 are taken to be synonyms for the 64 bit ARM Instruction Set
+Architecture (ISA).
 
 ## Section 1 - Bridging from C / C++ to Assembly Language
 
