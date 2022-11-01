@@ -5,26 +5,37 @@
 	console. This program demonstrates low level IO (write()) and
 	is written in the form of an infinite loop (i.e. ^C or kill will
 	be required to halt the program).
+
+	The approach used here avoids use of two for loops, one for moving
+	to the right and one for moving to the left. Rather, we notice that
+	the only difference between the two for loops would be that one
+	increments and the other decrements. Otherwise, they'd be the same.
+
+	Instead of the two for loops we'll use a toggle called delta. It
+	will alternate between 1 and -1 when counter reaches MAX_COLUMN (on
+	the way left to right / transition from 1 to -1) or 0 on the way
+	back (-1 to 1)
 */
+
+		.equ	MAX_COLUMN, 60
+		.equ	NUM_CHARS, 4
 
 counter	.req    w20
 delta	.req	w21
-		.equ	MAX_COLUMN, 60
-		.equ	NUM_CHARS, 4
 
 		.section    .rodata
 
 CHARS:	.asciz      "|/_\\"
-TRM:	.asciz		" \r"
+TRM:	.asciz		" \r"			// The space is important.
 
 		.text
 
 main:	stp		x29, x30, [sp, -16]!
-		stp		x20, x21, [sp, -16]!
+		stp		counter, delta, [sp, -16]!
 
 		mov		counter, wzr
-		mov		w0, wzr
 		mov		delta, 1
+		mov		w0, wzr
 
 0:		bl		Pad
 		bl		Emit
@@ -43,7 +54,9 @@ main:	stp		x29, x30, [sp, -16]!
 		bl		usleep
 		b 		0b
 
-		ldp		x20, x21, [sp], 16
+		// Because of the infinite loop, this code will not
+		// be reached but is here out of habit and good practices.
+		ldp		counter, delta, [sp], 16
 		ldp		x29, x30, [sp], 16
 		mov		w0, wzr
 		ret
@@ -77,11 +90,14 @@ Emit:	stp		x29, x30, [sp, -16]!
 		ret
 
 
-/*		Pad - prints w0 spaces to the console.
+/*	Pad - prints w0 spaces to the console. It does this using
+	a for loop printing one space at a time. A reasonable optimization
+	would be to create a large array of spaces and use the length
+	parameter to write() to replace the loop.
 */
 
 Pad:	stp		x29, x30, [sp, -16]!
-		str		delta, [sp, -16]!
+		str		delta, [sp, -16]!	// REUSING w21 !!!
 		mov		w21, wzr
 
 1:		ldr		x1, =buff
