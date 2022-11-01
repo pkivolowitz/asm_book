@@ -17,21 +17,27 @@
 	back (-1 to 1)
 */
 
-		.equ	MAX_COLUMN, 60
-		.equ	NUM_CHARS, 4
+		.equ	MAX_COLUMN, 60		// These are equivalent to
+		.equ	NUM_CHARS, 4		// #define in C and C++
 
-counter	.req    w20
-delta	.req	w21
+counter	.req    w20					// These also but these are for
+delta	.req	w21					// use with registers
 
-		.section    .rodata
+		.section    .rodata			// In essence: const
 
 CHARS:	.asciz      "|/_\\"
 TRM:	.asciz		" \r"			// The space is important.
+usec:	.int		75000			// 0.075 seconds delay AT LEAST
 
 		.text
 
 main:	stp		x29, x30, [sp, -16]!
 		stp		counter, delta, [sp, -16]!
+
+		// counter will move up and down between MAX_COLUMN and 0
+		// by toggling delta from 1 to -1 and back. This is far
+		// simpler than creating dual for loops which one might do 
+		// in a naive implementation.
 
 		mov		counter, wzr
 		mov		delta, 1
@@ -40,6 +46,8 @@ main:	stp		x29, x30, [sp, -16]!
 0:		bl		Pad
 		bl		Emit
 		bl		Terminator
+		// Having completed output for this animation cycle, adjust
+		// counter toggling delta if necessary.
 		add		counter, counter, delta
 		mov		w0, MAX_COLUMN
 		cmp		w0, counter
@@ -49,6 +57,7 @@ main:	stp		x29, x30, [sp, -16]!
 1:		cbnz	counter, 2f
 		neg		delta, delta
 
+		// Cause the delay between animation cycles.
 2:		ldr		x0, =usec
 		ldr		w0, [x0]
 		bl		usleep
@@ -62,7 +71,8 @@ main:	stp		x29, x30, [sp, -16]!
 		ret
 
 /*		Terminator - outputs "\r " - notice the space after
-		the carriage return.
+		the carriage return. It is important. Try redoing this
+		with the space removed to see why.
 */
 
 Terminator:
@@ -134,5 +144,6 @@ mod:	sdiv 	x2, x0, x1				// x2 gets a // b
 
 		.data
 buff:	.space	4
-usec:	.int	75000
+
+		.end
 
