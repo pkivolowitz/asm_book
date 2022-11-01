@@ -6,3 +6,4 @@ Here are a number of challenges for you to flex your new found knowledge.
 | ---- | --------- |
 | [DIRENT](./DIRENT/README.md) | Read Directory Entries to extract information about files. |
 | [PI](./PI/README.md) | Compute an approximation of PI using stochastic (random) methods. |
+| [WALKIES](./walkies/README.md) | A fun little animation. |
