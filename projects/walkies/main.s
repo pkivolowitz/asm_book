@@ -100,7 +100,7 @@ Emit:	stp		x29, x30, [sp, -16]!
 		ret
 
 
-/*	Pad - prints w0 spaces to the console. It does this using
+/*	Pad - prints counter spaces to the console. It does this using
 	a for loop printing one space at a time. A reasonable optimization
 	would be to create a large array of spaces and use the length
 	parameter to write() to replace the loop.
