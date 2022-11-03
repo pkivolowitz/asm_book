@@ -115,7 +115,8 @@ Foo.c:                                                                  // 23
 fmt:    .asciz        "%p a: 0x%x b: 0x%x c: 0x%x\n"                    // 27
 ```
 
-We aren't sure this method has anything to commend it over the previous
-method other than it does emphasize that offsets are relative to the
-data member that comes before it.
+This method has a *substantial* benefit over the previous methods. Imagine
+you need to insert a new field between `Foo.a` and `Foo.b`. Simply do so.
+If you're using this third method, which is based on relative offsets, the
+assembler will do the work of adjusting the following offsets for you.
 
