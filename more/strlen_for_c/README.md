@@ -1,7 +1,7 @@
-# Determining the Length of Strings for C Functions
+# Determining the Length of Literal Strings for C Functions
 
-C string have no soul, is something I like to tell my students. For
-example, uUnlike C++ strings, you can't ask them to tell you about
+C strings have no soul, is something I like to tell my students. For
+example, Unlike C++ strings, you can't ask them to tell you about
 themselves. Instead you must use other functions such as `strlen()`.
 
 When working with APIs that use C strings, you must often tell the
