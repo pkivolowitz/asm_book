@@ -108,7 +108,7 @@ Architecture (ISA).
 
 | Chapter | Content |
 | ------- | ------- |
-| --- | [Determing string length for C functions](./more/strlen_for_c/README.md) |
+| --- | [Determing string literal lengths for C functions](./more/strlen_for_c/README.md) |
 
 ## Projects
 
