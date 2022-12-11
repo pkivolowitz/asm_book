@@ -1,14 +1,19 @@
 # Section 1 / Calling and Returning From Functions
 
-Calling functions, passing parameters to them and receiving back return values is basic to using `C` and and `C++`. Calling methods (which are functions connected to classes) is similar but with enough differences to warrant its own discussion to be provided later in the chapter on [structs](../struct/structs.md).
+Calling functions, passing parameters to them and receiving back return
+values is basic to using `C` and and `C++`. Calling methods (which are
+functions connected to objects) is similar but with enough differences
+to warrant its own discussion to be provided later in the chapter on
+[structs](../struct/structs.md).
 
 ## Bottom Line Concept
 
-The name of a (non-inline) function is a label to which a branch with link ('bl') can be made.
+The name of a (non-inline) function is a label to which a branch with
+link ('bl') can be made.
 
-The `bl` instruction is stands for **B**ranch with **L**ink. The **link** concept is what enables a function (or method) to **return** to the instruction after the function call.
-
-*Note: this chapter is only a first look at functions and parameter passing. To fully explore functions and methods, additional knowledge is required.*
+The `bl` instruction is stands for **B**ranch with **L**ink. The
+**link** concept is what enables a function (or method) to **return**
+to the instruction after the call.
 
 ## A Trivial Function
 
@@ -19,7 +24,8 @@ void func() {
 }
 ```
 
-The function `func()` takes no parameters, does nothing and returns nothing.
+The function `func()` takes no parameters, does nothing and returns
+nothing.
 
 Here it is in assembly language:
 
@@ -27,11 +33,13 @@ Here it is in assembly language:
 func: ret
 ```
 
-Notice that `func` is a label. The only instruction in the function is `ret`. Strictly speaking, the assembly language function might more explicitly look like this in `C`:
+Notice that `func` is a label. The only instruction in the function is
+`ret`. Strictly speaking, the assembly language function might more
+explicitly look like this in `C`:
 
 ```c
 void func() {
-	return;
+    return;
 }
 ```
 
@@ -47,13 +55,15 @@ This would be done this way in assembly language:
 bl func
 ```
 
-Notice that calling a function **is** a branch. But it is a special branch instruction - *branch-with-link*. It is the *link* that allows the function to `ret`urn.
+Notice that calling a function **is** a branch. But it is a special
+branch instruction - *branch-with-link*. Again, it is the *link* that
+allows the function to `ret`urn.
 
 ## **bl**
 
 Branch-with-link computes the address of the instruction following it.
 It places this address into `x30` and then branches to the label
-provides. It makes one link of breadcrumbs to follow to get back
+provided. It makes one link of breadcrumbs to follow to get back
 following a `ret`.
 
 **This is why it is absolutely essential to backup `x30` inside your
@@ -78,7 +88,7 @@ hw:     .asciz  "Hello World!"                                      // 10
 
 What could possibly go wrong?
 
-Here is a listing from `gdb` as running the program simply
+Here is a listing from `gdb` since running the program simply
 hangs:
 
 ```text
@@ -111,8 +121,8 @@ which it needed to return was sitting in `x30`.
 
 Then, `main()` called a function - in this case `puts()` but which
 function doesn't matter - it called a function. In doing so, it
-overwrite the address to which `main()` needed to return with the
-address of line 7 in the code. That is where `puts()` needed to
+overwrote the address to which `main()` needed to return with the
+address of line 7 in the code. That is where `puts()` needs to
 return.
 
 So, when line 7 executes it puts the contents of `x30` into the
@@ -212,5 +222,4 @@ ReturnsADouble:                                                     // 13
 ```
 
 Note, the use of the floating point move instruction as well as the
-single precision and double precision registers. The specification in
-scientific notion is not necessary.
+single precision and double precision registers.
