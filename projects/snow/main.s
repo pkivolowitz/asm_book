@@ -7,7 +7,9 @@
         .equ        MAX_LINE, 24
         .equ        MAX_LINE_X2, 48
 
-storm   .req        x27
+storm   .req        x27                 // base address of storm 
+estorm  .req        x28                 // end of storm
+
 
 main:   stp         x29, x30, [sp, -16]!
         stp         x27, x28, [sp, -16]!
@@ -36,9 +38,19 @@ main:   stp         x29, x30, [sp, -16]!
 1:      mov         storm, x0           // The base address of the
                                         // allocated memory will be
                                         // preserved in x27.
+        mov         estorm, x0          // prep end of storm calculation
         ldr         x2, [sp], 16        // Restore the allocation size.
+        add         estorm, estorm, x2  // Preserve end-of-storm.
         mov         w1, wzr             // Fill with zero.
         bl          memset              // x0 still had base address.
+
+        bl          InitializeStorm
+
+10:     bl          Erase
+        bl          StepAll
+        bl          RenderAll
+        bl          Delay
+        b           10b
 
 99:     mov         x0, storm
         bl          free
@@ -46,6 +58,53 @@ main:   stp         x29, x30, [sp, -16]!
         mov         w0, wzr
 
 bye:    ldp         x27, x28, [sp], 16
+        ldp         x20, x30, [sp], 16
+        ret
+
+/*  line comes to us in w0
+    column comes to us in w1
+*/
+
+Move:   stp         x20, x30, [sp, -16]!
+        mov         w2, w1
+        mov         w1, w0
+        ldr         x0, =move_str
+        bl          printf
+        ldp         x20, x30, [sp], 16
+        ret
+
+Erase:  stp         x20, x30, [sp, -16]!
+        mov         w0, 1
+        mov         w1, 1
+        bl          Move
+        ldr         x0, =erase_str
+        bl          printf
+        ldp         x20, x30, [sp], 16
+        ret
+
+RenderOne:
+        ret
+
+RenderAll:
+        ret
+
+Delay:
+        ret
+
+StepOne:
+        ret
+
+StepAll:
+        ret
+
+InitializeStorm:
+        stp         x20, x30, [sp, -16]!
+        mov         x20, storm
+1:      mov         x0, x20
+        bl          ResetFlake
+        add         x20, x20, Flake.size
+        cmp         estorm, x20
+        bne         1b
         ldp         x20, x30, [sp], 16
         ret
 
@@ -100,6 +159,8 @@ mod:	sdiv 	x2, x0, x1         // x2 gets a // b
 
             .data
 bad_malloc: .asciz      "Allocation of flakes has failed"
+move_str:   .asciz      "\033[%d;%dH"
+erase_str:  .asciz      "\033[2J"
 
             .section    Flake
             .struct     0
