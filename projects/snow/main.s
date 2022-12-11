@@ -17,19 +17,25 @@ main:   stp         x29, x30, [sp, -16]!
 
         // Allocate the storm.
 
-        mov         x0, NUM_FLAKES
+        mov         x0, NUM_FLAKES      // Calculate space needed.
         mov         x1, Flake.size
         mul         x0, x0, x1
-        bl          malloc
-        cbnz        x0, 1f
+        str         x0, [sp, -16]!      // Save for memset.
+        bl          malloc              // Attempt the allocation.
+        cbnz        x0, 1f              // Branch if successful.
 
-        ldr         x0, =bad_malloc
+        add         sp, sp, 16          // Undo stack change.
+        ldr         x0, =bad_malloc     // Inform user of tragedy.
         bl          puts
         mov         w0, 1
         b           bye
 
-1:      mov         storm, x0
-
+1:      mov         storm, x0           // The base address of the
+                                        // allocated memory will be
+                                        // preserved in x27.
+        ldr         x2, [sp], 16        // Restore the allocation size.
+        mov         w1, xzr             // Fill with zero.
+        bl          memset              // x0 still had base address.
 
 99:     mov         x0, storm
         bl          free
@@ -40,8 +46,16 @@ bye:    ldp         x27, x28, [sp], 16
         ldp         x20, x30, [sp], 16
         ret
 
+/*      x0 contains the address of a Flake in need of being reset.
+        The column number of a Flake is anywhere from 1 to 80 (a
+        default terminal). The starting line is anywhere from 1 to
+        48 (24 x 2) lines ABOVE the screen. This allows the flakes to
+        drift downward without apparent gaps or bunches.
+*/
 ResetFlake:
-        
+        stp         x20, x30, [sp, -16]!
+        ldp         x20, x30, [sp], 16
+        ret
 
             .data
 bad_malloc: .asciz      "Allocation of flakes has failed"
