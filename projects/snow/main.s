@@ -2,7 +2,7 @@
         .align      2
         .text
 
-        .equ        NUM_FLAKES, 150
+        .equ        NUM_FLAKES, 250
         .equ        MAX_COLUMN, 80
         .equ        MAX_LINE, 24
         .equ        MAX_LINE_X2, 48
