@@ -86,8 +86,8 @@ If the particle's `line` exceeds 24, the particle is `Reset()`.
 
 ### `Render()`
 
-To draw a particle, `Move()` to its location then print a "*" all
-without emitting a new line. Before printing the "*", check to ensure
+To draw a particle, `Move()` to its location then print a "\*" all
+without emitting a new line. Before printing the "\*", check to ensure
 both the `line` and `column` are within the boundaries of the default
 terminal window (i.e. 1 &le; line &le; 24 and 1 &le; column &le; 80).
 If the particle's position is outside this range, don't print anything.
