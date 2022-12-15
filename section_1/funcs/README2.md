@@ -6,22 +6,22 @@ For the purposes of the present discussion, we assume all parameters are `long i
 
 Up to 8 parameters are passed in the scratch registers (of which there are 8). These are `x0` through `x7`. *Scratch* means the value of the register can be changed at will without any need to backup or restore their values.
 
-**This also means that you cannot count on the contents of the scratch registers maintaining their value if your function makes any function calls itself.**
+**This means that you cannot count on the contents of the scratch registers maintaining their value if your function makes any function calls.**
 
 For example:
 
 ```c
-long func(long p1, long p2)                                             // 1 
-{                                                                       // 2 
-    return p1 + p2;                                                     // 3 
-}                                                                       // 4 
+long func(long p1, long p2)                            // 1 
+{                                                      // 2 
+    return p1 + p2;                                    // 3 
+}                                                      // 4 
 ```
 
 is implemented as:
 
 ```asm
-func:   add x0, x0, x1                                                  // 1 
-        ret                                                             // 2 
+func:   add x0, x0, x1                                 // 1 
+        ret                                            // 2 
 ```
 
 The first parameter (`p1`) goes in the first scratch register (`x0`). It's an `x` because the parameter's type is `long int`. It is the `0` register, because that is the first scratch register.
@@ -42,10 +42,10 @@ A pointer is an address of something. The word *pointer* is scary. The words *ad
 Here is a function which *also* adds two parameters together but this time using pointers to `long int` rather than the values themselves.
 
 ```c
-void func(long * p1, long * p2)                                         // 1 
-{                                                                       // 2 
-    *p1 = *p1 + *p2;                                                    // 3 
-}                                                                       // 4 
+void func(long * p1, long * p2)                        // 1 
+{                                                      // 2 
+    *p1 = *p1 + *p2;                                   // 3 
+}                                                      // 4 
 ```
 
 `Line 1` passes the *address of* `p1` and `p2` as parameters. That is, the addresses of `p1` and `p2` are passed in registers `x0` and `x1` rather than their contents. The contents of the underlying
@@ -60,11 +60,11 @@ The values are added together and the result overwrites the value pointed to by 
 Here it is in assembly language:
 
 ```asm
-func:   ldr x2, [x0]                                                    // 1 
-        ldr x3, [x1]                                                    // 2 
-        add x2, x2, x3                                                  // 3 
-        str x2, [x0]                                                    // 4 
-        ret                                                             // 5 
+func:   ldr x2, [x0]                                   // 1 
+        ldr x3, [x1]                                   // 2 
+        add x2, x2, x3                                 // 3 
+        str x2, [x0]                                   // 4 
+        ret                                            // 5 
 ```
 
 The `add` instruction cannot operate on values in memory. With little exception, all the *action* takes place in registers, not memory. Therefore, the underlying values pointed to by the parameters must be fetched from memory.
@@ -105,10 +105,10 @@ So, as the smart *human*, we decided to use `x2` and `x3` because, well, they're
 Suppose we had:
 
 ```c++
-long func(const long p1, const long p2)                                 // 1 
-{                                                                       // 2 
-    return p1 + p2;                                                     // 3 
-}                                                                       // 4 
+long func(const long p1, const long p2)                // 1 
+{                                                      // 2 
+    return p1 + p2;                                    // 3 
+}                                                      // 4 
 ```
 
 how would the assembly language change?
@@ -122,10 +122,10 @@ Answer: no change at all!
 Suppose we had:
 
 ```c++
-long func(long & p1, long & p2)                                         // 1 
-{                                                                       // 2 
-    return p1 + p2;                                                     // 3 
-}                                                                       // 4 
+long func(long & p1, long & p2)                        // 1 
+{                                                      // 2 
+    return p1 + p2;                                    // 3 
+}                                                      // 4 
 ```
 
 how would the assembly language change?
@@ -150,9 +150,10 @@ Here is a sample function that requires 9 parameters (for who knows what reason)
 ```c++
 #include <stdio.h>
 
-void SillyFunction(long p1, long p2, long p3, long p4, long p5, long p6,
-				   long p7, long p8, long p9) {
-	printf("This example hurts my brain: %ld %ld\n", p8, p9);
+void SillyFunction(long p1, long p2, long p3, long p4, 
+                   long p5, long p6, long p7, long p8, 
+				   long p9) {
+	printf("This example hurts: %ld %ld\n", p8, p9);
 }
 
 int main() {
@@ -169,38 +170,38 @@ This example hurts my brain: 8 9
 In assembly language, this program could be written as:
 
 ```text
-        .text                                                           // 1 
-        .global    main                                                 // 2 
-                                                                        // 3 
-SillyFunction:                                                          // 4 
-        str        x30, [sp, -16]!                                      // 5 
-        ldr        x0, =fmt                                             // 6 
-        mov        x1, x7                                               // 7 
-        ldr        x2, [sp, 16]                                         // 8 
-        bl         printf                                               // 9 
-        ldr        x30, [sp], 32                                        // 10 
-        ret                                                             // 11 
-                                                                        // 12 
-main:                                                                   // 13 
-        str        x30, [sp, -16]!                                      // 14 
-        mov        x0, 9                                                // 15 
-        str        x0, [sp, -16]!                                       // 16 
-        mov        x0, 1                                                // 17 
-        mov        x1, 2                                                // 18 
-        mov        x2, 3                                                // 19 
-        mov        x3, 4                                                // 20 
-        mov        x4, 5                                                // 21 
-        mov        x5, 6                                                // 22 
-        mov        x6, 7                                                // 23 
-        mov        x7, 8                                                // 24 
-        bl         SillyFunction                                        // 25 
-        ldr        x30, [sp], 32                                        // 26 
-        ret                                                             // 27 
-                                                                        // 28 
-        .data                                                           // 29 
-fmt:    .asciz    "This example hurts my brain: %ld %ld\n"              // 30 
-                                                                        // 31 
-        .end
+        .text                                          // 1 
+        .global    main                                // 2 
+                                                       // 3 
+SillyFunction:                                         // 4 
+        str        x30, [sp, -16]!                     // 5 
+        ldr        x0, =fmt                            // 6 
+        mov        x1, x7                              // 7 
+        ldr        x2, [sp, 16]                        // 8 
+        bl         printf                              // 9 
+        ldr        x30, [sp], 32                       // 10 
+        ret                                            // 11 
+                                                       // 12 
+main:                                                  // 13 
+        str        x30, [sp, -16]!                     // 14 
+        mov        x0, 9                               // 15 
+        str        x0, [sp, -16]!                      // 16 
+        mov        x0, 1                               // 17 
+        mov        x1, 2                               // 18 
+        mov        x2, 3                               // 19 
+        mov        x3, 4                               // 20 
+        mov        x4, 5                               // 21 
+        mov        x5, 6                               // 22 
+        mov        x6, 7                               // 23 
+        mov        x7, 8                               // 24 
+        bl         SillyFunction                       // 25 
+        ldr        x30, [sp], 32                       // 26 
+        ret                                            // 27 
+                                                       // 28 
+        .data                                          // 29 
+fmt:    .asciz    "This example hurts: %ld %ld\n"      // 30 
+                                                       // 31 
+    
 ```
 
 Notice how `main()` puts the first 8 parameters into the scratch registers `x0` through `x7` using `Lines 17` to `24`. But first, it put the ninth parameter on the stack. It did the stack parameter first so that the stack pointer could be manipulated in a scratch register.
