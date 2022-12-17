@@ -12,10 +12,10 @@ language *and* assembly language is nothing to be scared about.
 ## For Whom Is This Book Intended?
 
 As mentioned, if you are already familiar with C (or languages descended
-from C), this book begins with what you already know. Later chapters
-dive more deeply into the corners and recesses of the ARM V8 ISA and are
-suitable for those wishing to master the rich instruction set of the 64
-bit ARM processors.
+from C such as C++), this book begins with what you already know. Later
+chapters dive more deeply into the corners and recesses of the ARM V8
+ISA and are suitable for those wishing to master the rich instruction
+set of the 64 bit ARM processors.
 
 ## Can This Book Be Used In Courses Covering Assembly Language?
 
@@ -23,15 +23,14 @@ Yes, absolutely.
 
 In fact, we would argue that the study of assembly language is extremely
 important to the building of competent software engineers. Further, we
-would argue that teaching the x86 instruction set is cruel
-as that ISA was born in the 1970s and has simply gotten more muddled
-with age.
+would argue that teaching the x86 instruction set is cruel as that ISA
+was born in the 1970s and has simply gotten more muddled with age.
 
 The MIPS instruction set is another ISA that is often covered in College
 level courses. While  kinder and gentler than the x86 ISA, the MIPS
 processor isn't nearly as relevant as the ARM family. Phones, tablets,
 laptops and even desktops contain ARM V8 processors making the study of
-the ARM ISA far more topical.
+the ARM ISA far more topical. Perhaps even more "cool".
 
 ## Calling Convention Used In This Book
 
@@ -43,8 +42,10 @@ conventions. This means:
 
 * You will need to run a ARM Linux VM on the Macintosh - even on
   ARM-based Macs. Why? Apple. That's why.
+
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
-  Windows machines.
+  Windows machines. These do exist!
+
 * You will need to run an ARM Linux VM on x86-based Windows machines.
 
 ## A Lot of Names
@@ -52,9 +53,14 @@ conventions. This means:
 As commendable as the ARM designs are, ARM's naming conventions for
 their Intellectual Properties are horrid. In this book, AARCH64 and ARM
 V8 are taken to be synonyms for the 64 bit ARM Instruction Set
-Architecture (ISA).
+Architecture (ISA). It is very difficult to find documentation at the
+ARM site because they have *so many versions*.
 
 ## Section 1 - Bridging from C / C++ to Assembly Language
+
+We start by providing what we're calling "bridging" from C and C++ to
+assembly language. We use the knowledge you already have to learn new
+knowledge - how cool is that!
 
 | Chapter | Content |
 | ------- | ------- |
@@ -83,6 +89,10 @@ Architecture (ISA).
 
 ## Section 2 - Floating Point
 
+Floating point operations use their own instructions and their own set
+of registers. Therefore, floating point operations are covered in their
+own section:
+
 | Chapter | Content |
 | ------- | ------- |
 | 10 | Floating Point |
@@ -97,6 +107,8 @@ Architecture (ISA).
 
 ## Section 3 - Bit Manipulation
 
+What would a book about assembly language be without bit bashing?
+
 | Chapter | Content |
 | ------- | ------- |
 | 11 | Bit Fields |
@@ -104,7 +116,7 @@ Architecture (ISA).
 | .... b | [.... With Bit Fields](./section_3/bitfields/with.md) |
 | .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md)
 
-## Section 3 - More Stuff
+## Section 4 - More Stuff
 
 | Chapter | Content |
 | ------- | ------- |
@@ -112,7 +124,11 @@ Architecture (ISA).
 
 ## Projects
 
-[Here](./projects/README.md) are some project specifications to offer a challenge to your growing mastery.
+[Here](./projects/README.md) are some project specifications to offer a
+challenge to your growing mastery.
+
+The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
+complex `struct` can be used in assembly language.
 
 ## About The Author
 
