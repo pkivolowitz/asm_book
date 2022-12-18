@@ -1,4 +1,4 @@
-# A Gentle Introduction to Assembly Language Programming
+=# A Gentle Introduction to Assembly Language Programming
 
 This textbook provides a gentle introduction to assembly language
 programming. What makes this introduction "gentle" is that it assumes
@@ -34,11 +34,13 @@ the ARM ISA far more topical. Perhaps even more "cool".
 
 ## Calling Convention Used In This Book
 
-Assembly language programming is quite closely intertwined with both the
-underlying hardware architecture and the host operating system. A
-"calling convention" refers to how functions are called and how
-parameters are passed. In this book we will use the ARM LINUX
-conventions. This means:
+Assembly language programming is quite closely dependent upon the
+underlying hardware architecture. The host operating environment plays
+an outsized role in determining how assembly language programs are
+constructed. A "calling convention" refers to how functions are called
+and how parameters are passed. 
+
+In this book we will use the ARM LINUX conventions. This means:
 
 * You will need to run a ARM Linux VM on the Macintosh - even on
   ARM-based Macs. Why? Apple. That's why.
@@ -55,6 +57,8 @@ their Intellectual Properties are horrid. In this book, AARCH64 and ARM
 V8 are taken to be synonyms for the 64 bit ARM Instruction Set
 Architecture (ISA). It is very difficult to find documentation at the
 ARM site because they have *so many versions*.
+
+Within the text we will provide germane links as appropriate.
 
 ## Section 1 - Bridging from C / C++ to Assembly Language
 
