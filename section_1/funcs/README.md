@@ -1,10 +1,11 @@
 # Section 1 / Calling and Returning From Functions
 
 Calling functions, passing parameters to them and receiving back return
-values is basic to using `C` and and `C++`. Calling methods (which are
-functions connected to objects) is similar but with enough differences
-to warrant its own discussion to be provided later in the chapter on
-[structs](../structs/using.md).
+values is basic to using `C` and and `C++`.
+
+Calling *methods* (which are functions connected to objects) is similar
+but with enough differences to warrant its own discussion to be provided
+later in the chapter on [structs](../structs/using.md).
 
 Be sure to read [this](./README2.md) for information about
 passing parameters to functions.
@@ -169,7 +170,7 @@ First, let's take a trip back in time to the early days of C.
 [Stephen Bourne](https://en.wikipedia.org/wiki/Stephen_R._Bourne) was
 writing `sh`, the first shell for Unix. He noticed that every function
 had to return a value - even functions that had no reason to return
-a value. 
+a value.
 
 In these early days, `void` functions did not yet exist.
 
@@ -231,6 +232,12 @@ ReturnsADouble:                                        // 13
 
 Note, the use of the floating point move instruction as well as the
 single precision and double precision registers.
+
+## Inline functions
+
+Functions that are declared as *inline* don't actually make function
+calls. Instead, the code from the function is type checked and inserted
+directly where the "call" is made after adjusting for parameter names.
 
 ## Repeating the TL;DR
 
