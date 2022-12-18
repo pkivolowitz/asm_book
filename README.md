@@ -1,4 +1,4 @@
-=# A Gentle Introduction to Assembly Language Programming
+# A Gentle Introduction to Assembly Language Programming
 
 This textbook provides a gentle introduction to assembly language
 programming. What makes this introduction "gentle" is that it assumes
@@ -38,7 +38,7 @@ Assembly language programming is quite closely dependent upon the
 underlying hardware architecture. The host operating environment plays
 an outsized role in determining how assembly language programs are
 constructed. A "calling convention" refers to how functions are called
-and how parameters are passed. 
+and how parameters are passed.
 
 In this book we will use the ARM LINUX conventions. This means:
 
@@ -55,10 +55,16 @@ In this book we will use the ARM LINUX conventions. This means:
 As commendable as the ARM designs are, ARM's naming conventions for
 their Intellectual Properties are horrid. In this book, AARCH64 and ARM
 V8 are taken to be synonyms for the 64 bit ARM Instruction Set
-Architecture (ISA). It is very difficult to find documentation at the
-ARM site because they have *so many versions*.
+Architecture (ISA).
+
+It is very difficult to find documentation at the ARM site because they
+have *so many versions*, so many names for the same thing and so much
+documentation in general. It really can be maddening.
 
 Within the text we will provide germane links as appropriate.
+
+[Here](<https://developer.arm.com/documentation/ddi0596/2021-12?lang=en>)
+is a link to "a" main instruction set page.
 
 ## Section 1 - Bridging from C / C++ to Assembly Language
 
@@ -124,7 +130,7 @@ What would a book about assembly language be without bit bashing?
 
 | Chapter | Content |
 | ------- | ------- |
-| --- | [Determing string literal lengths for C functions](./more/strlen_for_c/README.md) |
+| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) |
 
 ## Projects
 
