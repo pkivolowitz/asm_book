@@ -75,7 +75,9 @@ The error string is produced by `perror()`.
 
 ## man
 
-Here is where you will get documentation for `perror()`, `opendir()`, `closedir()`, and `readdir()`. The man page for `readdir()` also describes `struct dirent`.
+Here is where you will get documentation for `perror()`, `opendir()`,
+`closedir()`, and `readdir()`. The man page for `readdir()` also
+describes `struct dirent`.
 
 ```text
 man perror
