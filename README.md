@@ -89,6 +89,7 @@ knowledge - how cool is that!
 | 5 | Functions |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) |
 | .... b | [.... Passing Parameters](./section_1/funcs/README2.md) |
+| .... c | [.... Calling common C runtime functions](./section_1/funcs/README3.md) |
 | 6 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
 | 7 | Structs |
 | .... a | [.... Alignment](./section_1/structs/alignment.md) |
