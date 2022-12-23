@@ -56,6 +56,10 @@ Assume `ptr` is a pointer to a `long`:
 * Line 2 corresponds to: `*(ptr++)`.
 * Line 3 corresponds to: `*(++ptr)`.
 
+Note this is for illustration only in that the `++` syntax in C and C++ increment by 1. In lines 2 and 3, `#simm` can have values other than 1 including negative values for decrements.
+
+Also note that when used with the stack pointer `sp`, `#simm` must be a multiple of 16.
+
 Concerning the restrictions placed on the offsets:
 
 * `simm` can be in the range of -256 to 255 (10 byte signed value).
