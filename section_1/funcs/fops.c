@@ -6,8 +6,8 @@
 int main(int argc, char **argv) {
     char * fname = "test.txt";
     char * p_legend = NULL;
-    int fd = open(fname, O_RDWR | O_CREAT, 00600);
-    int retval = 0;
+	int fd = open(fname, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	int retval = 0;
     off_t seek_return;
     char buffer[80];
 
@@ -15,7 +15,10 @@ int main(int argc, char **argv) {
         p_legend = fname;
         goto out;
     } else {
-        printf("Flags used to open file: %o\n", O_RDWR | O_CREAT);
+        printf("Flags used to open file: 0%o 0%o\n", 
+			O_RDWR | O_CREAT,
+			S_IRUSR | S_IWUSR
+		);
         for (int counter = 0; counter < 10; counter++) {
             if (write(fd, "data\n", 5) != 5) {
                 p_legend = "On writing";
@@ -39,10 +42,12 @@ int main(int argc, char **argv) {
 
 out:    if (fd >= 0) {
             close(fd);
-            if (unlink(fname)) {
+/*             if (unlink(fname)) {
                 p_legend = "On unlinking";
-            }
-        }
+            } else {
+				printf("All went well. File is deleted.\n");
+			}
+ */        }
 
         if (p_legend != NULL) {
             perror(p_legend);
