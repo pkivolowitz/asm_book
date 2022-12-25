@@ -182,7 +182,7 @@ most importantly, knowing when to stop.
 
 ### Line 7
 
-`Line 7` is where is action is. Firstly, `cout` will receive some value
+`Line 7` is where the action is. Firstly, `cout` will receive some value
 for printing. `cout` is an output stream and the `<<` indicates
 something is being shoved into it - i.e. is being output.
 
