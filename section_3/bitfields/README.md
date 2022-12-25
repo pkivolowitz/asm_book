@@ -63,7 +63,7 @@ Before we examine using bit fields, let's look at what life would be
 like without them.
 
 Let's assume we're working with a byte that is comprised of three
-fields layed out as in `struct BF` above. That is, a one, two and
+fields laid out as in `struct BF` above. That is, a one, two and
 five bit field inside one byte.
 
 Without bit fields, we would have to write this code to clear `a`
