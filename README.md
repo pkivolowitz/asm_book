@@ -72,32 +72,32 @@ We start by providing what we're calling "bridging" from C and C++ to
 assembly language. We use the knowledge you already have to learn new
 knowledge - how cool is that!
 
-| Chapter | Content |
-| ------- | ------- |
-| 1 | [Hello World](./section_1/hello_world/README.md) |
-| 2 | [If Statements](./section_1/if/README.md) |
-| 3 | Loops |
-| .... a | [.... While Loops](./section_1/while/README.md) |
-| .... b | [.... For Loops](./section_1/for/README.md) |
-| .... c | [.... Implementing Continue](./section_1/for/README.md#implementing-a-continue)
-| .... d | [.... Implementing Break](./section_1/for/README.md#implementing-a-break)
-| 4 | Interludes |
-| .... a | [.... Registers](./section_1/regs/README.md) |
-| .... b | [.... Load and Store](./section_1/regs/ldr.md) |
-| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) |
-| .... d | [.... Register Sizes](./section_1/regs/widths.md) |
-| 5 | [`switch`](./section_1/jump_tables/README.md) |
-| 6 | Functions |
-| .... a | [.... Calling and Returning](./section_1/funcs/README.md) |
-| .... b | [.... Passing Parameters](./section_1/funcs/README2.md) |
-| .... c | [.... Calling common C runtime functions](./section_1/funcs/README3.md) |
-| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
-| 8 | Structs |
-| .... a | [.... Alignment](./section_1/structs/alignment.md) |
-| .... b | [.... Defining](./section_1/structs/defining.md) |
-| .... c | [.... Using](./section_1/structs/using.md) |
-|  9 | [`const`](./section_1/const/README.md)
-|  10 | [Casting](./section_1/casting/README.md) |
+| Chapter | Markdown | PDF |
+| ------- | -------- | --- |
+| 1 | [Hello World](./section_1/hello_world/README.md) | NA |
+| 2 | [If Statements](./section_1/if/README.md) | NA |
+| 3 | Loops | |
+| .... a | [.... While Loops](./section_1/while/README.md) | NA |
+| .... b | [.... For Loops](./section_1/for/README.md) | NA |
+| .... c | [.... Implementing Continue](./section_1/for/README.md#implementing-a-continue) | NA |
+| .... d | [.... Implementing Break](./section_1/for/README.md#implementing-a-break) | NA |
+| 4 | Interludes | |
+| .... a | [.... Registers](./section_1/regs/README.md) | NA |
+| .... b | [.... Load and Store](./section_1/regs/ldr.md) | NA |
+| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) | NA |
+| .... d | [.... Register Sizes](./section_1/regs/widths.md) | NA |
+| 5 | [`switch`](./section_1/jump_tables/README.md) | NA |
+| 6 | Functions | |
+| .... a | [.... Calling and Returning](./section_1/funcs/README.md) | NA |
+| .... b | [.... Passing Parameters](./section_1/funcs/README2.md) | NA |
+| .... c | [.... Calling common C runtime functions](./section_1/funcs/README3.md) | NA |
+| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) | NA |
+| 8 | Structs | |
+| .... a | [.... Alignment](./section_1/structs/alignment.md) | NA |
+| .... b | [.... Defining](./section_1/structs/defining.md) | NA |
+| .... c | [.... Using](./section_1/structs/using.md) | NA |
+|  9 | [`const`](./section_1/const/README.md) | NA |
+|  10 | [Casting](./section_1/casting/README.md) | NA |
 
 ## Section 2 - Floating Point
 
@@ -105,42 +105,64 @@ Floating point operations use their own instructions and their own set
 of registers. Therefore, floating point operations are covered in their
 own section:
 
-| Chapter | Content |
-| ------- | ------- |
-| 1 | Floating Point |
-| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md)
-| .... b | [.... Registers (simplified)](./section_2/float/working.md)
-| .... c | [.... Literals](./section_2/float/literals.md)
-| .... d | [.... `fmov` Not Yet Written](./section_2/float/)
-| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md)
-| .... f | [.... Four Basic Operations Not Yet Written](./section_2/float/)
-| .... g | [.... Selected Additional Operations Not Yet Written](./section_2/float/)
-| .... z | [.... Half Precision Floats](./section_2/float/half.md)
+| Chapter | Markdown | PDF |
+| ------- | -------- | --- |
+| 1 | Floating Point | |
+| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md) | NA |
+| .... b | [.... Registers (simplified)](./section_2/float/working.md) | NA |
+| .... c | [.... Literals](./section_2/float/literals.md) | NA |
+| .... d | [.... `fmov` Not Yet Written](./section_2/float/) | NA |
+| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md) | NA |
+| .... f | [.... Four Basic Operations Not Yet Written](./section_2/float/) | NA |
+| .... g | [.... Selected Additional Operations Not Yet Written](./section_2/float/) | NA |
+| .... z | [.... Half Precision Floats](./section_2/float/half.md) | NA |
 
 ## Section 3 - Bit Manipulation
 
 What would a book about assembly language be without bit bashing?
 
-| Chapter | Content |
-| ------- | ------- |
-| 1 | Bit Fields |
-| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) |
-| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) |
-| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md)
+| Chapter | Markdown | PDF |
+| ------- | -------- | --- |
+| 1 | Bit Fields | |
+| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | NA |
+| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | NA |
+| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | NA |
 
 ## Section 4 - More Stuff
 
-| Chapter | Content |
-| ------- | ------- |
-| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) |
+| Chapter | Markdown | PDF |
+| ------- | -------- | --- |
+| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | NA |
 
 ## Projects
 
 [Here](./projects/README.md) are some project specifications to offer a
-challenge to your growing mastery.
+challenge to your growing mastery. Here are very brief descriptions
+presented in alphabetical order.
 
+Perhaps before you tackle these, check out the fully described
+[FIZZBUZZ](./section_1/fizzbuzz/README.md) program first.
+
+---
 The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
 complex `struct` can be used in assembly language.
+
+---
+The [PI](./projects/PI/README.md) project demonstrates floating point
+instructions. The program will "throw darts at a target," calculating
+an approximation of PI by tracking how many darts "hit the target"
+versus the total number of darts "thrown".
+
+---
+The [SNOW](./projects/snow/README.md) project uses 1970's era tech to
+animate a simple particle system. This project demonstrates a reasonable
+design process of breaking down complex problems into simpler parts.
+
+---
+The [WALKIES](./projects/walkies/README.md) presents a cute little
+animation demonstrating looping with some pointer dereferencing.
+
+---
 
 ## About The Author
 
@@ -180,10 +202,18 @@ ISAs:
 
 This work is dedicated to my wife Sara and sons Ian and Evan.
 
-### Gratuitous Plug
+### Gratuitous Plugs
 
 Perry has created a library of about 200 programming projects
 suitable for CS 1, CS 2, Data Structures, Networking, Operating
 Systems and Computer Organization classes. If a publisher of
 CS text books be interested in purchasing the library, please
 reach out.
+
+Also, check out [Get Off My L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G), a Zombie novel for
+coders. You read that right... elite programmer Doug Handsman retires
+to his wife Ruth Ann's native northern Wisconsin. And then, well, the
+apocalypse happens. Bummer.
+
+Rated 4.3 out of 5 with more than 70 reviews, it's a fun read and costs
+next to nothing.
