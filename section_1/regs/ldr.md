@@ -131,15 +131,15 @@ Notice the following:
 Consider this code to sum up the values in an array:
 
 ```c
-long Sum(long * values, long length)                                    /* 1 */
-{                                                                       /* 2 */
-    long sum = 0;                                                       /* 3 */
-    for (long i = 0; i < length; i++)                                   /* 4 */
-    {                                                                   /* 5 */
-        sum += values[i];                                               /* 6 */
-    }                                                                   /* 7 */
-    return sum;                                                         /* 8 */
-}                                                                       /* 9 */
+long Sum(long * values, long length)                             /* 1 */
+{                                                                /* 2 */
+    long sum = 0;                                                /* 3 */
+    for (long i = 0; i < length; i++)                            /* 4 */
+    {                                                            /* 5 */
+        sum += values[i];                                        /* 6 */
+    }                                                            /* 7 */
+    return sum;                                                  /* 8 */
+}                                                                /* 9 */
 ```
 
 We're not going to translate this to assembly language. Instead, we will
@@ -152,16 +152,16 @@ fantastically inefficient (in this case).
 Consider the following code that performs the same function:
 
 ```c
-long Sum(long * values, long length)                                    /* 1 */
-{                                                                       /* 2 */
-    long sum = 0;                                                       /* 3 */
-    long * end = values + length;                                       /* 4 */
-    while (values < end)                                                /* 5 */
-    {                                                                   /* 6 */
-        sum += *(values++);                                             /* 7 */
-    }                                                                   /* 8 */
-    return sum;                                                         /* 9 */
-}                                                                       /* 10 */
+long Sum(long * values, long length)                             /* 1 */
+{                                                                /* 2 */
+    long sum = 0;                                                /* 3 */
+    long * end = values + length;                                /* 4 */
+    while (values < end)                                         /* 5 */
+    {                                                            /* 6 */
+        sum += *(values++);                                      /* 7 */
+    }                                                            /* 8 */
+    return sum;                                                  /* 9 */
+}                                                                /* 10 */
 ```
 
 Notice we don't use an index variable any longer. Instead, we use the
@@ -184,29 +184,29 @@ in both `C` and `C++`. It is *similar in spirit* to this in `C++`:
 Here is a hand translation of the above `C` code for function `Sum()`:
 
 ```asm
-    .global Sum                                                         // 1 
-    .text                                                               // 2 
-    .align  4                                                           // 3 
-                                                                        // 4 
-//  x0 is the pointer to data                                           // 5 
-//  x1 is the length and is reused as `end`                             // 6 
-//  x2 is the sum                                                       // 7 
-//  x3 is the current dereferenced value                                // 8 
-                                                                        // 9 
-Sum:                                                                    // 10 
-    mov     x2, xzr                                                     // 11 
-    add     x1, x0, x1, lsl 3                                           // 12 
-    b       2f                                                          // 13 
-                                                                        // 14 
-1:  ldr     x3, [x0], 8                                                 // 15 
-    add     x2, x2, x3                                                  // 16 
-2:  cmp     x0, x1                                                      // 17 
-    blt     1b                                                          // 18 
-                                                                        // 19 
-    mov     x0, x2                                                      // 20 
-    ret                                                                 // 21 
-                                                                        // 22 
-    .end                                                                // 23 
+    .global Sum                                                    // 1 
+    .text                                                          // 2 
+    .align  4                                                      // 3 
+
+//  x0 is the pointer to data                                      // 5 
+//  x1 is the length and is reused as `end`                        // 6 
+//  x2 is the sum                                                  // 7 
+//  x3 is the current dereferenced value                           // 8 
+
+Sum:                                                               // 10 
+    mov     x2, xzr                                                // 11 
+    add     x1, x0, x1, lsl 3                                      // 12 
+    b       2f                                                     // 13 
+
+1:  ldr     x3, [x0], 8                                            // 15 
+    add     x2, x2, x3                                             // 16 
+2:  cmp     x0, x1                                                 // 17 
+    blt     1b                                                     // 18 
+
+    mov     x0, x2                                                 // 20 
+    ret                                                            // 21 
+
+    .end                                                           // 23 
 ```
 
 Recall that `Sum(long * values, long length)` means that `x0` has the
@@ -371,57 +371,57 @@ You should read the chapter on `struct` found [here](where?).
 Here is a more elaborate case study. Given this:
 
 ```c
-#include <stdio.h>                                                      /* 1 */
-                                                                        /* 2 */
-struct Person                                                           /* 3 */
-{                                                                       /* 4 */
-    char * fname;                                                       /* 5 */
-    char * lname;                                                       /* 6 */
-    int age;                                                            /* 7 */
-};                                                                      /* 8 */
-                                                                        /* 9 */
-extern int rand();                                                      /* 10 */
-extern struct Person * FindOldestPerson(struct Person *, int);          /* 11 */
-                                                                        /* 12 */
+#include <stdio.h>                                               /* 1 */
+
+struct Person                                                    /* 3 */
+{                                                                /* 4 */
+    char * fname;                                                /* 5 */
+    char * lname;                                                /* 6 */
+    int age;                                                     /* 7 */
+};                                                               /* 8 */
+
+extern int rand();                                              /* 10 */
+extern struct Person * FindOldestPerson(struct Person *, int);  /* 11 */
+
 struct Person * OriginalFindOldestPerson(struct Person * people, int length) /* 13 */
-{                                                                       /* 14 */
-    int oldest_age = 0;                                                 /* 15 */
-    struct Person * oldest_ptr = NULL;                                  /* 16 */
-                                                                        /* 17 */
-    if (people)                                                         /* 18 */
-    {                                                                   /* 19 */
-        struct Person * end_ptr = people + length;                      /* 20 */
-        while (people < end_ptr)                                        /* 21 */
-        {                                                               /* 22 */
-            if (people->age > oldest_age)                               /* 23 */
-            {                                                           /* 24 */
-                oldest_age = people->age;                               /* 25 */
-                oldest_ptr = people;                                    /* 26 */
-            }                                                           /* 27 */
-            people++;                                                   /* 28 */
-        }                                                               /* 29 */
-    }                                                                   /* 30 */
-    return oldest_ptr;                                                  /* 31 */
-}                                                                       /* 32 */
-                                                                        /* 33 */
-#define LENGTH  20                                                      /* 34 */
-                                                                        /* 35 */
-int main()                                                              /* 36 */
-{                                                                       /* 37 */
-    struct Person array[LENGTH];                                        /* 38 */
-    for (int i = 0; i < LENGTH; i++)                                    /* 39 */
-    {                                                                   /* 40 */
-        array[i].age = rand() % 5000;                                   /* 41 */
-    }                                                                   /* 42 */
-    struct Person * oldest = FindOldestPerson(array, LENGTH);           /* 43 */
-    for (int i = 0; i < LENGTH; i++)                                    /* 44 */
-    {                                                                   /* 45 */
-        printf("%d", array[i].age);                                     /* 46 */
-        if (oldest == &array[i])                                        /* 47 */
-            printf("*");                                                /* 48 */
-        printf("\n");                                                   /* 49 */
-    }                                                                   /* 50 */
-}                                                                       /* 51 */
+{                                                               /* 14 */
+    int oldest_age = 0;                                         /* 15 */
+    struct Person * oldest_ptr = NULL;                          /* 16 */
+
+    if (people)                                                 /* 18 */
+    {                                                           /* 19 */
+        struct Person * end_ptr = people + length;              /* 20 */
+        while (people < end_ptr)                                /* 21 */
+        {                                                       /* 22 */
+            if (people->age > oldest_age)                       /* 23 */
+            {                                                   /* 24 */
+                oldest_age = people->age;                       /* 25 */
+                oldest_ptr = people;                            /* 26 */
+            }                                                   /* 27 */
+            people++;                                           /* 28 */
+        }                                                       /* 29 */
+    }                                                           /* 30 */
+    return oldest_ptr;                                          /* 31 */
+}                                                               /* 32 */
+
+#define LENGTH  20                                              /* 34 */
+
+int main()                                                      /* 36 */
+{                                                               /* 37 */
+    struct Person array[LENGTH];                                /* 38 */
+    for (int i = 0; i < LENGTH; i++)                            /* 39 */
+    {                                                           /* 40 */
+        array[i].age = rand() % 5000;                           /* 41 */
+    }                                                           /* 42 */
+    struct Person * oldest = FindOldestPerson(array, LENGTH);   /* 43 */
+    for (int i = 0; i < LENGTH; i++)                            /* 44 */
+    {                                                           /* 45 */
+        printf("%d", array[i].age);                             /* 46 */
+        if (oldest == &array[i])                                /* 47 */
+            printf("*");                                        /* 48 */
+        printf("\n");                                           /* 49 */
+    }                                                           /* 50 */
+}                                                               /* 51 */
 ```
 
 This program defines a `struct` called `Person`. See `line 3`.
@@ -440,9 +440,9 @@ serve only to move the location of the `age` member away from offset 0.
 same name so that the linker can reconcile the reference to
 `FindOldestPerson`.
 
-`OriginalFindOldestPerson` takes a pointer to an instance of `struct Person`. Being a pointer,
-this can be used as a way of finding just one instance or, as in our case, an array of these
-`structs`.
+`OriginalFindOldestPerson` takes a pointer to an instance of `struct
+Person`. Being a pointer, this can be used as a way of finding just one
+instance or, as in our case, an array of these `structs`.
 
 The function finds the largest value in the `age` member using the
 expected algorithm. It initializes an `oldest_age` found so far with 0
@@ -614,7 +614,7 @@ struct must be a multiple of 8. Four wasted bytes are added to the
 add long*. Here is the instruction:
 
 ```asm
-        smaddl  x4, w1, w5, x3      // initialize end_ptr               // 19 
+        smaddl  x4, w1, w5, x3      // initialize end_ptr          // 19 
 ```
 
 `w1` (the length) will be multiplied by `w5` (the size of each array
@@ -623,7 +623,7 @@ will be placed into `x4`. This assembly language instruction implements
 this in C:
 
 ```c
-        struct Person * end_ptr = people + length;                      /* 20 */
+        struct Person * end_ptr = people + length;              /* 20 */
 ```
 
 The compiler itself knows the true length of a `Person` (it is 24). When
@@ -656,8 +656,8 @@ resulted in a less than zero, zero, or more than zero result.
 `Lines 24` and `25` read:
 
 ```asm
-        csel    w2, w2, w5, gt      // update based on cmp              // 24 
-        csel    x0, x0, x3, gt      // update based on cmp              // 25 
+        csel    w2, w2, w5, gt      // update based on cmp         // 24 
+        csel    x0, x0, x3, gt      // update based on cmp         // 25 
 ```
 
 These are identical to this:
