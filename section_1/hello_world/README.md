@@ -623,6 +623,10 @@ This difference is OK because the older value of `argv` is preserved in
 `argv` before the increment, it doesn't matter when the increment is
 done.
 
+Why is that value of 8 on line 7? Recall that all addresses in this
+64 bit ISA are... 8 bytes long. To move our gaze from one pointer to
+the next within an array of pointers, we must increment by 8.
+
 The *if* happens on the first line of the C++ but done on the middle
 line of the assembly language. `cbz` stands for *`C`onditionally
 `B`ranch if `Z`ero*.
