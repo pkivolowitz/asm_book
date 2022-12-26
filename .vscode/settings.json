@@ -45,5 +45,8 @@
 		"rwtypo",
 		"slen",
 		"ssize"
-	]
+	],
+	"files.associations": {
+		"ostream": "cpp"
+	}
 }
