@@ -163,7 +163,7 @@ This image shows `gdb` in `layout regs` at the time our program is loaded.
 
 <figure>
   <img src="././1_prior_to_running.png" style="width:80%;">
-  <figcaption>Prior to launchr</figcaption>
+  <figcaption>Prior to launch</figcaption>
 </figure>
 
 Notice that all of the addresses match the disassemblies given above.
