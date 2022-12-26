@@ -19,11 +19,13 @@ fd 		.req	w28
 main:   stp     x29, x30, [sp, -16]!
         stp     x27, x28, [sp, -16]!
         bl      open_file
+
         // w0 will contain either the file descriptor of the new
         // file or -1 for a failure. Note that the value in w0
         // has also been copied to "fd" - a register alias.
         cmp 	w0, wzr
         bge 	1f
+
         // If we get here, the open has failed. Use perror() to
         // print a meaningful error and branch to exit. The return
         // code of the program will be set to non-zero inside fail.
@@ -37,6 +39,7 @@ main:   stp     x29, x30, [sp, -16]!
         // after printing an error message.
         bl		write_data
         cbz	    w0, 10f
+
         // If we get here, there was an error in write_data. Print
         // a reasonable error message then branch to the clean usleep
         // code.
@@ -49,6 +52,7 @@ main:   stp     x29, x30, [sp, -16]!
         // lseek(). 
 10:     bl      seek_zero
         cbz     x0, 20f
+
         // If we get here, the seek failed. Cause a reasonable
         // message to be printed then branch to the clean up code.
         ldr     x0, =sf
@@ -75,9 +79,13 @@ main:   stp     x29, x30, [sp, -16]!
     Explanation of the magic numbers:
 
     int open(const char *pathname, int flags, mode_t mode);
+
     octal 102 for flags is O_RDRW | O_CREAT
     octal 600 for mode is rw------- i.e. read and write for
         the owner but no permissions for anyone else.
+
+	There is a version of open() that takes two parameters. However,
+	if O_CREAT is specified, the three parameter version is required.
 */
 
         .equ    O_FLAGS, 0102
@@ -94,9 +102,9 @@ open_file:
         ret
 
 
-/*  This function uses perror to print a meaningful error
+/*  This function uses perror() to print a meaningful error
     message in the event of a failure. The string value
-    passed to perror arrives to us as a pointer in x0.
+    passed to perror() arrives to us as a pointer in x0.
 */
 
 fail:
@@ -107,6 +115,9 @@ fail:
         ret
 
 /*  ssize_t write(int fd, const void *buf, size_t count);
+
+	This function will write a string to the file descriptor contained
+	in "fd" (a register alias).
 */
 
 write_data:
