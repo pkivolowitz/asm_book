@@ -189,6 +189,9 @@ require 6 bytes to hold them. A virtual address space is all of the
 addresses a process can generate / use. Further, all addresses used
 by processes are virtual addresses.
 
+Kernels supporting other VA spaces, including 52 bit address spaces
+are possible but less common.
+
 The salient point is that even six bytes is far too large to fit in a
 four byte instruction. GDB is masking the pseudo instruction and showing
 what the effective addresses are.**
