@@ -1,27 +1,35 @@
 # Section 1 / Interlude - Registers
 
-We have discussed and used registers in the previous chapters without explanation. This chapter
-introduces the concept of registers and explains why registers are critical.
+We have discussed and used registers in the previous chapters without
+explanation. This chapter introduces the concept of registers and
+explains why registers are critical.
 
 ## Types of Registers
 
-Of general interest, the ARM 64 bit ISA offers a large register set for integer types and another
-for floating point types.
+Of general interest, the ARM 64 bit ISA offers a large register set for
+integer types and another for floating point types.
 
-The register set designed for integer types are indicated by `x` and `w` variants. The two
-variations are coincident - `w0` for example, is the same underlying register as `x0`. The
-choice of letter (`x` or `w`) determines how the register is interpreted.
+The register set designed for integer types are indicated by `x` and `w`
+variants. The two variations are coincident - `w0` for example, is the
+same underlying register as `x0`. The choice of letter (`x` or `w`)
+determines how the register is interpreted.
 
 * The `x` registers are for `long` integers and addresses.
-* The `w` registers are used for the narrower integer types.
+* The `w` registers are used for the narrower integer types. While `w`
+  stands for *word*, these registers are also used for `short` and 
+  `char`.
 
 The registers used for floating point types (and vector operations) are coincident:
 
-* `q` registers are a massive 16 bytes wide.
-* `v` registers are also 16 bytes wide and are synonyms for the `q` registers.
-* `d` registers for `doubles` which are 8 bytes wide. 2 per `v`.
-* `s` registers for `floats` which are 4 bytes wide. 4 per `v`.
-* `h` registers for `half precisions floats` which are 2 bytes wide. 8 per `v`.
+* `q` registers are a massive 16 bytes wide - quad words.
+* `v` registers are also 16 bytes wide and are synonyms for the `q`
+  registers.
+* `d` registers for `doubles` which are 8 bytes wide - double precision.
+  2 per `v`.
+* `s` registers for `floats` which are 4 bytes wide - single precision.
+  4 per `v`.
+* `h` registers for `half precisions floats` which are 2 bytes wide. 8
+  per `v`.
 * `b` registers for byte operations. 16 per `v`.
 
 ## Why Registers
