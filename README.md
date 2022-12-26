@@ -6,8 +6,12 @@ the reader is already comfortable with C or C++ coding. We use this
 assumed knowledge to **bridge** backward towards the low level ISA
 (Instruction Set Architecture).
 
-We drive home a very sharp point: C **is** a high level assembly
-language *and* assembly language is nothing to be scared about.
+We drive home a very sharp point:
+
+<center>
+   <i>Assembly language is nothing to be scared of!</i>
+</center>
+</br>
 
 ## For Whom Is This Book Intended?
 
