@@ -47,12 +47,27 @@ and how parameters are passed.
 In this book we will use the ARM LINUX conventions. This means:
 
 * You will need to run a ARM Linux VM on the Macintosh - even on
-  ARM-based Macs. Why? Apple. That's why.
+  ARM-based Macs. Why? Apple uses a different calling convention.
+  The convention used in this book should work on all ARM Linux
+  machines while the Apple calling convention is specific to Apple
+  Silicon-based machine. In the future, we hope to add a chapter
+  offering an explanation of the differences.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
   Windows machines. These do exist!
 
 * You will need to run an ARM Linux VM on x86-based Windows machines.
+  This is true even if you are on an ARM-based Windows machine for the
+  same reasons indicated above for Apple Silicon. In the future, we
+  hope to add a chapter detailing the Windows calling convention.
+
+You'll notice right away that we make use of the C-runtime directly
+rather than make OS service calls. So, for instance, if we want to
+call `write()`, we call `write` from the assembly language. This
+version of the system call `write` is a wrapper function built into
+the C-runtime which handles the low level details of performing a
+system call. See the [chapter](./not_written_yet.md) on what actually
+happens inside these wrapper functions.
 
 ## A Lot of Names
 
@@ -69,6 +84,114 @@ Within the text we will provide germane links as appropriate.
 
 [Here](<https://developer.arm.com/documentation/ddi0596/2021-12?lang=en>)
 is a link to "a" main instruction set page.
+
+## What you need to work with assembly language on Linux
+
+Getting the tools for assembly language development is quite
+straight forward - perhaps you already have them. Using `apt` from
+the Linux terminal, say:
+
+```text
+sudo apt update
+sudo apt install build-essential gdb
+```
+
+Then you'll need your favorite editor. We currently use `vi` for quick
+edits and Visual Studio Code for any heavy lifting.
+
+## How to build an assembly language
+
+We use `gcc`, the C "compiler". `g++` could also be used. What sense
+does that make... using the "compiler" to "compile" assembly language?
+
+Well, to answer that one must understand that the word "compiler" refers
+to only one step in a build sequence. What we talk about as being the
+"compiler" is actually an umbrella that includes:
+
+* A preprocessor that acts on any `#` preprocessor command like
+  `#include`. These commands are not part of C or C++. Rather they
+  are commands to the preprocessor.
+
+* The *actual* compiler, whose job it is turn high level languages
+  such as C and C++ into assembly language.
+
+* The assembler, which turns assembly language into machine code which
+  is not quite ready for execution.
+
+* And finally, the linker, which combines potentially many intermediate
+  machine code files (called object files), potentially many library
+  files (statically linked .dlls on Windows and .a files on Linux). The
+  linker is the last step in this chain.
+
+[Here](https://youtu.be/Iv3psS4n9j8) is a video explaining this process.
+
+We use gcc and g++ directly because, being umbrellas, they automate
+the above steps with other benefits such as automatically linking in
+the C runtime.
+
+Suppose you've implemented `main()` in a C file (main.c) and want to
+call out to an assembly language file you have written (asm.s). It can
+be done in several ways.
+
+### All at once
+
+```text
+gcc main.c asm.s
+```
+
+That's all you need for a minimal build. The resulting program will be
+written to `a.out`. All the intermediate files generated will be
+removed.
+
+### Modularly
+
+```text
+gcc -c main.c
+gcc -c asm.s
+gcc main.o asm.o
+```
+
+Used in this way, `.o` files are left on disk. Using the previous
+method, the `.o` files are removed without you seeing them.
+
+### If there are no C or C++ modules used
+
+Suppose `main()` is implemented in assembly language and `main.s` is
+self-contained, then simply:
+
+```text
+gcc main.s
+```
+
+Often, you will want to enable the debugger `gdb`. Do this:
+
+```text
+gcc -g main.s
+```
+
+### Programs called by the "Compiler"
+
+Using gcc to "compile" a program causes the following to be called
+on Ubuntu running on ARM:
+
+```text
+/usr/bin/cpp
+/usr/lib/gcc/aarch64-linux-gnu/11/cc1
+/usr/bin/as
+/usr/lib/gcc/aarch64-linux-gnu/11/collect2 which is...
+/usr/bin/ld
+```
+
+`cpp` is the C preprocessor - it is a general tool can is used by other
+languages as well (C++, for example).
+
+`cc1` is the actual compiler.
+
+`as` is the assembler.
+
+`ld` is the linker.
+
+You can see why we default to using the umbrella command in this book.
 
 ## Section 1 - Bridging from C / C++ to Assembly Language
 
