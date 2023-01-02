@@ -79,7 +79,7 @@ modify something marked as read only by the hardware will result in a crash.
 string contains a typo - we meant to write "Typo" but we experienced a
 senior moment and what got entered was "Rypo". Could happen to anyone.
 
-For some reason, we will fix "Rypo", turning it into "Type" using code
+For some reason, we will fix "Rypo", turning it into "Typo" using code
 rather than simply editing the file.
 
 The same is true for `rotypo`. Extra credit for being consistent.
