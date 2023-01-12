@@ -254,6 +254,7 @@ What would a book about assembly language be without bit bashing?
 | .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | NA |
 | .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | NA |
 | .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | NA |
+| 2 | [Endianness](./section_3/endian/README.md) | NA |
 
 ## Section 4 - More Stuff
 
