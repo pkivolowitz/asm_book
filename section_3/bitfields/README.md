@@ -356,7 +356,7 @@ size of data structures in memory and on disc.
 
 ## Space Versus Time
 
-In Computer Science there is an eternal between space and time. The
+In Computer Science there is an eternal tension between space and time. The
 following is a **law**:
 
 *If you want something to go faster, it will cost more memory.*
