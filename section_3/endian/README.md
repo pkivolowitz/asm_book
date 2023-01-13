@@ -156,8 +156,25 @@ on a little endian machine, it is the first byte in the long in memory.
 
 ## Output on a big endian machine
 
-We tried and tried but could not get anyone to run this code on a
-big-endian machine.
+We tried and tried to find a kind soul to run the above program on a
+big-endian machine. Redditor Athanasios Pavlidis ran a C version of the
+code on both an Amiga A4000/MC68040 and an Amiga A3000/MC68030. The
+results were:
+
+```text
+Endianness of this computer:
+i16: 0123
+i32: 01234567
+i64: 89abcdef01234567
+```
+
+Notice the values for `i16` and `i32` match the right hand column above.
+The value for `i64` is borked in that we specified it in the C code as a
+`long`. We then tried specifying the `long` as a `long long`. Apparently
+there is little support for 64 bit numbers on this ancient but
+venerable architecture.
+
+Athanasios Pavlidis has our appreciation and thanks.
 
 ## Can't the ARM swing both ways?
 
@@ -169,7 +186,8 @@ install the big-endian version of the toolchain.
 Here is a quote from Wikipedia:
 
 ```text
-ARM, C-Sky, and RISC-V have no relevant big-endian deployments, and can be considered little-endian in practice.
+ARM, C-Sky, and RISC-V have no relevant big-endian deployments, and can
+be considered little-endian in practice.
 ```
 
 ## What is Intel?
@@ -178,6 +196,4 @@ The common Intel processors are also little-endian.
 
 ## So what's big-endian?
 
-The Motorola 68K family - we reached out to the Amiga user community in
-the hopes that someone would run the code, but no one has and this makes
-us sad. :(
+IBM mainframes and the Motorola 68K family come to mind. See above.

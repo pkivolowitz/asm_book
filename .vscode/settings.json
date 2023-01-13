@@ -33,19 +33,21 @@
 		"MD024":false
     },
     "cSpell.ignoreWords": [
-		"Rypo",
-		"dless",
-		"dmore",
-		"foov",
-		"ndless",
-		"ndmore",
-		"onditionally",
-		"onsole",
-		"rotypo",
-		"rwtypo",
-		"slen",
-		"ssize"
-	],
+        "Athanasios",
+        "Pavlidis",
+        "Rypo",
+        "dless",
+        "dmore",
+        "foov",
+        "ndless",
+        "ndmore",
+        "onditionally",
+        "onsole",
+        "rotypo",
+        "rwtypo",
+        "slen",
+        "ssize"
+    ],
 	"files.associations": {
 		"ostream": "cpp"
 	}
