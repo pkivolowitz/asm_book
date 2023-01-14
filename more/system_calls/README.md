@@ -61,7 +61,7 @@ In a perfect world, each Linux distribution would use the same set of
 system call numbers. But no.
 
 [This](https://marcin.juszkiewicz.com.pl/download/tables/syscalls.html)
-is he most comprehensive list of system call numbers we have seen. It
+is the most comprehensive list of system call numbers we have seen. It
 shows system call numbers for many architectures and distributions.
 
 ## Example: calling `getpid()`
