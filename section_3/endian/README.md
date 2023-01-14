@@ -13,27 +13,24 @@ The TL;DR of endianness is this:
 
 * suppose you have a pointer to a `short`
 
-* is the *byte* at the address contained in the pointer the first byte
+* is the byte at the address contained in the pointer the first byte
 of the `short` or the second?
 
-* this extends to `int` and to `long` as well
-
-That's the essential nugget.
+This extends to `int` and to `long` as well.
 
 ## Why talk about this?
 
 Endianness is mostly hidden from you. The value of an `int` is the value
-you think it is and how the `int` is constructed isn't even on your
+you think it is and how the `int` is constructed probably isn't on your
 radar.
 
 Endianness is a big deal for people who code network applications where
-early on a standard was required to determine which byte of an `int` is
+early on, a standard was required to determine which byte of an `int` is
 the first one transmitted over the wire. Network Byte Order is big
-endian. Unfortunately, most of todays very popular processors are
-little endian.
+endian. Most of todays very popular processors are little endian.
 
-For us assembly language coders, endianness comes into play when we're
-using our debuggers. After all, when we examine memory, memory is a
+For us assembly language coders, endianness especially comes into play
+when we're using our debuggers. When we examine memory, memory is a
 linear stream of bytes. Without understanding endianness, you might be
 confused about what you're seeing.
 
@@ -48,8 +45,10 @@ end.
 
 Please read the entirety of Gulliver's Travels keeping in mind how
 absolutely nasty Swift's portrayal of 18th century politics can be. You
-won't be disappointed. And no, the classic cartoon version, Max
-Fleischer's 1939 masterpiece, doesn't do the book justice.
+won't be disappointed. 
+
+The classic cartoon version, Max Fleischer's 1939 masterpiece, doesn't
+do the book justice.
 
 ## How do the terms apply?
 
@@ -59,7 +58,7 @@ significant byte lives. Thus the terms...
 
 If the most significant byte comes first, the architecture is said to
 be big-endian. If the least significant byte comes first, it is little
-endian.
+endian. There's a little more to it than that, but not much.
 
 **Notice I have not discussed strings.**
 
@@ -122,17 +121,17 @@ string Dump(T & i) {                                              // 15
 }                                                                 // 24
 ```
 
-First, you might not be familiar with templated functions. Notice
-line 14 tells the compiler that the next function is templated and that
-`T` be take on the value matching the parameter that is actually given
-to the function.
+You might not be familiar with templated functions. Notice line 14 tells
+the compiler that the next function is templated and that `T` will stand
+in for the type matching the parameter that is actually given to the
+function.
 
-Thus, at compile time, the compiler write a different function for each
+Thus, at compile time, the compiler writes a different function for each
 of `int`, `short` and `long`. When the compiler gets to the `sizeof()`
 on line 20, the size of the "right" type is taken.
 
-Using the templated approach we need write this function only once
-rather than three times for each of `int`, `short` and `long`.
+Using the templated approach, we need write this function only once
+rather than three times (for each of `int`, `short` and `long`).
 
 ## Output on a little endian machine
 
@@ -169,6 +168,7 @@ i64: 89abcdef01234567
 ```
 
 Notice the values for `i16` and `i32` match the right hand column above.
+
 The value for `i64` is borked in that we specified it in the C code as a
 `long`. We then tried specifying the `long` as a `long long`. Apparently
 there is little support for 64 bit numbers on this ancient but

@@ -62,12 +62,12 @@ In this book we will use the ARM LINUX conventions. This means:
   hope to add a chapter detailing the Windows calling convention.
 
 You'll notice right away that we make use of the C-runtime directly
-rather than make OS service calls. So, for instance, if we want to
-call `write()`, we call `write` from the assembly language. This
-version of the system call `write` is a wrapper function built into
-the C-runtime which handles the low level details of performing a
-system call. See the [chapter](./not_written_yet.md) on what actually
-happens inside these wrapper functions.
+rather than make OS service calls. So, for instance, if we want to call
+`write()`, we call `write` from the assembly language. This version of
+the system call `write` is a wrapper function built into the C-runtime
+which handles the low level details of performing a system call. See the
+[here](./more/system_calls/README.md) on what actually happens inside
+these wrapper functions.
 
 ## A Lot of Names
 
@@ -217,7 +217,7 @@ knowledge - how cool is that!
 | 6 | Functions | |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) | NA |
 | .... b | [.... Passing Parameters](./section_1/funcs/README2.md) | NA |
-| .... c | [.... Calling common C runtime functions](./section_1/funcs/README3.md) | NA |
+| .... c | [.... Example of calling some common C runtime functions](./section_1/funcs/README3.md) | NA |
 | 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) | NA |
 | 8 | Structs | |
 | .... a | [.... Alignment](./section_1/structs/alignment.md) | NA |
@@ -261,6 +261,7 @@ What would a book about assembly language be without bit bashing?
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
 | --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | NA |
+| --- | [Under the hood: System Calls](./more/system_calls/README.md) | NA |
 
 ## Projects
 
