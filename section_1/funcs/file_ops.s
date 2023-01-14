@@ -58,7 +58,38 @@ main:   stp     x29, x30, [sp, -16]!
         ldr     x0, =sf
         bl      fail
         b       50f
-20:
+
+20:     // When we get here, we have to read from the file and print
+        // the results. To ignore the complexity of memory allocation
+        // and buffer overrun potential, we'll read one character at a 
+        // time looking the end-of-file.
+
+        // ssize_t read(int fildes, void *buf, size_t nbyte);
+        mov     w0, fd
+        ldr     x1, =buffer
+        mov     x2, 1
+        bl      read
+        // Check the return value - should be 1.
+        cbz     x0,50f      // zero means EOF - that's OK.
+        // If x0 is negative, that IS a problem.
+        cmp     x0, xzr
+        bge     25f
+        // The return value is negative - this is an error.
+        ldr     x0, =rf
+        bl      fail
+        b       99f
+
+25:     // Write the character sitting in buffer to the console.
+        mov     w0, 1
+        ldr     x1, =buffer
+        mov     x2, 1
+        bl      write
+        // We will ignore the return value for the sake of brevity.
+        // There are plenty of examples of handling a potential error
+        // elsewhere in this code.
+        // --
+        b       20b
+
         // When we get here, we are done. Close the file.
 50:		mov		w0, fd
         bl 		close
@@ -154,8 +185,10 @@ seek_zero:
         .data
 prog:	.asciz	"file_ops"
 wf:     .asciz  "write failed"
+rf:     .asciz  "read failed"
 sf:     .asciz  "lseek failed"
 fname:	.asciz	"test.txt"
 txt:	.asciz	"some data\n"
 txt_s:	.word	txt_s - txt - 1		// strlen(txt)
+buffer: .word   0
         .end
