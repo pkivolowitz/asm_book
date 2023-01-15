@@ -182,6 +182,23 @@ Often, you will want to enable the debugger `gdb`. Do this:
 gcc -g main.s
 ```
 
+### The C Pre-Processor
+
+If you want `gcc` to run your code through the C pre-processor
+(for handing `#include` for example), name your assembly language
+source code files with a capital S. So, on Linux:
+
+`gcc main.s`
+
+Will not go through the C pre-processor but
+
+`gcc main.S`
+
+will.
+
+See the [Apple Silicon](./more/apple_silicon/README.md) chapter for
+more information.
+
 ### Programs called by the "Compiler"
 
 Using gcc to "compile" a program causes the following to be called
