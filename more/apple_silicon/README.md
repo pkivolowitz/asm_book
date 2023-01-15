@@ -42,7 +42,6 @@ This gets expanded to:
 ```text
         adrp    x0, fmt@PAGE
         add     x0, x0, fmt@PAGEOFF
-.endm
 ```
 
 ## Loading the address of data
@@ -85,7 +84,6 @@ Hence:
 ```text
         adrp    x0, fmt@PAGE
         add     x0, x0, fmt@PAGEOFF
-.endm
 ```
 
 The first instruction puts the high bits of the label's address in `x0`.
@@ -238,6 +236,10 @@ To be Apple compatible, in addition to backing up `x30` also back up
 `x29` and then:
 
 `mov x29, sp`
+
+### More?
+
+As we discover more differences, they will be described here.
 
 ## START_PROC and END_PROC
 
