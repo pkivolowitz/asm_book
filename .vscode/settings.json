@@ -30,7 +30,8 @@
         "strlen",
         "strncpy",
         "struct",
-        "structs"
+        "structs",
+        "xreg"
     ],
 	"markdownlint.config": {
 		"MD024":false

@@ -46,12 +46,18 @@ and how parameters are passed.
 
 In this book we will use the ARM LINUX conventions. This means:
 
-* You will need to run a ARM Linux VM on the Macintosh - even on
+* You *may** need to run a ARM Linux VM on the Macintosh - even on
   ARM-based Macs. Why? Apple uses a different calling convention.
+
   The convention used in this book should work on all ARM Linux
   machines while the Apple calling convention is specific to Apple
-  Silicon-based machine. In the future, we hope to add a chapter
-  offering an explanation of the differences.
+  Silicon-based machine.
+
+  This necessity did not sit well with some on reddit. We listened.
+  
+  We now have a chapter devoted to bringing Linux and Apple code
+  together to the degree possible. [This chapter](./more/apple_silicon/)
+  also provides a suite of macros that provide this help.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
   Windows machines. These do exist!
