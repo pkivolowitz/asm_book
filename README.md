@@ -300,8 +300,15 @@ What would a book about assembly language be without bit bashing?
 challenge to your growing mastery. Here are very brief descriptions
 presented in alphabetical order.
 
+---
+
 Perhaps before you tackle these, check out the fully described
 [FIZZBUZZ](./section_1/fizzbuzz/README.md) program first.
+
+---
+
+Then try [this](./projects/first_project/README.md) as your very first
+project. With some blank lines and comments it weighs in at 35 lines.
 
 ---
 The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
