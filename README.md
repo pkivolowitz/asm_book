@@ -46,34 +46,41 @@ and how parameters are passed.
 
 In this book we will use the ARM LINUX conventions. This means:
 
-* You *may** need to run a ARM Linux VM on the Macintosh - even on
+* You *may* need to run a ARM Linux VM on the Macintosh - even on
   ARM-based Macs. Why? Apple uses a different calling convention.
 
   The convention used in this book should work on all ARM Linux
   machines while the Apple calling convention is specific to Apple
-  Silicon-based machine.
+  Silicon-based machines.
 
   This necessity did not sit well with some on reddit. We listened.
   
   We now have a chapter devoted to bringing Linux and Apple code
   together to the degree possible. [This chapter](./more/apple_silicon/)
-  also provides a suite of macros that provide this help.
+  also provides a suite of macros that provide this help. If you're
+  willing to adjust how you code (and use the macros), you can
+  sucessfully write assembly language once and build it on both Linux
+  and Mac OS.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
   Windows machines. These do exist!
 
 * You will need to run an ARM Linux VM on x86-based Windows machines.
-  This is true even if you are on an ARM-based Windows machine for the
-  same reasons indicated above for Apple Silicon. In the future, we
-  hope to add a chapter detailing the Windows calling convention.
+  This is true even if you are on an ARM-based Windows machine as there
+  are so many differences between a Unix-like environment and Windows.
 
 You'll notice right away that we make use of the C-runtime directly
 rather than make OS service calls. So, for instance, if we want to call
 `write()`, we call `write` from the assembly language. This version of
 the system call `write` is a wrapper function built into the C-runtime
-which handles the low level details of performing a system call. See the
+(CRT)
+which handles the lower level details of performing a system call. See the
 [here](./more/system_calls/README.md) on what actually happens inside
-these wrapper functions.
+these wrapper functions. 
+
+The benefit of using the CRT wrappers is that there are details, explained
+in the chapter, that differ from system to system and architecture to 
+architecture even for making the same system call.
 
 ## A Lot of Names
 
@@ -268,6 +275,7 @@ What would a book about assembly language be without bit bashing?
 | ------- | -------- | --- |
 | --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | NA |
 | --- | [Under the hood: System Calls](./more/system_calls/README.md) | NA |
+| --- | [Apple Silicon](./more/apple_silicon/README.md) | NA |
 
 ## Projects
 
