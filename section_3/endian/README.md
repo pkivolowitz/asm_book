@@ -214,6 +214,6 @@ The author worked extensively in the Amiga ecosystem from the middle
 
 ![Art Department Professional](./adpro.jpeg)
 
-![mp](./mp2.webp)
+![mp](./mp2.jpeg)
 
 In those days we sold software by the pound! Look at that manual!
