@@ -178,7 +178,7 @@ Here is a screenshot:
 
 ![screen](./amiga.png)
 
-For completeness, Mr. Pavlidis run the code on the IBM Power PC
+For completeness, Mr. Pavlidis ran the code on the IBM Power PC
 (System/6000) and got these correct results:
 
 ![screen](./power.png)
