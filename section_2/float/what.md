@@ -46,7 +46,7 @@ Equation:           1 x 2^0                  1 x 2^0
 ```
 
 On the line marked "Value" you can see the values represented as double precision 
-and as single precious. Under "Comment" you can see that there
+and as single precision. Under "Comment" you can see that there
 is no difference between the double and the single precision numbers. Remember
 the key thing about floating point numbers: they are approximations. Sometimes,
 as in the case of whole numbers like 1, the approximation is exact. When there

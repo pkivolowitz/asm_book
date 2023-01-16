@@ -60,9 +60,9 @@ The `endl` is doing two things for you:
 1. Of course, it's giving you a new line but it is also...
 2. Triggers the output to actually render on your console
 
-Actual output via streams like `cout` and `cerr` only happens
-when new lines are emitted. This is called "buffering". Buffering is
-a powerful technique to increase efficiency when:
+Actual output via streams like `cout` only happens when new lines are
+emitted. This is called "buffering". Buffering is a powerful technique
+to increase efficiency when:
 
 * the amount of output is a little at a time
 
@@ -87,7 +87,10 @@ The choice of the method name `flush()` is apropos in that you're
 "flushing" any buffered characters all the way to their ultimate end
 point.
 
-Note that `cout` can be replaced with the name of any output stream.
+Note that `cout` can be replaced with the name of any output stream. Though
+observe that its counterpart `cerr`, which is intended for diagnostics and
+error reporting, does not use a buffer so that important messages are reported
+immediately. As a result, there is never any need to call `cerr.flush()`.
 
 ## Forcing Output In Assembly Language
 
