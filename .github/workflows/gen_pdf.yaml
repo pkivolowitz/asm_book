@@ -13,3 +13,10 @@ jobs:
     - name: Create PDF
       run: |
         pandoc README.md -o README.pdf
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v9
+      with:
+        author_name: Evan Kivolowitz
+        author_email: ekivolowitz@wisc.edu
+        message: 'Generating pdfs.'
+        add: '*.pdf'
