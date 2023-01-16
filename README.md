@@ -300,36 +300,26 @@ What would a book about assembly language be without bit bashing?
 challenge to your growing mastery. Here are very brief descriptions
 presented in alphabetical order.
 
----
-
 Perhaps before you tackle these, check out the fully described
 [FIZZBUZZ](./section_1/fizzbuzz/README.md) program first.
-
----
 
 Then try [this](./projects/first_project/README.md) as your very first
 project. With some blank lines and comments it weighs in at 35 lines.
 
----
 The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
 complex `struct` can be used in assembly language.
 
----
 The [PI](./projects/PI/README.md) project demonstrates floating point
 instructions. The program will "throw darts at a target," calculating
 an approximation of PI by tracking how many darts "hit the target"
 versus the total number of darts "thrown".
 
----
 The [SNOW](./projects/snow/README.md) project uses 1970's era tech to
 animate a simple particle system. This project demonstrates a reasonable
 design process of breaking down complex problems into simpler parts.
 
----
 The [WALKIES](./projects/walkies/README.md) presents a cute little
 animation demonstrating looping with some pointer dereferencing.
-
----
 
 ## About The Author
 
