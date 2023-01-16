@@ -1,0 +1,15 @@
+name: Generate PDF
+on: [push]
+jobs:
+  build:
+    name: Generate PDF
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install pandoc and dependencies
+      run: |
+        sudo apt install pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+    - name: Create PDF
+      run: |
+        pandoc README.md -o README.pdf
