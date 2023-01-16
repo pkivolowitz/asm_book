@@ -210,7 +210,7 @@ Our jump table remains the same.
 ## More strategies for implementing `switch`
 
 As indicated above, an optimizer has at least three tools available to
-it to implement complex `switch` statements. And, it an combine these
+it to implement complex `switch` statements. And, it can combine these
 tools.
 
 For example, suppose your cases boil down to two ranges of fairly
@@ -240,5 +240,5 @@ common cases at the top of the `if / else` sequence.
 **This is known as making the common case fast.**
 
 Making the common case fast is one of the Great Ideas in Computer
-Science. One, you would do well to remember no matter than language
+Science. One, you would do well to remember no matter what language
 you're working with.
