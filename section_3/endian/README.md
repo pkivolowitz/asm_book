@@ -45,7 +45,7 @@ end.
 
 Please read the entirety of Gulliver's Travels keeping in mind how
 absolutely nasty Swift's portrayal of 18th century politics can be. You
-won't be disappointed. 
+won't be disappointed.
 
 The classic cartoon version, Max Fleischer's 1939 masterpiece, doesn't
 do the book justice.
@@ -156,7 +156,7 @@ on a little endian machine, it is the first byte in the long in memory.
 ## Output on a big endian machine
 
 We tried and tried to find a kind soul to run the above program on a
-big-endian machine. Redditor Athanasios Pavlidis ran a C version of the
+big-endian machine. Athanasios Pavlidis ran a C version of the
 code on both an Amiga A4000/MC68040 and an Amiga A3000/MC68030. The
 results were:
 
@@ -170,9 +170,18 @@ i64: 89abcdef01234567
 Notice the values for `i16` and `i32` match the right hand column above.
 
 The value for `i64` is borked in that we specified it in the C code as a
-`long`. We then tried specifying the `long` as a `long long`. Apparently
-there is little support for 64 bit numbers on this ancient but
-venerable architecture.
+`long`. We then tried specifying the `long` as a `long long` but got the
+same results.
+
+Mr. Pavlidis tried a different tool chain and got the correct results.
+Here is a screenshot:
+
+![screen](./amiga.png)
+
+For completeness, Mr. Pavlidis run the code on the IBM Power PC
+(System/6000) and got these correct results:
+
+![screen](./power.png)
 
 Athanasios Pavlidis has our appreciation and thanks.
 
@@ -197,3 +206,14 @@ The common Intel processors are also little-endian.
 ## So what's big-endian?
 
 IBM mainframes and the Motorola 68K family come to mind. See above.
+
+## Nostalgia
+
+The author worked extensively in the Amiga ecosystem from the middle
+1980s to the middle 1990s. Here are some products from his company:
+
+![Art Department Professional](./adpro.jpeg)
+
+![mp](./mp2.webp)
+
+In those days we sold software by the pound! Look at that manual!
