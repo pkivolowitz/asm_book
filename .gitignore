@@ -1,6 +1,7 @@
 # Prerequisites
 *.icloud
 *.d
+*.swp
 
 temp
 .DS_*
