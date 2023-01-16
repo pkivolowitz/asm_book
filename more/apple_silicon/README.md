@@ -189,7 +189,7 @@ that tells the function how many parameters were actually given.
 
 For example:
 
-`printf("%d is a number.\n");`
+`printf("%d is a number.\n", 9);`
 
 There is but one `%` place holder in this text. This tells `printf()`
 that in addition to the string there is but one more parameter to be
