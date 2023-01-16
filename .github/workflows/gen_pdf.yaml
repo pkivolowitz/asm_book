@@ -12,7 +12,16 @@ jobs:
         sudo apt install pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
     - name: Create PDF
       run: |
-        pandoc README.md -o README.pdf
+        file_list=`find . -print | grep -i ".md"`
+        for element in $file_list
+        do
+                dir=`dirname ${element}`
+                cd $dir
+                echo `pwd`
+                fname=`basename ${element}`
+                pandoc $fname -o ${fname::-2}pdf
+                cd -
+        done
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with:
