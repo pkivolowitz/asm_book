@@ -1,2 +1,3 @@
 #!/bin/bash
-git diff --name-only main | grep -i ".md"
+file_list=`git diff --name-only main | grep -i ".md"`
+echo $file_list
