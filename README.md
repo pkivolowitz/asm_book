@@ -47,20 +47,27 @@ and how parameters are passed.
 In this book we will use the ARM LINUX conventions. This means:
 
 * You *may* need to run a ARM Linux VM on the Macintosh - even on
-  ARM-based Macs. Why? Apple uses a different calling convention.
+  ARM-based Macs. Why? Apple uses a different calling convention. Keep
+  reading before you get upset.
 
   The convention used in this book should work on all ARM Linux
   machines while the Apple calling convention is specific to Apple
   Silicon-based machines.
 
-  This necessity did not sit well with some on reddit. We listened.
+  This necessity for a VM even when running on an Apple Silicon machine 
+  did not sit well with some on reddit. We listened.
   
   We now have a chapter devoted to bringing Linux and Apple code
-  together to the degree possible. [This chapter](./more/apple_silicon/)
-  also provides a suite of macros that provide this help. If you're
-  willing to adjust how you code (and use the macros), you can
-  successfully write assembly language once and build it on both Linux
-  and Mac OS.
+  together to the degree possible. 
+  
+  [This chapter](./more/apple_silicon/) provides a suite of macros that
+  provide this help. If you're willing to adjust how you code (and use
+  the macros), you can successfully write assembly language once and
+  build it on both Linux and Mac OS.
+
+  The macros are a work in progress. [This
+  link](./macros/apple-linux-convergence.S) will lead to a current copy
+  of them. We will try to keep this file up to date.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
   Windows machines. These do exist!
@@ -124,6 +131,10 @@ to only one step in a build sequence. What we talk about as being the
 * A preprocessor that acts on any `#` preprocessor command like
   `#include`. These commands are not part of C or C++. Rather they
   are commands to the preprocessor.
+
+  Note that `gcc` will invoke the C preprocessor only if your assembly
+  language file ends in `.S` - capital S. It may not be invoked if your
+  file ends in a lower case s or any other file extension.
 
 * The *actual* compiler, whose job it is turn high level languages
   such as C and C++ into assembly language.
@@ -265,14 +276,14 @@ own section:
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
 | 1 | Floating Point | |
-| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md) | NA |
-| .... b | [.... Registers (simplified)](./section_2/float/working.md) | NA |
-| .... c | [.... Literals](./section_2/float/literals.md) | NA |
+| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md) | [Link](./section_2/float/what.pdf) |
+| .... b | [.... Registers (simplified)](./section_2/float/working.md) | [Link](./section_2/float/working.pdf) |
+| .... c | [.... Literals](./section_2/float/literals.md) | [Link](./section_2/float/literals.pdf) |
 | .... d | [.... `fmov` Not Yet Written](./section_2/float/) | NA |
-| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md) | NA |
+| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md) | [Link](./section_2/float/rounding.pdf) |
 | .... f | [.... Four Basic Operations Not Yet Written](./section_2/float/) | NA |
 | .... g | [.... Selected Additional Operations Not Yet Written](./section_2/float/) | NA |
-| .... z | [.... Half Precision Floats](./section_2/float/half.md) | NA |
+| .... z | [.... Half Precision Floats](./section_2/float/half.md) | [Link](./section_2/float/half.pdf) |
 
 ## Section 3 - Bit Manipulation
 
