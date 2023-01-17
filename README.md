@@ -242,7 +242,7 @@ knowledge - how cool is that!
 | .... a | [.... Registers](./section_1/regs/README.md) | [Link](./section_1/regs/README.pdf) |
 | .... b | [.... Load and Store](./section_1/regs/ldr.md) | [Link](./section_1/regs/ldr.pdf) |
 | .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) | [Link](./section_1/regs/ldr2.pdf) |
-| .... d | [.... Register Sizes](./section_1/regs/widths.md) | [Link]((./section_1/regs/widths.pdf) |
+| .... d | [.... Register Sizes](./section_1/regs/widths.md) | [Link](./section_1/regs/widths.pdf) |
 | 5 | [`switch`](./section_1/jump_tables/README.md) | [Link](./section_1/jump_tables/README.pdf) |
 | 6 | Functions | |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) | [Link](./section_1/funcs/README.pdf) |
