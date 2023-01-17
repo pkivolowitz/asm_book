@@ -231,30 +231,30 @@ knowledge - how cool is that!
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
-| 1 | [Hello World](./section_1/hello_world/README.md) | NA |
-| 2 | [If Statements](./section_1/if/README.md) | NA |
+| 1 | [Hello World](./section_1/hello_world/README.md) | [Link](./section_1/hello_world/README.pdf)  |
+| 2 | [If Statements](./section_1/if/README.md) | [Link](./section_1/if/README.pdf) |
 | 3 | Loops | |
-| .... a | [.... While Loops](./section_1/while/README.md) | NA |
-| .... b | [.... For Loops](./section_1/for/README.md) | NA |
-| .... c | [.... Implementing Continue](./section_1/for/README.md#implementing-a-continue) | NA |
-| .... d | [.... Implementing Break](./section_1/for/README.md#implementing-a-break) | NA |
+| .... a | [.... While Loops](./section_1/while/README.md) | [Link](./section_1/while/README.pdf) |
+| .... b | [.... For Loops](./section_1/for/README.md) | [Link](./section_1/for/README.pdf) |
+| .... c | [.... Implementing Continue](./section_1/for/README.md#implementing-a-continue) | [Link](./section_1/for/README.pdf) |
+| .... d | [.... Implementing Break](./section_1/for/README.md#implementing-a-break) |  [Link](./section_1/for/README.pdf) |
 | 4 | Interludes | |
-| .... a | [.... Registers](./section_1/regs/README.md) | NA |
-| .... b | [.... Load and Store](./section_1/regs/ldr.md) | NA |
-| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) | NA |
-| .... d | [.... Register Sizes](./section_1/regs/widths.md) | NA |
-| 5 | [`switch`](./section_1/jump_tables/README.md) | NA |
+| .... a | [.... Registers](./section_1/regs/README.md) | [Link](./section_1/regs/README.pdf) |
+| .... b | [.... Load and Store](./section_1/regs/ldr.md) | [Link](./section_1/regs/ldr.pdf) |
+| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) | [Link](./section_1/regs/ldr2.pdf) |
+| .... d | [.... Register Sizes](./section_1/regs/widths.md) | [Link]((./section_1/regs/widths.pdf) |
+| 5 | [`switch`](./section_1/jump_tables/README.md) | [Link](./section_1/jump_tables/README.pdf) |
 | 6 | Functions | |
-| .... a | [.... Calling and Returning](./section_1/funcs/README.md) | NA |
-| .... b | [.... Passing Parameters](./section_1/funcs/README2.md) | NA |
-| .... c | [.... Example of calling some common C runtime functions](./section_1/funcs/README3.md) | NA |
-| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) | NA |
+| .... a | [.... Calling and Returning](./section_1/funcs/README.md) | [Link](./section_1/funcs/README.pdf) |
+| .... b | [.... Passing Parameters](./section_1/funcs/README2.md) | [Link](./section_1/funcs/README2.pdf) |
+| .... c | [.... Example of calling some common C runtime functions](./section_1/funcs/README3.md) | [Link](./section_1/funcs/README3.pdf) |
+| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) | [Link](./section_1/fizzbuzz/README.pdf) |
 | 8 | Structs | |
-| .... a | [.... Alignment](./section_1/structs/alignment.md) | NA |
-| .... b | [.... Defining](./section_1/structs/defining.md) | NA |
-| .... c | [.... Using](./section_1/structs/using.md) | NA |
-|  9 | [`const`](./section_1/const/README.md) | NA |
-|  10 | [Casting](./section_1/casting/README.md) | NA |
+| .... a | [.... Alignment](./section_1/structs/alignment.md) | [Link](./section_1/structs/alignment.pdf) |
+| .... b | [.... Defining](./section_1/structs/defining.md) | [Link](./section_1/structs/defining.pdf) |
+| .... c | [.... Using](./section_1/structs/using.md) | [Link](./section_1/structs/using.pdf) |
+|  9 | [`const`](./section_1/const/README.md) | [Link](./section_1/const/README.pdf) |
+|  10 | [Casting](./section_1/casting/README.md) | [Link](./section_1/casting/README.pdf) |
 
 ## Section 2 - Floating Point
 
@@ -281,18 +281,18 @@ What would a book about assembly language be without bit bashing?
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
 | 1 | Bit Fields | |
-| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | NA |
-| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | NA |
-| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | NA |
-| 2 | [Endianness](./section_3/endian/README.md) | NA |
+| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | [Link]((./section_3/bitfields/README.pdf) |
+| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | [Link](./section_3/bitfields/with.pdf) |
+| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | [Link](./section_3/bitfields/review.pdf) |
+| 2 | [Endianness](./section_3/endian/README.md) | [Link]((./section_3/endian/README.pdf) |
 
 ## Section 4 - More Stuff
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
-| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | NA |
-| --- | [Under the hood: System Calls](./more/system_calls/README.md) | NA |
-| --- | [Apple Silicon](./more/apple_silicon/README.md) | NA |
+| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
+| --- | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
+| --- | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
 
 ## Projects
 
