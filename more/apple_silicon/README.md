@@ -25,7 +25,7 @@ macro as an early form of C++ templated function (kinda but not really).
 Here's an example of an assembly language macro:
 
 ```text
-.macro LD_ADDR xreg, label 
+.macro LLD_ADDR xreg, label 
         adrp    \xreg, \label@PAGE
         add     \xreg, \xreg, \label@PAGEOFF
 .endm
@@ -34,7 +34,7 @@ Here's an example of an assembly language macro:
 Here's how it might be used:
 
 ```text
-        LD_ADDR x0, fmt
+        LLD_ADDR x0, fmt
 ```
 
 This gets expanded to:
@@ -62,6 +62,7 @@ would this be possible since we've seen that addresses are (often) six
 bytes long and our instructions are always 4 bytes long? As we describe
 elsewhere, the above `ldr` instance is actually turned into instructions
 to load an address relative to the address of the current instruction.
+
 As long as the data we want is relatively close to the `ldr`, this works
 out to a difference in addresses that is small (and so, can be fit into
 a 4 byte instruction).
@@ -93,6 +94,11 @@ address into `x0` forming a complete address.
 In this way, labels can be further away from the current instruction
 than the Linux way.
 
+Apple does something similar with global variables, perhaps defined in
+C or C++ files. Instead of `PAGE` and `PAGEOFF` they use global
+versions. The macro `GLD_ADDR` is used in this case rather than
+`LLD_ADDR` which works with "locally" defined addresses.
+
 ## How does this help bridge Apple and Linux?
 
 [Here](./macros.S) is an assembly language file containing the macros
@@ -102,7 +108,7 @@ closer together.
 Notice it has:
 
 ```text
-.macro LD_ADDR xreg, label 
+.macro LLD_ADDR xreg, label 
         adrp    \xreg, \label@PAGE
         add     \xreg, \xreg, \label@PAGEOFF
 .endm
@@ -111,7 +117,7 @@ Notice it has:
 but also:
 
 ```text
-.macro LD_ADDR xreg, label
+.macro LLD_ADDR xreg, label
         ldr     \xreg, =\label
 .endm
 ```
@@ -134,17 +140,17 @@ provided by the standard C pre-processor. I.e.:
 C pre-processor. `clang` on Linux will not by default but can if you
 specify `-x assembler-with-cpp`.
 
-gcc on Mac OS can be based on clang so on Mac OS it inherits `clang`'s
-behavior. gcc on Linux does not run assembly language files through
-the C pre-processor *if the asm file ends in .s but WILL if the file
-ends in .S* It took the author a long time to find this...
+`gcc` on Mac OS can be based on `clang` so on Mac OS it inherits
+`clang`'s behavior. `gcc` on Linux does not run assembly language files
+through the C pre-processor *if the asm file ends in .s but WILL if the
+file ends in .S*
 
 ## Differences between Apple and Linux
 
 ### Loading label addresses
 
-This was described above. If you use `LD_ADDR` the macros will adapt for
-you.
+This was described above. If you use `LLD_ADDR` the macros will adapt
+for you.
 
 ### Function labels
 
@@ -181,6 +187,8 @@ use
 
 and the macros will adapt.
 
+You can find documentation on the macros [here](../../macros/README.md).
+
 ## Variadic functions
 
 Functions like `printf()` are variadic. This means the function can take
@@ -203,17 +211,24 @@ use the stack.
 Apple will put the first parameter in the zero register and then shifts
 immediately to putting all other parameters onto the stack.
 
-Here is how we overcame this difference:
+We overcome this difference by detecting which environment we are
+building in using `#if` after having first set up for the Linux version.
+By setting up for the Linux version, the Apple version involves just
+pushing registers onto the stack.
+
+Remember that to print a float or double, they must be copied to `x`
+registers.
+
+An example:
 
 ```text
-        // setting up a two value printf as usual
-        LD_ADDR x0, fmt     // loads the address of fmt
-        LD_ADDR x1, ptr     // loads **ptr
-        ldr     x1, [x1]    // dereferences **ptr to make *ptr
-        ldr     x2, [x1]    // dereferences *ptr to get value
+        LLD_ADDR x0, fmt     // loads the address of fmt
+        LLD_PTR  x1, ptr     // loads **ptr
+        ldr      x1, [x1]    // turns **ptr into *ptr
+        ldr      x2, [x1]    // dereferences *ptr to get value
 # if defined(__APPLE__)
         // if apple, push the second and third argument to stack
-        stp     x1, x2, [sp, -16]!
+        PUSH_P  x1, x2
         CRT     printf
         add     sp, sp, 16
 # else
@@ -237,6 +252,8 @@ To be Apple compatible, in addition to backing up `x30` also back up
 
 `mov x29, sp`
 
+We will be converting all sample code to do this over time.
+
 ### More?
 
 As we discover more differences, they will be described here.
@@ -247,6 +264,10 @@ Again, for debugging purposes, you can insert frame checks into your
 code. These work the same on both Apple Silicon and Linux. If you want
 these, put `START_PROC` after the label introducing a function. Then,
 put `END_PROC` after the last statement of the function.
+
+This helps the debuggers understand where a function begins and ends.
+
+We will transition all sample code to use this over time.
 
 ## A useful link
 
