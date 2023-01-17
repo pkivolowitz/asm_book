@@ -71,10 +71,6 @@ main:
         ldr         \xreg, =\label
 .endm
 
-
-.macro LD_ADDR xreg, label
-.endm
-
 #endif
 
 .macro  START_PROC          // after starting label
