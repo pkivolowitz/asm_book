@@ -59,7 +59,7 @@ In this book we will use the ARM LINUX conventions. This means:
   together to the degree possible. [This chapter](./more/apple_silicon/)
   also provides a suite of macros that provide this help. If you're
   willing to adjust how you code (and use the macros), you can
-  sucessfully write assembly language once and build it on both Linux
+  successfully write assembly language once and build it on both Linux
   and Mac OS.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
@@ -76,10 +76,10 @@ the system call `write` is a wrapper function built into the C-runtime
 (CRT)
 which handles the lower level details of performing a system call. See the
 [here](./more/system_calls/README.md) on what actually happens inside
-these wrapper functions. 
+these wrapper functions.
 
 The benefit of using the CRT wrappers is that there are details, explained
-in the chapter, that differ from system to system and architecture to 
+in the chapter, that differ from system to system and architecture to
 architecture even for making the same system call.
 
 ## A Lot of Names
@@ -281,10 +281,10 @@ What would a book about assembly language be without bit bashing?
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
 | 1 | Bit Fields | |
-| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | [Link]((./section_3/bitfields/README.pdf) |
+| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | [Link]./section_3/bitfields/README.pdf) |
 | .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | [Link](./section_3/bitfields/with.pdf) |
 | .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | [Link](./section_3/bitfields/review.pdf) |
-| 2 | [Endianness](./section_3/endian/README.md) | [Link]((./section_3/endian/README.pdf) |
+| 2 | [Endianness](./section_3/endian/README.md) | [Link](./section_3/endian/README.pdf) |
 
 ## Section 4 - More Stuff
 
