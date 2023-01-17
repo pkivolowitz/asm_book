@@ -9,6 +9,6 @@ do
 	echo `pwd`
 	fname=`basename ${element}`
 	pandoc $fname -o ${fname::-2}pdf
-	cd -
+	cd - > /dev/null
 done
 
