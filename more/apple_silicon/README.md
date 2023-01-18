@@ -101,9 +101,9 @@ versions. The macro `GLD_ADDR` is used in this case rather than
 
 ## How does this help bridge Apple and Linux?
 
-[Here](./macros.S) is an assembly language file containing the macros
-we're developing to bring Linux and Apple Silicon assembly language
-closer together.
+[Here](./apple-linux-convergence.S) is an assembly language file
+containing the macros we're developing to bring Linux and Apple Silicon
+assembly language closer together.
 
 Notice it has:
 
