@@ -304,7 +304,7 @@ What would a book about assembly language be without bit bashing?
 | --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
 | --- | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
 | --- | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
-| --- | [Apple / Linux Convergence](./macros) |
+| --- | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
 
 ## Projects
 
