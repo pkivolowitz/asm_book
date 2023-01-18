@@ -25,15 +25,26 @@ underscores to labels defined by libraries such as the CRT and certain
 other symbols like `main`.
 
 So, `main` will not be found by the linker on Apple systems and `_main`
-will be an error on Linux systems. There are macros to adjust for this.
+will be an error on Linux systems.
 
-There are some exceptions such as making use of `FILE * stdin`. On
-Linux this would be `stdin`. On Mac OS you would expect `_stdin` but
-you'd be wrong... instead Apple uses `___stdinp`. Why? Apple.
+The macros adjust for this.
+
+There are some exceptions to the prepending rule on Apple such as making
+use of `FILE * stdin`. On Linux this would be `stdin`. On Mac OS you
+would expect `_stdin` but you'd be wrong... instead Apple uses
+`___stdinp`. Why? Because Apple.
+
+There is an assumption here that labels created by you do not have
+prepended underscores. This can be a problem if this isn't the case. The
+solution may be to add a parallel set of macros that either do prepend
+or do not. This is an open question which we hope to get user input to
+resolve.
 
 ## Macros of general use
 
-These macros don't converge Apple and Linux. They're just nice to have.
+First, we describe a number of macros which are the same on both Apple
+and Linux. These macros don't converge Apple and Linux. They're just
+nice to have.
 
 ### PUSH_P, PUSH_R, POP_P and POP_R
 
@@ -61,97 +72,114 @@ These resolve to: `.cfi_startproc` and `.cfi_endproc` respectively.
 
 Handy more readable macros for determining minima and maxima.
 
-`MIN     x0, x1, x2`
+Signature:
 
-resolves to:
+`MIN     src_a, src_b, dest`
 
-`csel   x2, x0, x1, GT` putting the minimum of `x0` and `x1` into `x2`.
+The smaller of `src_a` and `src_b` is put into `dest`.
+
+Signature:
+
+`MAX     src_a, src_b, dest`
+
+The larger of `src_a` and `src_b` is put into `dest`.
 
 ## Loads and Stores
 
 ### GLD_PTR
 
-Loads the address of a label and then dereferences it where, on Apple
+Loads the address of a label and then *dereferences* it where, on Apple
 the label is in the global space and on Linux is a relatively close
 label.
 
-Apple version:
+Signature:
 
 ```text
-.macro  GLD_PTR     xreg, label     // Dereference a global *
-        adrp        \xreg, _\label@GOTPAGE
-        ldr         \xreg, [\xreg, _\label@GOTPAGEOFF]
-.endm
+GLD_PTR     xreg, label
 ```
 
-Linux version:
+When this macro finishes, the specified x register contains what
+64 bit value lives at the specified label.
+
+### GLD_ADDR
+
+Loads the address of the label into the specified x register. No
+dereferencing takes place. On Apple machines, the label will be
+found in the global space.
+
+Signature:
 
 ```text
-.macro  GLD_PTR     xreg, label     // Dereference a global *
-        ldr         \xreg, =\label
-        ldr         \xreg, [\xreg]
-.endm
+GLD_ADDR    xreg, label
 ```
+
+When this macro completes, the address of the label is in the x
+register.
 
 ### LLD_ADDR
 
-Load the value of a "local" label.
+Similar to `GLD_ADDR` this macro loads the address of a "local" label.
 
-Apple version:
-
-```text
-.macro  LLD_ADDR xreg, label        // Load a local address
-        adrp    \xreg, \label@PAGE
-        add     \xreg, \xreg, \label@PAGEOFF
-.endm
-```
-
-Linux version:
+Signature:
 
 ```text
-.macro  LLD_ADDR xreg, label
-        ldr         \xreg, =\label
-.endm
+LLD_ADDR xreg, label
 ```
 
-## Extern a global label
+When this macro completes, the address of the label is in the x
+register.
+
+### LLD_DBL
+
+Signature:
+
+`LLD_DBL xreg, dreg, label`
+
+When this macro completes, a double that lives at the specified local
+label will sit in the specified double register.
+
+Note: No underscore is prepended.
+
+See [this sample program](./double.S) for an example.
+
+### LLD_FLT
+
+Signature:
+
+`LLD_FLT xreg, sreg, label`
+
+When this macro completes, a float that lives at the specified
+local label will sit in the specified single precision
+register.
+
+Note: No underscore is prepended.
+
+See [this sample program](./float.S) for an example.
+
+## Mark a label as global
 
 Makes a label available externally.
 
-Apple version:
+Signature:
 
-```text
-.macro GLABEL label
-        .global _\label
-.endm
-```
+`GLABEL label`
 
-Linux version:
+An underscore is prepended.
 
-```text
-.macro GLABEL label
-        .global \label
-.endm
-```
-
-For example:
-
-```text
-    GLABEL  main
-```
-
-## Calling functions
+## Calling CRT functions
 
 If you create your own function without an underscore, just call it as
 usual.
 
 If you need to call a function such as those found in the C runtime
-library, use in this way:
+library, use this macro in this way:
 
-```text
-    CRT     strlen
-```
+`CRT     strlen`
+
+An underscore is prepended.
 
 ## Declaring `main()`
 
 Put `MAIN` on a line by itself. Notice there is no colon.
+
+An underscore is prepended.

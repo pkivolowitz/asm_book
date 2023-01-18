@@ -1,77 +1,87 @@
-//  Macros to permit the "same" assembly language to build on ARM64
-//  Linux systems as well as Apple Silicon systems.
-//
-//  Perry Kivolowitz
-//  A Gentle Introduction to Assembly Language
+/*  Macros to permit the "same" assembly language to build on ARM64
+    Linux systems as well as Apple Silicon systems.
 
+    See the fuller documentation at:
+    https://github.com/pkivolowitz/asm_book/blob/main/macros/README.md
+
+    Perry Kivolowitz
+    A Gentle Introduction to Assembly Language
+*/
+
+.macro  GLD_PTR     xreg, label
 #if defined(__APPLE__)
-
-//  Apple makes a distinction between loading something close by
-//  versus something global. Note the use of GOTPAGE rather then
-//  PAGE. 
-//
-//  Note: this macro dereferences the label getting what is at
-//  the label's address.
-
-.macro  GLD_PTR     xreg, label     // Dereference a global *
         adrp	    \xreg, _\label@GOTPAGE
         ldr	        \xreg, [\xreg, _\label@GOTPAGEOFF]
+#else
+        ldr         \xreg, =\label
+        ldr         \xreg, [\xreg]
+#endif
 .endm
 
 .macro  GLD_ADDR    xreg, label     // Get a global address
+#if defined(__APPLE__)
         adrp	    \xreg, _\label@GOTPAGE
         add         \xreg, \xreg, _\label@GOTPAGEOFF
-.endm
-
-//  This macro loads the address of a nearby label.
-
-.macro  LLD_ADDR xreg, label        // Load a local address
-        adrp    \xreg, \label@PAGE
-        add     \xreg, \xreg, \label@PAGEOFF
-.endm
-
-.macro GLABEL label
-        .global _\label
-.endm
-
-.macro MAIN
-_main:
-.endm
-
-.macro  CRT label
-        bl  _\label
-.endm
-
-#else   //  LINUX
-
-.macro GLABEL label
-        .global \label
-.endm
-
-.macro MAIN
-main:
-.endm
-
-.macro  CRT label
-        bl  \label
-.endm
-
-//  This macro treats label as a pointer and dereferences it.
-//  That is, it puts into the xreg what is found at the address
-//  of the label.
-
-.macro  GLD_PTR     xreg, label     // Dereference a global *
+#else
         ldr         \xreg, =\label
-        ldr         \xreg, [\xreg]
+#endif
 .endm
-
-//  This macro loads the address of a nearby label.
 
 .macro  LLD_ADDR xreg, label
+#if defined(__APPLE__)
+        adrp    \xreg, \label@PAGE
+        add     \xreg, \xreg, \label@PAGEOFF
+#else
         ldr         \xreg, =\label
+#endif
 .endm
 
+.macro  LLD_DBL xreg, dreg, label
+#if defined(__APPLE__)
+        adrp    \xreg, \label@PAGE
+        add     \xreg, \xreg, \label@PAGEOFF
+        ldur    \dreg, [\xreg]
+//      fmov    \dreg, \xreg
+#else
+        ldr     \xreg, =\label
+        ldur    \dreg, [\xreg]
 #endif
+.endm
+
+.macro  LLD_FLT xreg, sreg, label
+#if defined(__APPLE__)
+        adrp    \xreg, \label@PAGE
+        add     \xreg, \xreg, \label@PAGEOFF
+        ldur    \sreg, [\xreg]
+#else
+        ldr     \xreg, =\label
+        ldur    \sreg, [\xreg]
+#endif
+.endm
+
+.macro GLABEL label
+#if defined(__APPLE__)
+        .global _\label
+#else
+        .global \label
+#endif
+.endm
+
+.macro MAIN
+#if defined(__APPLE__)
+_main:
+#else
+main:
+#endif
+.endm
+
+.macro  CRT label
+#if defined(__APPLE__)
+        bl  _\label
+#else
+        bl  \label
+#endif
+.endm
 
 .macro  START_PROC          // after starting label
         .cfi_startproc
