@@ -27,11 +27,13 @@
         "setfill",
         "simm",
         "smaddl",
+        "sreg",
         "stringstream",
         "strlen",
         "strncpy",
         "struct",
         "structs",
+        "wreg",
         "xreg"
     ],
 	"markdownlint.config": {
@@ -52,7 +54,8 @@
         "rotypo",
         "rwtypo",
         "slen",
-        "ssize"
+        "ssize",
+        "stdinp"
     ],
 	"files.associations": {
 		"ostream": "cpp"
