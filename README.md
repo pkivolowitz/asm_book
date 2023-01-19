@@ -16,25 +16,15 @@ We drive home a very sharp point:
 ## For Whom Is This Book Intended?
 
 As mentioned, if you are already familiar with C (or languages descended
-from C such as C++), this book begins with what you already know. Later
-chapters dive more deeply into the corners and recesses of the ARM V8
-ISA and are suitable for those wishing to master the rich instruction
+from C such as C++), this book begins with what you already know.
+
+Later chapters dive more deeply into the corners and recesses of the ARM
+V8 ISA and are suitable for those wishing to master the rich instruction
 set of the 64 bit ARM processors.
 
 ## Can This Book Be Used In Courses Covering Assembly Language?
 
 Yes, absolutely.
-
-In fact, we would argue that the study of assembly language is extremely
-important to the building of competent software engineers. Further, we
-would argue that teaching the x86 instruction set is cruel as that ISA
-was born in the 1970s and has simply gotten more muddled with age.
-
-The MIPS instruction set is another ISA that is often covered in College
-level courses. While  kinder and gentler than the x86 ISA, the MIPS
-processor isn't nearly as relevant as the ARM family. Phones, tablets,
-laptops and even desktops contain ARM V8 processors making the study of
-the ARM ISA far more topical. Perhaps even more "cool".
 
 ## Calling Convention Used In This Book
 
@@ -54,20 +44,19 @@ In this book we will use the ARM LINUX conventions. This means:
   machines while the Apple calling convention is specific to Apple
   Silicon-based machines.
 
-  This necessity for a VM even when running on an Apple Silicon machine 
-  did not sit well with some on reddit. We listened.
+  This necessity for a VM even when running on an Apple Silicon machine
+  did not sit well with some, who made this criticism known. We assessed
+  this to be a valid and constructive criticism and have responded.
   
   We now have a chapter devoted to bringing Linux and Apple code
-  together to the degree possible. 
+  together to the degree possible.
   
-  [This chapter](./more/apple_silicon/) provides a suite of macros that
-  provide this help. If you're willing to adjust how you code (and use
-  the macros), you can successfully write assembly language once and
-  build it on both Linux and Mac OS.
+  * The macros are a work in progress. [This link](./macros/) will lead
+    to a current copy of them as well as documentation. Macros that make
+    programming a bit easier are also included.
 
-  The macros are a work in progress. [This
-  link](./macros/apple-linux-convergence.S) will lead to a current copy
-  of them. We will try to keep this file up to date.
+  * [This chapter](./more/apple_silicon/) provides some additional
+    information about Apple Silicon assembly language programming.
 
 * You will need to run WSL (Windows Subsystem for Linux) on ARM-based
   Windows machines. These do exist!
@@ -76,18 +65,18 @@ In this book we will use the ARM LINUX conventions. This means:
   This is true even if you are on an ARM-based Windows machine as there
   are so many differences between a Unix-like environment and Windows.
 
-You'll notice right away that we make use of the C-runtime directly
-rather than make OS service calls. So, for instance, if we want to call
-`write()`, we call `write` from the assembly language. This version of
-the system call `write` is a wrapper function built into the C-runtime
-(CRT)
-which handles the lower level details of performing a system call. See the
+You'll notice that we make use of the C-runtime directly rather than
+make OS system calls. So, for instance, if we want to call `write()`,
+we call `write` from the assembly language. This version of the system
+call `write` is a wrapper function built into the C-runtime (CRT) which
+handles the lower level details of performing a system call. See the
 [here](./more/system_calls/README.md) on what actually happens inside
 these wrapper functions.
 
-The benefit of using the CRT wrappers is that there are details, explained
-in the chapter, that differ from system to system and architecture to
-architecture even for making the same system call.
+The benefit of using the CRT wrappers is that there are details,
+explained in the chapter, that differ from system to system and
+architecture to architecture even for making the same system call. The
+CRT hides these differences.
 
 ## A Lot of Names
 
@@ -107,22 +96,32 @@ is a link to "a" main instruction set page.
 
 ## What you need to work with assembly language on Linux
 
-Getting the tools for assembly language development is quite
-straight forward - perhaps you already have them. Using `apt` from
-the Linux terminal, say:
+Getting the tools for assembly language development is quite straight
+forward - perhaps you already have them. Using `apt` from the Linux
+terminal, say:
 
 ```text
 sudo apt update
 sudo apt install build-essential gdb
 ```
 
+On the Macintosh type:
+
+`xcode-select --install`
+
+into a terminal and follow directions. Note that `gdb` is replaced by
+`lldb` with just enough differences to make you cry.
+
 Then you'll need your favorite editor. We currently use `vi` for quick
 edits and Visual Studio Code for any heavy lifting.
 
 ## How to build an assembly language
 
-We use `gcc`, the C "compiler". `g++` could also be used. What sense
-does that make... using the "compiler" to "compile" assembly language?
+We use `gcc`, the C "compiler". `g++` could also be used. On the Mac,
+`clang` can also be used.
+
+What sense does that make... using the "compiler" to "compile" assembly
+language?
 
 Well, to answer that one must understand that the word "compiler" refers
 to only one step in a build sequence. What we talk about as being the
@@ -154,13 +153,13 @@ the above steps with other benefits such as automatically linking in
 the C runtime.
 
 Suppose you've implemented `main()` in a C file (main.c) and want to
-call out to an assembly language file you have written (asm.s). It can
+make use of an assembly language file you have written (asm.S). It can
 be done in several ways.
 
 ### All at once
 
 ```text
-gcc main.c asm.s
+gcc main.c asm.S
 ```
 
 That's all you need for a minimal build. The resulting program will be
@@ -171,7 +170,7 @@ removed.
 
 ```text
 gcc -c main.c
-gcc -c asm.s
+gcc -c asm.S
 gcc main.o asm.o
 ```
 
@@ -184,13 +183,13 @@ Suppose `main()` is implemented in assembly language and `main.s` is
 self-contained, then simply:
 
 ```text
-gcc main.s
+gcc main.S
 ```
 
-Often, you will want to enable the debugger `gdb`. Do this:
+Often, you will want to enable the debugger `gdb` or `lldb`. Do this:
 
 ```text
-gcc -g main.s
+gcc -g main.S
 ```
 
 ### The C Pre-Processor
@@ -207,13 +206,11 @@ Will not go through the C pre-processor but
 
 will.
 
-See the [Apple Silicon](./more/apple_silicon/README.md) chapter for
-more information.
-
 ### Programs called by the "Compiler"
 
-Using gcc to "compile" a program causes the following to be called
-on Ubuntu running on ARM:
+To drive home the point that the "compiler" is an umbrella, using gcc to
+"compile" a program causes the following to be called on Ubuntu running
+on ARM:
 
 ```text
 /usr/bin/cpp
@@ -306,6 +303,10 @@ What would a book about assembly language be without bit bashing?
 | --- | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
 | --- | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
 
+## Macro Suite
+
+As mentioned above, the macro suite [can be found here](./macros/).
+
 ## Projects
 
 [Here](./projects/README.md) are some project specifications to offer a
@@ -340,11 +341,10 @@ decades. He launched more than 5 companies, mostly relating to hardware,
 image processing and visual effects (for motion pictures and
 television). Perry received Emmy recognition for his work on the The
 Gathering, the pilot episode of Babylon 5. Later he received an Emmy
-Award for Engineering along with his colleagues at
-[SilhouetteFX, LLC](https://en.wikipedia.org/wiki/SilhouetteFX).
-SilhouetteFX is used in almost every significant motion picture for
-rotoscoping, paint, tracking, 2D to 3D reconstruction, compositing and
-more.
+Award for Engineering along with his colleagues at [SilhouetteFX,
+LLC](https://en.wikipedia.org/wiki/SilhouetteFX). SilhouetteFX is used
+in almost every significant motion picture for rotoscoping, paint,
+tracking, 2D to 3D reconstruction, compositing and more.
 
 In 1996 Perry received an [Academy Award for Scientific and
 Technical Achievement](https://en.wikipedia.org/wiki/Academy_Award_for_Technical_Achievement)
@@ -352,9 +352,9 @@ for his invention of Shape Driven Warping and
 Morphing. This is the technique responsible for many of the
 famous effects in Forrest Gump, Titanic and Stargate.
 
-Twenty twenty two marks Perry's 18th year teaching Computer
-Science at the college level,
-ten years at the UW Madison and now 8 at Carthage College.
+Twenty twenty three marks Perry's 19th year teaching Computer Science at
+the college level, ten years at the UW Madison and now 8+ at Carthage
+College.
 
 Assembly language is a passion for Perry having worked in the following
 ISAs:
@@ -379,10 +379,11 @@ Systems and Computer Organization classes. If a publisher of
 CS text books be interested in purchasing the library, please
 reach out.
 
-Also, check out [Get Off My L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G), a Zombie novel for
-coders. You read that right... elite programmer Doug Handsman retires
-to his wife Ruth Ann's native northern Wisconsin. And then, well, the
-apocalypse happens. Bummer.
+Also, check out [Get Off My
+L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G),
+a Zombie novel for coders. You read that right... elite programmer Doug
+Handsman retires to his wife Ruth Ann's native northern Wisconsin. And
+then, well, the apocalypse happens. Bummer.
 
 Rated 4.3 out of 5 with more than 70 reviews, it's a fun read and costs
 next to nothing.
