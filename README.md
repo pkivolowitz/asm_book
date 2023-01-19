@@ -327,6 +327,9 @@ instructions. The program will "throw darts at a target," calculating
 an approximation of PI by tracking how many darts "hit the target"
 versus the total number of darts "thrown".
 
+The [SINE](./projects/SINE/README.md) project stresses floating point
+math and functions.
+
 The [SNOW](./projects/snow/README.md) project uses 1970's era tech to
 animate a simple particle system. This project demonstrates a reasonable
 design process of breaking down complex problems into simpler parts.
