@@ -1,6 +1,5 @@
 /*	Perry Kivolowitz
-	Professor and Chair of Computer Science
-	Carthage College
+    A Gentle Introduction to Assembly Language
 */
 
 #include <iostream>
@@ -12,24 +11,28 @@
 
 using namespace std;
 
-const int BIASD = 1023;
-const int BIASF = 127;
+const int BIASD = 1023;     // biasing value for double exponents
+const int BIASF = 127;      // biasing value for floats
 
-const int FRAC_SIZD = 52;
-const int FRAC_SIZF = 23;
+// The mantissa controls precision.
 
-const int EXPO_SIZD = 11;
-const int EXPO_SIZF = 8;
+const int FRAC_SIZD = 52;   // number of bits in double's mantissa
+const int FRAC_SIZF = 23;   // number of bits in float's mantissa
+
+// The exponent controls range.
+
+const int EXPO_SIZD = 11;   // number of bits in a double's exponent
+const int EXPO_SIZF = 8;    // number of bits in a float's exponent
 
 const int SIGN_SIZE = 1;
 
-struct SP {
+struct SP {                 // construction of a float
 	unsigned int frac : FRAC_SIZF;
 	unsigned int expo : EXPO_SIZF;
 	unsigned int sign : SIGN_SIZE;
 };
 
-struct DP {
+struct DP {                 // construction of a double
 	unsigned long frac : FRAC_SIZD;
 	unsigned long expo : EXPO_SIZD;
 	unsigned long sign : SIGN_SIZE;
@@ -61,7 +64,9 @@ template<class T>
 string MakeEquation(T & u, int bias) {
 	stringstream ss;
 	bool is_double = (bias == BIASD);
-	ss << (u.sign ? "-" : "") << dec << setprecision(11) << 1.0 + DeBinary(is_double, u.frac) << " x 2^" << (u.expo - bias);
+	ss << (u.sign ? "-" : "") << dec << setprecision(11);
+    ss << 1.0 + DeBinary(is_double, u.frac);
+    ss << " x 2^" << (u.expo - bias);
 	return ss.str();
 }
 
@@ -69,22 +74,26 @@ int main(int argc, char ** argv) {
 	Double d;
 	Single  f;
 
-	const int fore_space = 20;
-	const int field_space = 25;
+	const int fore_space = 18;
+	const int field_space = 20;
 
 	if (argc < 2) {
-		cerr << "Must supply a floating point value as a command line argument.\n";
+		cerr << "Requires a floating point value on command line .\n";
 		return 1;
 	}
 	d.d = atof(argv[1]);
 	f.f = float(d.d);
 
-	cout << left << setw(fore_space) << "Component" << left << setw(25) << "Double";
-	cout << left << setw(field_space) << "Float" << "Comment" << endl;
+	cout << left << setw(fore_space) << "Component" << left;
+    cout << setw(field_space);
+    cout << "Double" << left << setw(field_space) << "Float";
+    cout << "Comment" << endl;
 
-	cout << left << setw(fore_space) << "Value:" << setw(25) << setprecision(10) << d.d;
+	cout << left << setw(fore_space) << "Value:" << setw(field_space);
+    cout << setprecision(10) << d.d;
 	cout << setw(field_space) << setprecision(10) << f.f;
-	cout << "Delta(F - D): " << setw(16) << setprecision(10) << f.f - d.d << endl;
+	cout << "Delta(F - D): " << setw(16) << setprecision(10);
+    cout << f.f - d.d << endl;
 
 	cout << left << setw(fore_space) << "Sign:";
 	cout << setw(field_space) << (bool)d.D.sign;
@@ -107,28 +116,38 @@ int main(int argc, char ** argv) {
 	cout << endl;
 
 	cout << setw(fore_space) << "Halves:";
-	cout << setw(field_space) << hex << ((d.D.frac >> (FRAC_SIZD - 1)) & 1);
-	cout << setw(field_space) << hex << ((f.F.frac >> (FRAC_SIZF - 1)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((d.D.frac >> (FRAC_SIZD - 1)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((f.F.frac >> (FRAC_SIZF - 1)) & 1);
 	cout << endl;
 
 	cout << setw(fore_space) << "Quarters:";
-	cout << setw(field_space) << hex << ((d.D.frac >> (FRAC_SIZD - 2)) & 1);
-	cout << setw(field_space) << hex << ((f.F.frac >> (FRAC_SIZF - 2)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((d.D.frac >> (FRAC_SIZD - 2)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((f.F.frac >> (FRAC_SIZF - 2)) & 1);
 	cout << endl;
 
 	cout << setw(fore_space) << "Eighths:";
-	cout << setw(field_space) << hex << ((d.D.frac >> (FRAC_SIZD - 3)) & 1);
-	cout << setw(field_space) << hex << ((f.F.frac >> (FRAC_SIZF - 3)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((d.D.frac >> (FRAC_SIZD - 3)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((f.F.frac >> (FRAC_SIZF - 3)) & 1);
 	cout << endl;
 
 	cout << setw(fore_space) << "Sixteenths:";
-	cout << setw(field_space) << hex << ((d.D.frac >> (FRAC_SIZD - 4)) & 1);
-	cout << setw(field_space) << hex << ((f.F.frac >> (FRAC_SIZF - 4)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((d.D.frac >> (FRAC_SIZD - 4)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((f.F.frac >> (FRAC_SIZF - 4)) & 1);
 	cout << endl;
 
 	cout << setw(fore_space) << "Thirty seconds:";
-	cout << setw(field_space) << hex << ((d.D.frac >> (FRAC_SIZD - 5)) & 1);
-	cout << setw(field_space) << hex << ((f.F.frac >> (FRAC_SIZF - 5)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((d.D.frac >> (FRAC_SIZD - 5)) & 1);
+	cout << setw(field_space) << hex;
+    cout << ((f.F.frac >> (FRAC_SIZF - 5)) & 1);
 	cout << endl;
 
 	cout << setw(fore_space) << "Full fraction:";

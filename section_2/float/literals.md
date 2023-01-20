@@ -10,8 +10,8 @@ themselves, using floating point literals is extremely constrained.
 For example:
 
 ```asm
-        fmov    d0, 1		// 1
-        fmov    d0, 1.1		// 2
+        fmov    d0, 1     // 1
+        fmov    d0, 1.1   // 2
 ```
 
 `Line 1` will pass muster but `Line 2` will cause an error.
@@ -150,13 +150,13 @@ what that magic is.
 Build the program with the `-g` option to enable debugging using GDB.
 
 ```text
-$ gcc -g t.s
+% gcc -g t.s
 ```
 
 Then launch GDB on the executable:
 
 ```text
-$ gdb a.out
+% gdb a.out
 ```
 
 Set a breakpoint on line 6.

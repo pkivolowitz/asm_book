@@ -13,9 +13,11 @@ For this chapter, I will use:
 * Rounding means picking some fractional value and if the float's
 fraction is higher, you go one way and if lower, you go the other.
 
-* Truncation means you don't look too closely at the fractional value.
-Instead, you just eliminate the fractional part and slam the whole
-number ... one way or the other.
+* Truncation means you don't care about the fractional value. You just
+eliminate the fractional part and slam the whole number ... one way or
+the other.
+
+"One way or the other" is defined next.
 
 ## Truncation Towards Zero
 
@@ -30,8 +32,8 @@ Diving a little deeper, there is a choice to be made as to whether or
 not `integer_variable` is signed or unsigned. And, whether or not
 `integer_variable` is a 32 bit or 64 bit value.
 
-The instruction is `fcvtz` - convert towards zero. Then, the choice
-as to whether to produce a signed or unsigned result is defined by the
+The instruction is `fcvtz` - convert towards zero. Then, the choice as
+to whether to produce a signed or unsigned result is defined by the
 final letterL `u` or `s`.
 
 | Mnemonic | Meaning |
@@ -41,7 +43,7 @@ final letterL `u` or `s`.
 
 As an example of how the ARM documentation is confusing - this
 instruction which completely discards the fractional value is said by
-the ARM documentation as doing rounding.
+the ARM documentation as doing rounding not truncating.
 
 The the choice of source register defined whether you are converting
 a double or single precision floating point value.
@@ -60,13 +62,17 @@ Examples where `d` is a `double` and `f` is a `float`:
 
 | C++ | Instruction |
 | --- | ----------- |
-| `int32_t(d)` | `fcvtzs	w0, d0` |
-| `uint32_t(d)` | `fcvtzu	w0, d0` |
-| `int64_t(d)` | `fcvtzs	x0, d0` |
-| `uint64_t(d)` | `fcvtzu	x0, d0` |
+| `int32_t(d)` |  `fcvtzs    w0, d0` |
+| `uint32_t(d)` | `fcvtzu    w0, d0` |
+| `int64_t(d)` |  `fcvtzs    x0, d0` |
+| `uint64_t(d)` | `fcvtzu    x0, d0` |
 
-[Here](./asm_rounding.s) is a program which demonstrates various
+[Here](./asm_rounding.S) is a program which demonstrates various
 ways of converting doubles to integers.
+
+Note: This source code has been updated using the author's
+Apple / Linux Convergence macros and can be built on both Apple Mac OS
+and Linux ARM systems.
 
 Let's look at:
 
@@ -105,23 +111,23 @@ Notice all the values were truncated to the whole number that is
 Truncation away from zero is not as easy. In fact, it cannot be
 performed with a single instruction.
 
-In C and C++:
+In C (and C++):
 
 ```c
 iv = (int(fv) == fv) ? int(fv) : int(fv) + ((fv < 0) ? -1 : 1);
 ```
 
-If the `fv` is already equal to a whole number, the
-integer value will be that whole number. Other wise the `iv` is
-the whole number further *away from zero*.
+If the `fv` is already equal to a whole number, the integer value will
+be that whole number. Other wise the `iv` is the whole number further
+*away from zero*.
 
-In C++, a more sophisticated version would require `<cmath>` and
-could look like:
+In C++, a more sophisticated version would require `<cmath>` and could
+look like:
 
 ```c++
 template <typename T>
 int MyTruncate(T x) {
-	return int((x < 0) ? floor(x) : ceil(x));
+    return int((x < 0) ? floor(x) : ceil(x));
 }
 ```
 
@@ -136,15 +142,15 @@ given above.
 
 ```asm
 RoundAwayFromZero:
-		fcmp	d0, 0
-		ble		1f
-		// Value is positive, truncate towards positive infinity (ceil)
-		frintp	d0, d0
-		b 		2f
-1:		// Value is negative, truncate towards negative infinity (floor)
-		frintm	d0, d0
-2:		fcvtzs	x0, d0
-		ret
+        fcmp    d0, 0
+        ble     1f
+        // Value is positive, truncate towards positive infinity (ceil)
+        frintp  d0, d0
+        b       2f
+1:      // Value is negative, truncate towards negative infinity (floor)
+        frintm  d0, d0
+2:      fcvtzs  x0, d0
+        ret
 ```
 
 `frintp` and `frintm` will honor the source register already being

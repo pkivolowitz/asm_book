@@ -26,7 +26,7 @@ We say aliases because, like the integer registers, how you reference a
 floating point register determines how it is interpreted.
 
 For example, in the following image, note the overlap of two single
-precision floats within a single double precision floating point 
+precision floats within a single double precision floating point
 register.
 
 ![regs](./regs.png)
@@ -35,7 +35,6 @@ It is worth noting early and often that you should not mix dealing
 with different precisions assuming that because of the overlaps in
 space, you'll get a meaningful result.
 
-The above image does not show the corresponding layout of *half
-precision* floating point registers. `H0` sits in the least
-significant bits of `S0` and so on.
-
+The above image does not show the corresponding layout of [half
+precision](./half.md) floating point registers. `H0` sits in the least
+ significant bits of `S0` and so on.
