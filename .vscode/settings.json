@@ -7,12 +7,14 @@
         "cbnz",
         "cout",
         "csel",
+        "dptr",
         "FCVTAS",
         "fcvtz",
         "fildes",
         "fizzbuzz",
         "fname",
         "Formulus",
+        "fptr",
         "funcs",
         "getpid",
         "iostream",
@@ -41,23 +43,35 @@
     },
     "cSpell.ignoreWords": [
         "Athanasios",
+        "BIASD",
+        "BIASF",
         "Pavlidis",
         "Rypo",
+        "SIZD",
+        "SIZF",
         "bitfields",
         "dless",
         "dmore",
+        "fcvtms",
+        "fcvtps",
+        "fcvtta",
         "foov",
         "ndless",
         "ndmore",
+        "nvless",
+        "nvmore",
         "onditionally",
         "onsole",
         "rotypo",
         "rwtypo",
         "slen",
         "ssize",
-        "stdinp"
+        "stdinp",
+        "vless",
+        "vmore"
     ],
 	"files.associations": {
-		"ostream": "cpp"
-	}
+        "ostream": "cpp",
+        "iomanip": "cpp"
+    }
 }
