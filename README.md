@@ -13,6 +13,8 @@ We drive home a very sharp point:
 </center>
 </br>
 
+[Quick Link to Table of Contents](#section-1---bridging-from-c--c-to-assembly-language)
+
 ## For Whom Is This Book Intended?
 
 As mentioned, if you are already familiar with C (or languages descended
