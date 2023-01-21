@@ -272,15 +272,13 @@ own section:
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
-| 1 | Floating Point | |
-| .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md) | [Link](./section_2/float/what.pdf) |
-| .... b | [.... Registers (simplified)](./section_2/float/working.md) | [Link](./section_2/float/working.pdf) |
-| .... c | [.... Literals](./section_2/float/literals.md) | [Link](./section_2/float/literals.pdf) |
-| .... d | [.... `fmov` Not Yet Written](./section_2/float/) | NA |
-| .... e | [.... Conversion To / From Integers](./section_2/float/rounding.md) | [Link](./section_2/float/rounding.pdf) |
-| .... f | [.... Four Basic Operations Not Yet Written](./section_2/float/) | NA |
-| .... g | [.... Selected Additional Operations Not Yet Written](./section_2/float/) | NA |
-| .... z | [.... Half Precision Floats](./section_2/float/half.md) | [Link](./section_2/float/half.pdf) |
+| 1 | [What Are Floating Point Numbers?](./section_2/float/what.md) | [Link](./section_2/float/what.pdf) |
+| 2 | [Registers](./section_2/float/working.md) | [Link](./section_2/float/working.pdf) |
+| 3 | [Truncation and Rounding](./section_2/float/rounding.md) | [Link](./section_2/float/rounding.pdf) |
+| 4 | [Literals](./section_2/float/literals.md) | [Link](./section_2/float/literals.pdf) |
+| 5 | [`fmov` Not Yet Written](./not_written_yet.md) | [Link](./not_written_yet.pdf) |
+| 6 | [Half Precision Floats](./section_2/float/half.md) | [Link](./section_2/float/half.pdf) |
+| 7 | [NEON SIMD Not Yet Written](./not_written_yet.md) | [Link](./not_written_yet.pdf) |
 
 ## Section 3 - Bit Manipulation
 
