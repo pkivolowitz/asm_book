@@ -272,6 +272,7 @@ own section:
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
+| 0 | [Chapter Overview](./section_2/float/README.md) | [Link](./section_2/float/README.pdf) |
 | 1 | [What Are Floating Point Numbers?](./section_2/float/what.md) | [Link](./section_2/float/what.pdf) |
 | 2 | [Registers](./section_2/float/working.md) | [Link](./section_2/float/working.pdf) |
 | 3 | [Truncation and Rounding](./section_2/float/rounding.md) | [Link](./section_2/float/rounding.pdf) |
