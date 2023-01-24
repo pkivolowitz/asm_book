@@ -279,7 +279,7 @@ own section:
 | 2 | [Registers](./section_2/float/working.md) | [Link](./section_2/float/working.pdf) |
 | 3 | [Truncation and Rounding](./section_2/float/rounding.md) | [Link](./section_2/float/rounding.pdf) |
 | 4 | [Literals](./section_2/float/literals.md) | [Link](./section_2/float/literals.pdf) |
-| 5 | [`fmov` Not Yet Written](./not_written_yet.md) | [Link](./not_written_yet.pdf) |
+| 5 | [`fmov`](./section_2/float/fmov.md) | [Link](./section_2/float/fmov.pdf) |
 | 6 | [Half Precision Floats](./section_2/float/half.md) | [Link](./section_2/float/half.pdf) |
 | 7 | [NEON SIMD Not Yet Written](./not_written_yet.md) | [Link](./not_written_yet.pdf) |
 

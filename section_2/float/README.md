@@ -49,7 +49,7 @@ register. Except when you can't. Well, mostly you can't.
 
 Additionally, there are some rules about using `fmov` between registers.
 
-[This chapter](../../not_written_yet.md) covers the nuances of using
+[This chapter](./fmov.md) covers the nuances of using
 `fmov`.
 
 ## Half Precision Floating Point Numbers
