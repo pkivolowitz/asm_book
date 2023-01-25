@@ -16,13 +16,15 @@ We drive home a very sharp point:
 </br>
 
 <h2>
-<a href="#section-1---bridging-from-c--c-to-assembly-language">
-Quick Link to Table of Contents
-</a>
+    <a href="#table-of-contents">
+        Quick Link to Table of Contents
+    </a>
 </h2>
-</br>
+<br/>
 
-## For Whom Is This Book Intended?
+## Front Matter
+
+### For Whom Is This Book Intended?
 
 As mentioned, if you are already familiar with C (or languages descended
 from C such as C++), this book begins with what you already know.
@@ -31,11 +33,11 @@ Later chapters dive more deeply into the corners and recesses of the ARM
 V8 ISA and are suitable for those wishing to master the rich instruction
 set of the 64 bit ARM processors.
 
-## Can This Book Be Used In Courses Covering Assembly Language?
+### Can This Book Be Used In Courses Covering Assembly Language?
 
 Yes, absolutely.
 
-## Calling Convention Used In This Book
+### Calling Convention Used In This Book
 
 Assembly language programming is quite closely dependent upon the
 underlying hardware architecture. The host operating environment plays
@@ -87,7 +89,7 @@ explained in the chapter, that differ from system to system and
 architecture to architecture even for making the same system call. The
 CRT hides these differences.
 
-## A Lot of Names
+### A Lot of Names
 
 As commendable as the ARM designs are, ARM's naming conventions for
 their Intellectual Properties are horrid. In this book, AARCH64 and ARM
@@ -103,7 +105,7 @@ Within the text we will provide germane links as appropriate.
 [Here](<https://developer.arm.com/documentation/ddi0596/2021-12?lang=en>)
 is a link to "a" main instruction set page.
 
-## What you need to work with assembly language on Linux
+### What you need to work with assembly language on Linux
 
 Getting the tools for assembly language development is quite straight
 forward - perhaps you already have them. Using `apt` from the Linux
@@ -124,7 +126,7 @@ into a terminal and follow directions. Note that `gdb` is replaced by
 Then you'll need your favorite editor. We currently use `vi` for quick
 edits and Visual Studio Code for any heavy lifting.
 
-## How to build an assembly language
+### How to build an assembly language
 
 We use `gcc`, the C "compiler". `g++` could also be used. On the Mac,
 `clang` can also be used.
@@ -165,7 +167,7 @@ Suppose you've implemented `main()` in a C file (main.c) and want to
 make use of an assembly language file you have written (asm.S). It can
 be done in several ways.
 
-### All at once
+#### All at once
 
 ```text
 gcc main.c asm.S
@@ -175,7 +177,7 @@ That's all you need for a minimal build. The resulting program will be
 written to `a.out`. All the intermediate files generated will be
 removed.
 
-### Modularly
+#### Modularly
 
 ```text
 gcc -c main.c
@@ -201,7 +203,7 @@ Often, you will want to enable the debugger `gdb` or `lldb`. Do this:
 gcc -g main.S
 ```
 
-### The C Pre-Processor
+#### The C Pre-Processor
 
 If you want `gcc` to run your code through the C pre-processor
 (for handing `#include` for example), name your assembly language
@@ -215,7 +217,7 @@ Will not go through the C pre-processor but
 
 will.
 
-### Programs called by the "Compiler"
+#### Programs called by the "Compiler"
 
 To drive home the point that the "compiler" is an umbrella, using gcc to
 "compile" a program causes the following to be called on Ubuntu running
@@ -262,6 +264,7 @@ knowledge - how cool is that!
 | 4b | [Load and Store](./section_1/regs/ldr.md) | [Link](./section_1/regs/ldr.pdf) |
 | 4c | [More About `ldr`](./section_1/regs/ldr2.md) | [Link](./section_1/regs/ldr2.pdf) |
 | 4d | [Register Sizes](./section_1/regs/widths.md) | [Link](./section_1/regs/widths.pdf) |
+| 4e | [Hexadecimal](./section_1/hex.md) | [Link](./section_1/hex.pdf) |
 | 5 | [`switch`](./section_1/jump_tables/README.md) | [Link](./section_1/jump_tables/README.pdf) |
 | 6 | Functions | |
 | 6a | [Calling and Returning](./section_1/funcs/README.md) | [Link](./section_1/funcs/README.pdf) |
@@ -306,17 +309,20 @@ What would a book about assembly language be without bit bashing?
 
 ### Section 4 - More Stuff
 
+In this section, we present miscellaneous material.
+
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
-| --- | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
-| --- | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
-| --- | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
-| --- | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
-| --- | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
+| 1 | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
+| 2 | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
+| 3 | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
+| 4 | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
+| 5 | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
 
 ## Macro Suite
 
-As mentioned above, the macro suite [can be found here](./macros/).
+As indicated immediately above, the macro suite [can be found
+here](./macros/).
 
 ## Projects
 
@@ -324,28 +330,28 @@ As mentioned above, the macro suite [can be found here](./macros/).
 challenge to your growing mastery. Here are very brief descriptions
 presented in alphabetical order.
 
-Perhaps before you tackle these, check out the fully described
+  Perhaps before you tackle these, check out the fully described
 [FIZZBUZZ](./section_1/fizzbuzz/README.md) program first.
 
-Then try [this](./projects/first_project/README.md) as your very first
+* Then try [this](./projects/first_project/README.md) as your very first
 project. With some blank lines and comments it weighs in at 35 lines.
 
-The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
+* The [DIRENT](./projects/DIRENT/README.md) project demonstrates how a
 complex `struct` can be used in assembly language.
 
-The [PI](./projects/PI/README.md) project demonstrates floating point
+* The [PI](./projects/PI/README.md) project demonstrates floating point
 instructions. The program will "throw darts at a target," calculating
 an approximation of PI by tracking how many darts "hit the target"
 versus the total number of darts "thrown".
 
-The [SINE](./projects/SINE/README.md) project stresses floating point
+* The [SINE](./projects/SINE/README.md) project stresses floating point
 math and functions.
 
-The [SNOW](./projects/snow/README.md) project uses 1970's era tech to
+* The [SNOW](./projects/snow/README.md) project uses 1970's era tech to
 animate a simple particle system. This project demonstrates a reasonable
 design process of breaking down complex problems into simpler parts.
 
-The [WALKIES](./projects/walkies/README.md) presents a cute little
+* The [WALKIES](./projects/walkies/README.md) presents a cute little
 animation demonstrating looping with some pointer dereferencing.
 
 ## About The Author
@@ -360,18 +366,18 @@ LLC](https://en.wikipedia.org/wiki/SilhouetteFX). SilhouetteFX is used
 in almost every significant motion picture for rotoscoping, paint,
 tracking, 2D to 3D reconstruction, compositing and more.
 
-In 1996 Perry received an [Academy Award for Scientific and
-Technical Achievement](https://en.wikipedia.org/wiki/Academy_Award_for_Technical_Achievement)
-for his invention of Shape Driven Warping and
-Morphing. This is the technique responsible for many of the
-famous effects in Forrest Gump, Titanic and Stargate.
+In 1996 Perry received an [Academy Award for Scientific and Technical
+Achievement](https://en.wikipedia.org/wiki/Academy_Award_for_Technical_Achievement)
+for his invention of Shape Driven Warping and Morphing. This is the
+technique responsible for many of the famous effects in Forrest Gump,
+Titanic and Stargate.
 
 Twenty twenty three marks Perry's 19th year teaching Computer Science at
 the college level, ten years at the UW Madison and now 8+ at Carthage
 College.
 
 Assembly language is a passion for Perry having worked in the following
-ISAs:
+ISAs (in chronological order):
 
 * Univac 1100
 
@@ -389,14 +395,17 @@ This work is dedicated to my wife Sara and sons Ian and Evan.
 
 Perry has created a library of about 200 programming projects suitable
 for CS 1, CS 2, Data Structures, Networking, Operating Systems and
-Computer Organization classes. If a publisher of CS text books would be
-interested in purchasing the library, please reach out.
+Computer Organization classes. If a publisher of CS text books (or other
+CS related content) would be interested in purchasing the library,
+please reach out.
 
 Also, check out [Get Off My
 L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G),
-a Zombie novel for coders. You read that right... elite programmer Doug
-Handsman retires to his wife Ruth Ann's native northern Wisconsin. And
-then, well, the apocalypse happens. Bummer.
+a Zombie novel for coders. 
+
+You read that right... elite programmer Doug Handsman retires to his
+wife Ruth Ann's native northern Wisconsin. And then, well, the
+apocalypse happens. Bummer.
 
 Rated 4.3 out of 5 with more than 70 reviews, it's a fun read and costs
 next to nothing.
