@@ -13,7 +13,14 @@ We drive home a very sharp point:
 </center>
 </br>
 
-[Quick Link to Table of Contents](#section-1---bridging-from-c--c-to-assembly-language)
+</br>
+
+<h2>
+<a href="#section-1---bridging-from-c--c-to-assembly-language">
+Quick Link to Table of Contents
+</a>
+</h2>
+</br>
 
 ## For Whom Is This Book Intended?
 
@@ -233,7 +240,9 @@ languages as well (C++, for example).
 
 You can see why we default to using the umbrella command in this book.
 
-## Section 1 - Bridging from C / C++ to Assembly Language
+## Table of Contents
+
+### Section 1 - Bridging from C / C++ to Assembly Language
 
 We start by providing what we're calling "bridging" from C and C++ to
 assembly language. We use the knowledge you already have to learn new
@@ -266,7 +275,7 @@ knowledge - how cool is that!
 |  9 | [`const`](./section_1/const/README.md) | [Link](./section_1/const/README.pdf) |
 |  10 | [Casting](./section_1/casting/README.md) | [Link](./section_1/casting/README.pdf) |
 
-## Section 2 - Floating Point
+### Section 2 - Floating Point
 
 Floating point operations use their own instructions and their own set
 of registers. Therefore, floating point operations are covered in their
@@ -283,7 +292,7 @@ own section:
 | 6 | [Half Precision Floats](./section_2/float/half.md) | [Link](./section_2/float/half.pdf) |
 | 7 | [NEON SIMD Not Yet Written](./not_written_yet.md) | [Link](./not_written_yet.pdf) |
 
-## Section 3 - Bit Manipulation
+### Section 3 - Bit Manipulation
 
 What would a book about assembly language be without bit bashing?
 
@@ -295,7 +304,7 @@ What would a book about assembly language be without bit bashing?
 | 1c | [Review of Newly Described Instructions](./section_3/bitfields/review.md) | [Link](./section_3/bitfields/review.pdf) |
 | 2 | [Endianness](./section_3/endian/README.md) | [Link](./section_3/endian/README.pdf) |
 
-## Section 4 - More Stuff
+### Section 4 - More Stuff
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
