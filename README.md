@@ -244,25 +244,25 @@ knowledge - how cool is that!
 | 1 | [Hello World](./section_1/hello_world/README.md) | [Link](./section_1/hello_world/README.pdf)  |
 | 2 | [If Statements](./section_1/if/README.md) | [Link](./section_1/if/README.pdf) |
 | 3 | Loops | |
-| .... a | [.... While Loops](./section_1/while/README.md) | [Link](./section_1/while/README.pdf) |
-| .... b | [.... For Loops](./section_1/for/README.md) | [Link](./section_1/for/README.pdf) |
-| .... c | [.... Implementing Continue](./section_1/for/README.md#implementing-a-continue) | [Link](./section_1/for/README.pdf) |
-| .... d | [.... Implementing Break](./section_1/for/README.md#implementing-a-break) |  [Link](./section_1/for/README.pdf) |
+| 3a | [While Loops](./section_1/while/README.md) | [Link](./section_1/while/README.pdf) |
+| 3b | [For Loops](./section_1/for/README.md) | [Link](./section_1/for/README.pdf) |
+| 3c | [Implementing Continue](./section_1/for/README.md#implementing-a-continue) | [Link](./section_1/for/README.pdf) |
+| 3d | [Implementing Break](./section_1/for/README.md#implementing-a-break) |  [Link](./section_1/for/README.pdf) |
 | 4 | Interludes | |
-| .... a | [.... Registers](./section_1/regs/README.md) | [Link](./section_1/regs/README.pdf) |
-| .... b | [.... Load and Store](./section_1/regs/ldr.md) | [Link](./section_1/regs/ldr.pdf) |
-| .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) | [Link](./section_1/regs/ldr2.pdf) |
-| .... d | [.... Register Sizes](./section_1/regs/widths.md) | [Link](./section_1/regs/widths.pdf) |
+| 4a | [Registers](./section_1/regs/README.md) | [Link](./section_1/regs/README.pdf) |
+| 4b | [Load and Store](./section_1/regs/ldr.md) | [Link](./section_1/regs/ldr.pdf) |
+| 4c | [More About `ldr`](./section_1/regs/ldr2.md) | [Link](./section_1/regs/ldr2.pdf) |
+| 4d | [Register Sizes](./section_1/regs/widths.md) | [Link](./section_1/regs/widths.pdf) |
 | 5 | [`switch`](./section_1/jump_tables/README.md) | [Link](./section_1/jump_tables/README.pdf) |
 | 6 | Functions | |
-| .... a | [.... Calling and Returning](./section_1/funcs/README.md) | [Link](./section_1/funcs/README.pdf) |
-| .... b | [.... Passing Parameters](./section_1/funcs/README2.md) | [Link](./section_1/funcs/README2.pdf) |
-| .... c | [.... Example of calling some common C runtime functions](./section_1/funcs/README3.md) | [Link](./section_1/funcs/README3.pdf) |
+| 6a | [Calling and Returning](./section_1/funcs/README.md) | [Link](./section_1/funcs/README.pdf) |
+| 6b | [Passing Parameters](./section_1/funcs/README2.md) | [Link](./section_1/funcs/README2.pdf) |
+| 6c | [Example of calling some common C runtime functions](./section_1/funcs/README3.md) | [Link](./section_1/funcs/README3.pdf) |
 | 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) | [Link](./section_1/fizzbuzz/README.pdf) |
 | 8 | Structs | |
-| .... a | [.... Alignment](./section_1/structs/alignment.md) | [Link](./section_1/structs/alignment.pdf) |
-| .... b | [.... Defining](./section_1/structs/defining.md) | [Link](./section_1/structs/defining.pdf) |
-| .... c | [.... Using](./section_1/structs/using.md) | [Link](./section_1/structs/using.pdf) |
+| 8a | [Alignment](./section_1/structs/alignment.md) | [Link](./section_1/structs/alignment.pdf) |
+| 8b | [Defining](./section_1/structs/defining.md) | [Link](./section_1/structs/defining.pdf) |
+| 8c | [Using](./section_1/structs/using.md) | [Link](./section_1/structs/using.pdf) |
 |  9 | [`const`](./section_1/const/README.md) | [Link](./section_1/const/README.pdf) |
 |  10 | [Casting](./section_1/casting/README.md) | [Link](./section_1/casting/README.pdf) |
 
@@ -290,9 +290,9 @@ What would a book about assembly language be without bit bashing?
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
 | 1 | Bit Fields | |
-| .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) | [Link]./section_3/bitfields/README.pdf) |
-| .... b | [.... With Bit Fields](./section_3/bitfields/with.md) | [Link](./section_3/bitfields/with.pdf) |
-| .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md) | [Link](./section_3/bitfields/review.pdf) |
+| 1a | [Without Bit Fields](./section_3/bitfields/README.md) | [Link](./section_3/bitfields/README.pdf) |
+| 1b | [With Bit Fields](./section_3/bitfields/with.md) | [Link](./section_3/bitfields/with.pdf) |
+| 1c | [Review of Newly Described Instructions](./section_3/bitfields/review.md) | [Link](./section_3/bitfields/review.pdf) |
 | 2 | [Endianness](./section_3/endian/README.md) | [Link](./section_3/endian/README.pdf) |
 
 ## Section 4 - More Stuff
