@@ -378,11 +378,10 @@ This work is dedicated to my wife Sara and sons Ian and Evan.
 
 ### Gratuitous Plugs
 
-Perry has created a library of about 200 programming projects
-suitable for CS 1, CS 2, Data Structures, Networking, Operating
-Systems and Computer Organization classes. If a publisher of
-CS text books be interested in purchasing the library, please
-reach out.
+Perry has created a library of about 200 programming projects suitable
+for CS 1, CS 2, Data Structures, Networking, Operating Systems and
+Computer Organization classes. If a publisher of CS text books would be
+interested in purchasing the library, please reach out.
 
 Also, check out [Get Off My
 L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G),
