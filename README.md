@@ -303,6 +303,7 @@ What would a book about assembly language be without bit bashing?
 | --- | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
 | --- | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
 | --- | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
+| --- | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
 
 ## Macro Suite
 
