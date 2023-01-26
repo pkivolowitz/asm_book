@@ -318,6 +318,7 @@ In this section, we present miscellaneous material.
 | 3 | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
 | 4 | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
 | 5 | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
+| 6 | [Calling Assembly Language From Python](./python/) | [Link](./python/README.pdf) |
 
 ## Macro Suite
 
