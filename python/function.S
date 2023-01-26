@@ -2,6 +2,7 @@
 
 /*
     gcc -fPIC -shared -o my_square.so function.S 
+    https://realpython.com/python-bindings-overview/#python-bindings-overview
 */
         .p2align    2
         .text
