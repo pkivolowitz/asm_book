@@ -4,8 +4,12 @@
 
 In this chapter we examine the difference between loading the address of
 (a pointer to) a data label versus loading the data at the label. Both
-use the `ldr` instruction however, the assembler actually does some
-trickery behind the scenes to accomplish the loads.
+use the `ldr` instruction however, the assembler (on Linux) actually
+does some trickery behind the scenes to accomplish the loads.
+
+Note - this chapter describes `ldr` from the perspective of Linux. For a
+brief discussion of how Apple Mac OS uses `ldr`, please [see
+here](#apple-silicon).
 
 ## Length of Instructions
 
@@ -275,3 +279,62 @@ instruction can be used to properly locate the values to be written.
 ## Questions
 
 To be written.
+
+## Apple Silicon
+
+You've seen that under Linux, there is a pseudo-instruction which hides
+some trickery:
+
+`ldr    x0, =label`
+
+This works if `label` is +/- four mebibytes (as megabytes are now
+called) away from the `ldr` instruction.
+
+Apple "thinks different." The above instruction will not pass the
+assembler on a Mac OS machine. Instead, Apple uses two techniques
+which can access labels no matter where they are.
+
+Apple accomplishes this by splitting the loading of the address of a
+label into two instructions. The first causes the base address of the
+*page* on which the label resides to be loaded. The page number is
+calculated for you based upon the label. The second adds to the base
+address, the offset in the page at which the label can be found.
+
+Here is how one would load the address of a label which is outside the
+source code module:
+
+```text
+.macro  GLD_ADDR    xreg, label     // Get a global address
+#if defined(__APPLE__)
+        adrp        \xreg, _\label@GOTPAGE
+        add         \xreg, \xreg, _\label@GOTPAGEOFF
+#else
+        ldr         \xreg, =\label
+#endif
+.endm
+```
+
+This is a macro from our [Apple Linux Convergence
+Suite](../../macros/README.md).
+
+It shows how, on Apple systems, part of the address is loaded from
+a page and then the remainder (the offset) is added in.
+
+The `G` in `GLD_ADDR` stands for global.
+
+If the label is defined in the same source code module:
+
+```asm
+.macro  LLD_ADDR xreg, label
+#if defined(__APPLE__)
+        adrp        \xreg, \label@PAGE
+        add         \xreg, \xreg, \label@PAGEOFF
+#else
+        ldr         \xreg, =\label
+#endif
+.endm
+```
+
+The difference being `@PAGE` versus `@GOTPAGE`, etc.
+
+The first `L` in `LLD_ADDR` stands for local.
