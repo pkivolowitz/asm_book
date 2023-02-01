@@ -69,7 +69,7 @@ You can spell stuff with hex.
 | Hex Value | Notes |
 | --------- | ----- |
 | DEADBEEF | Found frequently in MC68K code especially Amiga |
-| 8BADFOOD | Found for similar reasons but on Apple products |
+| 8BADF00D | Found for similar reasons but on Apple products |
 | DEADDEAD | Associated with the Blue Screen of Death |
 | F003BA11 | Used by undergraduates everywhere |
 | C0EDBABE | Used by misogynists everywhere |
