@@ -40,6 +40,15 @@ solution may be to add a parallel set of macros that either do prepend
 or do not. This is an open question which we hope to get user input to
 resolve.
 
+## Note About Variadic Functions
+
+Functions such as `printf()` do not have fixed signatures. That is, they
+may accept a variable number of parameters of varying types. Linux and
+Apple Silicon handle these functions quite differently.
+
+This is [explained at length in the chapter on variadic
+functions](../more/apple_silicon/README.md).
+
 ## Macros of general use
 
 First, we describe a number of macros which are the same on both Apple

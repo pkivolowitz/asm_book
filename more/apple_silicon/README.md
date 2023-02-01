@@ -62,7 +62,7 @@ file ends in .S*
 
 ## Differences between Apple and Linux
 
-## Variadic functions
+### Variadic functions
 
 *This is important! Understand this section in order to be able to use
 `printf()`.*
@@ -106,13 +106,36 @@ An example:
 #if defined(__APPLE__)
         PUSH_R      d0
         CRT         printf
-        add         sp, sp, 16
+        add         sp, sp, 16  // See discussion below.
 #else
         CRT         printf
 #endif
 ```
 
-## Other differences
+Reminder that this makes use of the C preprocessor to perform the
+conditional evaluation detecting the platform. You can ensure that the C
+preprocessor is used by naming your assembly language source code files
+ending in capital S.
+
+### Undoing Stack Pointer Changes
+
+A small tip concerning undoing changes to the stack pointer. You might
+think that changes to the stack made by `str` or `stp` and their
+cousins **must** be undone with `ldr` or `ldp` and their cousins.
+
+This depends.
+
+If you need to get back the original contents of a register pushed onto
+the stack, then an `ldr` or `ldp` is appropriate. However, if you don't
+need to get the original contents of a register back, then it is faster
+to undo a change to the stack using addition.
+
+Take for example the use of `printf()`. On Apple Silicon systems, you
+must send arguments to `printf()` by pushing them onto the stack.
+However, when `printf()` completes, you have no need for the values that
+you pushed. As shown above, simply add the right (multiple of 16) to the
+stack pointer. This is faster as the addition makes no reference to RAM
+(or caches) as the `ldr` would.
 
 ### Frame pointer
 

@@ -54,6 +54,10 @@ what it is doing.
 
 ## Differences Between Apple and Linux
 
+Apple and Linux differ in how they implement parameter passing to
+variadic functions in assembly language. This is explained in [more
+detail in the chapter on Apple Silicon](./../apple_silicon/README.md).
+
 ### Linux
 
 Linux uses the first 8 scratch registers as normal. If you need to
@@ -64,6 +68,7 @@ do anyway) to determine where to find them.
 ### Apple
 
 Apple puts the first argument in `x0` as usual but all remaining
-arguments go on the stack in right to left order. There are some
-other restrictions - it is best to refer to [this](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms
+arguments go on the stack in right to left order. There are some other
+restrictions - it is best to refer to
+[this](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms
 ) cryptically written document.
