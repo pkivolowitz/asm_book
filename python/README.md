@@ -4,7 +4,7 @@ It is possible to call your assembly language code from Python. In fact,
 it can be insanely easy. It can also be difficult. What differentiates
 the two are the arguments you need to pass.
 
-Python stores data ina very different way than C and therefore assembly
+Python stores data in a very different way than C and therefore assembly
 language. All Python data types are objects, which for sets and dicts
 can make things difficult and outside the scope of this book.
 
