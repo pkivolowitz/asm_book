@@ -10,6 +10,11 @@ the C into ARM V8 assembly language.
 At every step, we'll completely explain the code and document what has
 changed from version to version so that little background is assumed.
 
+[Special Bonus](#special-bonus---build-on-linux-and-apple-silicon) can
+be found by following the link. The code found there uses the macro
+suite developed by the author that allows code to be written once and
+built on both the Mac M family as well as on Linux.
+
 ## V1 in C++
 
 Here is the code to a program that prints to the console, the contents
@@ -670,18 +675,62 @@ job.
 We do maintain that understanding assembly language principles will
 improve your higher level language coding.
 
+## Special Bonus - Build on Linux AND Apple Silicon
+
+[Here](./v6.S) is the source code shown below.
+
+[Here](./apple-linux-convergence.S) is the source code to the macro
+suite that allows you to write the code once and build on both the Apple
+M family and upon Linux.
+
+The documentation can be found [here](./../../macros/).
+
+```text
+#include "apple-linux-convergence.S"                        // 1 
+                                                            // 2 
+        .text                                               // 3 
+        .p2align    2                                       // 4 
+        GLABEL      main                                    // 5 
+                                                            // 6 
+MAIN                                                        // 7 
+        PUSH_P      x21, x30                                // 8 
+        PUSH_R      x29                                     // 9 
+        mov         x29, sp                                 // 10 
+                                                            // 11 
+        mov         x21, x1                                 // 12 
+                                                            // 13 
+1:      ldr         x0, [x21], 8                            // 14 
+        cbz         x0, 2f                                  // 15 
+        CRT         puts                                    // 16 
+        b           1b                                      // 17 
+                                                            // 18 
+2:      POP_R       x29                                     // 19 
+        POP_P       x21, x30                                // 20 
+        mov         x0, xzr                                 // 21 
+        ret                                                 // 22 
+                                                            // 23 
+        .end                                                // 24 
+```
+
+The push and pop macros simply save typing but the other macros sense
+if you are building on Linux or on Apple M family. In this case, the
+macros are helping with underscores but the macro suite contains more
+sophisticated helpers as well.
+
 ## Questions
 
 ### 1
 
-(T | F) It is the compiler's job to reduce a higher level language to assembly language.
+(T | F) It is the compiler's job to reduce a higher level language to
+assembly language.
 
-Answer: True - The "compiler" is just one step in the "compilation" process. In fact it
-is step 2. Invoking the "preprocessor" is step 1.
+Answer: True - The "compiler" is just one step in the "compilation"
+process. In fact it is step 2. Invoking the "preprocessor" is step 1.
 
 ### 2
 
-(T | F) Failing to mark `main` as a `global` will result in a syntax error.
+(T | F) Failing to mark `main` as a `global` will result in a syntax
+error.
 
 Answer: False - a linker error will happen, not a syntax error.
 
@@ -689,8 +738,9 @@ Answer: False - a linker error will happen, not a syntax error.
 
 \___ and ___ implement the braces in C and C++.
 
-Answer: labels and branches - the closing brace of a `while` loop for example,
-is a branch instruction. The opening brace of a `while` is a label.
+Answer: labels and branches - the closing brace of a `while` loop for
+example, is a branch instruction. The opening brace of a `while` is a
+label.
 
 ### 4
 
@@ -701,12 +751,14 @@ if a_register has value 0
     then goto label
 ```
 
-Answer: True - `cbz` stands for "compare and branch if zero". There is also
-a `cbnz` instruction. To test for other Boolean conditions, use `cmp`.
+Answer: True - `cbz` stands for "compare and branch if zero". There is
+also a `cbnz` instruction. To test for other Boolean conditions, use
+`cmp`.
 
 ### 5
 
-While this chapter is entitled "Hello World," the example used isn't actually "Hello World." Here is a "Hello World" for you to complete:
+While this chapter is entitled "Hello World," the example used isn't
+actually "Hello World." Here is a "Hello World" for you to complete:
 
 ```text
    .global main                                                       
