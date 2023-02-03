@@ -185,10 +185,21 @@ library, use this macro in this way:
 
 `CRT     strlen`
 
-An underscore is prepended.
+An underscore is prepended on the Mac.
 
 ## Declaring `main()`
 
 Put `MAIN` on a line by itself. Notice there is no colon.
 
-An underscore is prepended.
+An underscore is prepended on the Mac.
+
+## `errno`
+
+The externally defined `errno` is accessed via a CRT function which
+isn't seen when coding in C and C++. The function is named differently
+on Mac versus Linux. To get the address of `errno` use:
+
+`ERRNO_ADDR`
+
+This macro makes the correct CRT call and leaves the address of `errno`
+in `x0`.

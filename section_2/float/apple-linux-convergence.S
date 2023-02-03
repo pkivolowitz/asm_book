@@ -75,6 +75,18 @@ main:
 #endif
 .endm
 
+/*  Fetching the address of the externally defined errno is quite
+    different on Apple and Linux. This macro leaves the address of
+    errno in x0.
+*/
+.macro  ERRNO_ADDR
+#if defined(__APPLE__)
+        bl      ___error
+#else
+        bl      __errno_location
+#endif
+.endm
+
 .macro  CRT label
 #if defined(__APPLE__)
         bl  _\label
