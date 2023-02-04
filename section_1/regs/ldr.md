@@ -104,10 +104,12 @@ often used when executing SIMD instructions.
 
 SIMD is *Single Instruction - Multiple Data*. For example, 4 single
 precision floats might be multiplied by a scalar in a single
-instruction.
+instruction. The SIMD instruction set that is / will be covered in this
+book is called NEON.
 
-The AARCH64 ISA includes an even more exotic means of performing
-mass calculation which we might describe (some day).
+The AARCH64 ISA includes an even more exotic means of performing mass
+calculation called SVE. We will probably never cover AVE as no generally
+available processor implements it. This includes Apple Silicon.
 
 ## Examples
 

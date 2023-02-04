@@ -71,7 +71,8 @@ The first kind is NEON.
 [This is described here.](./../../not_written_yet.md)
 
 The second kind of Scalable Vector Extension (SVE) for which we do not
-have near-term plans to cover.
+have near-term plans to cover. SVE is not implemented on any generally
+available ARM processor including Apple Silicon.
 
 ## Demo Programs in this Chapter
 

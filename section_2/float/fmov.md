@@ -64,7 +64,7 @@ covered [in this chapter](./literals.md).
 ## SIMD
 
 `fmov` can also deal with the more complicated special cases induced by
-SIMD instruction.
+SIMD instructions.
 
 ## Movement To / From Integer Registers
 
