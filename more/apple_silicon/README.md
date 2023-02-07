@@ -62,6 +62,13 @@ file ends in .S*
 
 ## Differences between Apple and Linux
 
+### Getting the address of `errno`
+
+`errno` is an externally defined `int32_t` used by many "system"
+provided APIs to report error conditions back to calling programs. The
+macro `ERRNO_ADDR` can be used to converge how Linux and Apple get the
+address of the variable (which is left in `x0`).
+
 ### Variadic functions
 
 *This is important! Understand this section in order to be able to use
