@@ -55,6 +55,14 @@ First, we describe a number of macros which are the same on both Apple
 and Linux. These macros don't converge Apple and Linux. They're just
 nice to have.
 
+### AASCIZ
+
+`AASCIZ    label, string`
+
+This macro invokes `.asciz` with the string set to `string` and the
+label set to `label`. In addition, this macro ensures that the string
+begins on a 4-byte-aligned boundary.
+
 ### PUSH_P, PUSH_R, POP_P and POP_R
 
 These macros save some repetitive typing. For example:
@@ -98,6 +106,45 @@ Signature:
 `MAX     src_a, src_b, dest`
 
 The larger of `src_a` and `src_b` is put into `dest`.
+
+### Mark a label as global
+
+Makes a label available externally.
+
+Signature:
+
+`GLABEL label`
+
+An underscore is prepended.
+
+### Calling CRT functions
+
+If you create your own function without an underscore, just call it as
+usual.
+
+If you need to call a function such as those found in the C runtime
+library, use this macro in this way:
+
+`CRT     strlen`
+
+An underscore is prepended on the Mac.
+
+### Declaring `main()`
+
+Put `MAIN` on a line by itself. Notice there is no colon.
+
+An underscore is prepended on the Mac.
+
+### `errno`
+
+The externally defined `errno` is accessed via a CRT function which
+isn't seen when coding in C and C++. The function is named differently
+on Mac versus Linux. To get the address of `errno` use:
+
+`ERRNO_ADDR`
+
+This macro makes the correct CRT call and leaves the address of `errno`
+in `x0`.
 
 ## Loads and Stores
 
@@ -170,50 +217,3 @@ register.
 Note: No underscore is prepended.
 
 See [this sample program](./float.S) for an example.
-
-## Mark a label as global
-
-Makes a label available externally.
-
-Signature:
-
-`GLABEL label`
-
-An underscore is prepended.
-
-## Calling CRT functions
-
-If you create your own function without an underscore, just call it as
-usual.
-
-If you need to call a function such as those found in the C runtime
-library, use this macro in this way:
-
-`CRT     strlen`
-
-An underscore is prepended on the Mac.
-
-## Declaring `main()`
-
-Put `MAIN` on a line by itself. Notice there is no colon.
-
-An underscore is prepended on the Mac.
-
-## `errno`
-
-The externally defined `errno` is accessed via a CRT function which
-isn't seen when coding in C and C++. The function is named differently
-on Mac versus Linux. To get the address of `errno` use:
-
-`ERRNO_ADDR`
-
-This macro makes the correct CRT call and leaves the address of `errno`
-in `x0`.
-
-## AASCIZ
-
-`AASCIZ    label, string`
-
-This macro invokes `.asciz` with the string set to `string` and the
-label set to `label`. In addition, this macro ensures that the string
-begins on a 4-byte-aligned boundary.
