@@ -2,7 +2,7 @@
 
 This book is written to the Linux calling convention as stated early on.
 Unfortunately, this means that even if you own an Apple Silicon machine,
-which is AARCH64, you'd still need a Linux virtual machine. 
+which is AARCH64, you'd still need a Linux virtual machine.
 
 This didn't sit well with some on reddit and rightfully so. We undertook
 to develop a way of writing assembly code once and having it work on
@@ -61,6 +61,13 @@ through the C pre-processor *if the asm file ends in .s but WILL if the
 file ends in .S*
 
 ## Differences between Apple and Linux
+
+### Getting the address of `errno`
+
+`errno` is an externally defined `int32_t` used by many "system"
+provided APIs to report error conditions back to calling programs. The
+macro `ERRNO_ADDR` can be used to converge how Linux and Apple get the
+address of the variable (which is left in `x0`).
 
 ### Variadic functions
 
@@ -142,7 +149,7 @@ stack pointer. This is faster as the addition makes no reference to RAM
 Apple requires that `x29` be kept as a valid stack frame pointer. The
 frame pointer should always start out as equal to the stack pointer.
 However, within the function, the stack pointer is free to change. The
-frame pointer must remain fixed so that debuggers always know how to 
+frame pointer must remain fixed so that debuggers always know how to
 find the initial stack *frame*.
 
 To be Apple compatible, in addition to backing up `x30` also back up
