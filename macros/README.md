@@ -79,7 +79,13 @@ These resolve to: `.cfi_startproc` and `.cfi_endproc` respectively.
 
 ### MIN and MAX
 
-Handy more readable macros for determining minima and maxima.
+Handy more readable macros for determining minima and maxima. Note that
+the macro performs a `cmp` which subtracts `src_b` from `src_a`
+(discarding the results) in order to set the flags to be interpreted by
+the following `csel`.
+
+Thank you to u/TNorthover for nudge to add the cmp directly into the
+macro.
 
 Signature:
 

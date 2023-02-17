@@ -1,3 +1,5 @@
+/*  A test program.
+*/
 #include "apple-linux-convergence.S"
 
         .text
@@ -24,6 +26,6 @@ MAIN
         END_PROC
 
 flt:    .float      0.125
-fmt:    .asciz      "%f\n"
+fmt:    .asciz      "Should print 0.125000: %f\n"
 
         .end
