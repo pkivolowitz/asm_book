@@ -144,3 +144,8 @@ main:
         cmp     \src_a, \src_b
         csel    \dest, \src_a, \src_b, GT
 .endm
+
+.macro  AASCIZ      label, string
+        .p2align    2
+\label: .asciz      "\string"
+.endm

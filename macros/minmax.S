@@ -86,11 +86,8 @@ PrintLegend:
         ret
         END_PROC
 
-        .p2align    2
-fmt:    .asciz      "Values to compare: %d and %d\n"
-        .p2align    2
-fmtgt:  .asciz      "Greater value is: %d\n"
-        .p2align    2
-fmtls:  .asciz      "Lesser value is:  %d\n"
+        AASCIZ      fmt, "Values to compare: %d and %d\n"
+        AASCIZ      fmtgt, "Greater value is: %d\n"
+        AASCIZ      fmtls, "Lesser value is:  %d\n"
 
         .end

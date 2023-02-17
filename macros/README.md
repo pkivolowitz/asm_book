@@ -209,3 +209,11 @@ on Mac versus Linux. To get the address of `errno` use:
 
 This macro makes the correct CRT call and leaves the address of `errno`
 in `x0`.
+
+## AASCIZ
+
+`AASCIZ    label, string`
+
+This macro invokes `.asciz` with the string set to `string` and the
+label set to `label`. In addition, this macro ensures that the string
+begins on a 4-byte-aligned boundary.
