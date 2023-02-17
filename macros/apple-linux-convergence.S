@@ -119,10 +119,28 @@ main:
         ldr     \a, [sp], 16
 .endm
 
+/*  The smaller of src_a and src_b is put into dest. A cmp instruction
+    or other instruction that sets the flags must be performed first.
+    This macro makes it easy to remember which register does what in the
+    csel.
+    
+    Thank you to u/TNorthover for nudge to add the cmp.
+*/
+
 .macro  MIN     src_a, src_b, dest
-        csel    \dest, \src_a, \src_b, GT
+        cmp     \src_a, \src_b
+        csel    \dest, \src_a, \src_b, LT
 .endm
 
+/*  The larger of src_a and src_b is put into dest. A cmp instruction
+    or other instruction that sets the flags must be performed first.
+    This macro makes it easy to remember which register does what in the
+    csel.
+
+    Thank you to u/TNorthover for nudge to add the cmp.
+*/
+
 .macro  MAX     src_a, src_b, dest
-        csel    \dest, \src_a, \src_b, LT
+        cmp     \src_a, \src_b
+        csel    \dest, \src_a, \src_b, GT
 .endm
