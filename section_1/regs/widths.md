@@ -67,13 +67,18 @@ ram:    .quad   0xFFFFFFFFFFFFFFFF                                // 14
                                                                   // 17 
 ```
 
-`Line 14` puts an identifiable pattern into 8 bytes of RAM and gives them the symbol `ram`.
+`Line 14` puts an identifiable pattern into 8 bytes of RAM and gives
+them the symbol `ram`.
 
 `Line 6` gets the address of these bytes into `x1`.
 
-The next four lines put zeros into that memory using progressively wider store instructions.
+The next four lines put zeros into that memory using progressively wider
+store instructions.
 
-The following is a `gdb` session running the above program. Line numbers have been added to assist with the description of the session. Rather than describe all after a wall of text, descriptions will be provided inline.
+The following is a `gdb` session running the above program. Line numbers
+have been added to assist with the description of the session. Rather
+than describe all after a wall of text, descriptions will be provided
+inline.
 
 ```text
 (gdb) b main                                                            // 1 
@@ -164,7 +169,8 @@ Adding the `g` (for `g`iant) we can see all 8 bytes.
 0xaaaaaaab1010:    0xffffffffffffff00                              // 29 
 ```
 
-We just did a `strb` and looking at memory, we see one byte's worth of zeros.
+We just did a `strb` and looking at memory, we see one byte's worth of
+zeros.
 
 *Note: this brings up an interesting question... which byte is actually
 sitting at the address of `ram`? We will have to look into this more
@@ -203,8 +209,8 @@ the address `ram`? When we examined the `long` just after putting in one
 byte of zero, we saw this:
 
 ```text
-(gdb) x/gx &ram                                                         // 28 
-0xaaaaaaab1010:    0xffffffffffffff00                                   // 29 
+(gdb) x/gx &ram                                                    // 28 
+0xaaaaaaab1010:    0xffffffffffffff00                              // 29 
 ```
 
 Notice the zeros come at the end. Keep in mind, these bytes are printed
@@ -233,16 +239,16 @@ Given this program (not intended for meaningful execution... just
 e`x`amining memory):
 
 ```asm
-        .global    main                                                 // 1 
-        .text                                                           // 2 
-        .align    2                                                     // 3 
-                                                                        // 4 
-main:    mov     x0, xzr                                                // 5 
-        ret                                                             // 6 
-                                                                        // 7 
-        .data                                                           // 8 
-ram:    .quad   0xAABBCCDDEEFF0011                                      // 9 
-        .end                                                            // 10 
+        .global    main                                            // 1 
+        .text                                                      // 2 
+        .align    2                                                // 3 
+                                                                   // 4 
+main:    mov     x0, xzr                                           // 5 
+        ret                                                        // 6 
+                                                                   // 7 
+        .data                                                      // 8 
+ram:    .quad   0xAABBCCDDEEFF0011                                 // 9 
+        .end                                                       // 10 
 ```
 
 let's take a look at the memory at location `ram` in two ways. Once
