@@ -22,6 +22,6 @@ main:		stp		x29, x30, [sp, -16]!
 
 		.data
 
-fmt:		.asciz		"Number: %d\n"
+fmt:	.asciz		"Number: %d\n"
 		.end
 

@@ -1,3 +1,6 @@
+/*  The purpose of this program is to crash due to not manipulating the
+    stack in multiples of 16.
+*/
         .global main
         .text
         .align  2
