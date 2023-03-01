@@ -18,13 +18,13 @@ const uint32_t NUM_THREADS = 16;
 volatile uint32_t naked_int;
 atomic<uint32_t> atomic_integer(0);
 
-extern "C" void LoadLockedStoreConditional(uint32_t * value);
+extern "C" void LoadLinkedStoreConditional(uint32_t * value);
 
 void LLSCWorker() {
 	extern volatile uint32_t naked_int;
 
 	for (uint32_t i = 0; i < MAX_LOOPS; i++) {
-		LoadLockedStoreConditional((uint32_t *) &naked_int);
+		LoadLinkedStoreConditional((uint32_t *)&naked_int);
 	}
 }
 
