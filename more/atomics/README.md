@@ -2,6 +2,8 @@
 
 ![Gurney Hallek](./battle_pug.jpeg)
 
+David Lynch's Dune.
+
 ## Threads
 
 Suppose you run two copies of the same program at the same time. They
