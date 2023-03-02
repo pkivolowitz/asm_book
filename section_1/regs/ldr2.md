@@ -18,12 +18,17 @@ here](#apple-silicon) and [below](#apple-silicon).
 
 ## Length of Pointers
 
-**All** AARCH64 pointers are 8 bytes in width.
+**All** AARCH64 pointers are 8 bytes in width&#8224;.
+
+&#8224;While this is technically true, typically only the lower 39, 42
+or 48 bits of addresses in Linux systems are used - i.e. the virtual
+address space of an ARM Linux process is smaller than 64 bits. The upper
+bits are set to zero when considering the address as an 8-byte value.
 
 ## How to Specify an Address Too Big to Fit in an Instruction?
 
 The title of this section sets the table for the need for trickery. All
-labels refer to addresses. Addresses are 8 bytes in width but all
+labels refer to addresses. Addresses are 8 bytes&#8224; in width but all
 instructions are 4 bytes in width. Clearly, we cannot fit the full
 address of a label in an instruction.
 
@@ -171,7 +176,8 @@ This image shows `gdb` in `layout regs` at the time our program is loaded.
 Notice that all of the addresses match the disassemblies given above.
 For example `main()` starts at `7a0`.
 
-Now watch what happens the the program is actually launched:
+Now watch what happens the the program is actually launched (see Figure
+2):
 
 ![After breakpoint and launch](./2_after_b_and_run.png)
 
@@ -196,7 +202,7 @@ four byte instruction. GDB is masking the pseudo instruction and showing
 what the effective addresses are.**
 
 Now lets step forward to see the results of the first `ldr` of the
-`printf()` template / format string into `x0`.
+`printf()` template / format string into `x0`. See Figure 3.
 
 ![Results of first ldr](./3_results_of_first_ldr.png)
 
@@ -205,16 +211,16 @@ the value encoded in the instruction ending in `a7d0`.
 This is our only indirect evidence that the instruction we wrote
 has been modified to use some calculated offset from the `pc`.
 
-To finish, here is how we confirm `x0` is indeed correct.
+To finish, here is how we confirm `x0` is indeed correct. See Figure 4.
 
 ![Confirming x0](./4_confirm_x0_is_correct.png)
 
 Notice down below the `x/s $x0` prints the value in memory
 corresponding to the address contained in `x0`.
 
-Finally:
+Finally see Figure 5.
 
-![Confirming x2](./4_confirm_x0_is_correct.png)
+![Confirming x2](./5_confirm_x2_is_correct.png)
 
 At the outset of this discussion we said that this program will crash on
 source code `line 15`. See if you can work out why. Take a moment before
@@ -222,7 +228,7 @@ reading further.
 
 Now that you have a hypothesis in mind, take a look at this screenshot
 showing the state of `x1` after this instruction: `ldr  x1, q` is
-executed.
+executed. See Figure 6.
 
 ![After bad load](./after_bad_load.png)
 
@@ -231,7 +237,7 @@ previous attempt at printing. Notice still more that the value now in
 `x1` is the value of `q`, not its address.
 
 Naturally, the next instruction which tries to dereference the value of
-`q` rather than its address, causes a crash.
+`q` rather than its address, causes a crash. See Figure 7.
 
 ![After crash](./after_crash.png)
 
@@ -305,8 +311,9 @@ source code module:
 This is a macro from our [Apple Linux Convergence
 Suite](../../macros/README.md).
 
-It shows how, on Apple systems, part of the address is loaded from
-a page and then the remainder (the offset) is added in.
+It shows how, on Apple systems, the higher bits of the address is loaded
+from the starting address of the page on which the symbol sits and then
+the remainder (the offset) is added in.
 
 The `G` in `GLD_ADDR` stands for global.
 
@@ -326,3 +333,17 @@ If the label is defined in the same source code module:
 The difference being `@PAGE` versus `@GOTPAGE`, etc.
 
 The first `L` in `LLD_ADDR` stands for local.
+
+## Avoiding the Memory Reference on Linux
+
+The technique Apple uses for loading the address of labels can be used
+on Linux as well so as to avoid the reference to memory (literal pool).
+
+Suppose `s` is a locally defined symbol. Then:
+
+```asm
+adrp    x0, s
+add     x0, x0, :lo12:s
+```
+
+duplicates the approach Apple uses.
