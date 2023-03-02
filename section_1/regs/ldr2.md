@@ -8,8 +8,9 @@ use the `ldr` instruction however, the assembler (on Linux) actually
 does some trickery behind the scenes to accomplish the loads.
 
 Note - this chapter describes `ldr` from the perspective of Linux. For a
-brief discussion of how Apple Mac OS uses `ldr`, please [see
-here](#apple-silicon).
+brief discussion of how Apple Mac OS avoids using `ldr` to load the address
+of labels, please [see
+here](#apple-silicon) and [below](#apple-silicon).
 
 ## Length of Instructions
 
@@ -42,7 +43,7 @@ When you assemble an instruction looking like:
 ```
 
 the assembler puts the address of the label into a special region of
-memory fancily called a "literal pool." What matters is this region of
+memory called a "literal pool." What matters is this region of
 memory is placed immediately after (therefore nearby) your code.
 
 Then, the assembler computes the difference between the address of the
@@ -165,20 +166,14 @@ to accomplish their nefarious purposes.
 
 This image shows `gdb` in `layout regs` at the time our program is loaded.
 
-<figure>
-  <img src="././1_prior_to_running.png" style="width:80%;">
-  <figcaption>Prior to launch</figcaption>
-</figure>
+![Prior to Launch](././1_prior_to_running.png)
 
 Notice that all of the addresses match the disassemblies given above.
 For example `main()` starts at `7a0`.
 
 Now watch what happens the the program is actually launched:
 
-<figure>
-  <img src="./2_after_b_and_run.png" style="width:80%;">
-  <figcaption>After breakpoint and launch</figcaption>
-</figure>
+![After breakpoint and launch](./2_after_b_and_run.png)
 
 Suddenly all the address change to much larger values.
 
@@ -203,10 +198,7 @@ what the effective addresses are.**
 Now lets step forward to see the results of the first `ldr` of the
 `printf()` template / format string into `x0`.
 
-<figure>
-  <img src="./3_results_of_first_ldr.png" style="width:80%;">
-  <figcaption>Results of first ldr</figcaption>
-</figure>
+![Results of first ldr](./3_results_of_first_ldr.png)
 
 There is a pointer in `x0` ending in `b018`. Notice this is **NOT**
 the value encoded in the instruction ending in `a7d0`.
@@ -215,20 +207,14 @@ has been modified to use some calculated offset from the `pc`.
 
 To finish, here is how we confirm `x0` is indeed correct.
 
-<figure>
-  <img src="./4_confirm_x0_is_correct.png" style="width:80%;">
-  <figcaption>Confirming x0 is correct</figcaption>
-</figure>
+![Confirming x0](./4_confirm_x0_is_correct.png)
 
 Notice down below the `x/s $x0` prints the value in memory
 corresponding to the address contained in `x0`.
 
 Finally:
 
-<figure>
-  <img src="./4_confirm_x0_is_correct.png" style="width:80%;">
-  <figcaption>Confirming x2 is correct</figcaption>
-</figure>
+![Confirming x2](./4_confirm_x0_is_correct.png)
 
 At the outset of this discussion we said that this program will crash on
 source code `line 15`. See if you can work out why. Take a moment before
@@ -238,10 +224,7 @@ Now that you have a hypothesis in mind, take a look at this screenshot
 showing the state of `x1` after this instruction: `ldr  x1, q` is
 executed.
 
-<figure>
-  <img src="./after_bad_load.png" style="width:80%;">
-  <figcaption>After bad load</figcaption>
-</figure>
+![After bad load](./after_bad_load.png)
 
 Notice that what is in `x1` this time looks very different from the
 previous attempt at printing. Notice still more that the value now in
@@ -250,10 +233,7 @@ previous attempt at printing. Notice still more that the value now in
 Naturally, the next instruction which tries to dereference the value of
 `q` rather than its address, causes a crash.
 
-<figure>
-  <img src="./after_crash.png" style="width:80%;">
-  <figcaption>After crash</figcaption>
-</figure>
+![After crash](./after_crash.png)
 
 ## Summary
 
@@ -290,15 +270,23 @@ some trickery:
 This works if `label` is +/- four mebibytes (as megabytes are now
 called) away from the `ldr` instruction.
 
+*A downside of this approach is that the literal pool, from which the
+address is loaded, resides in RAM. This means each of these `ldr`
+pseudo instructions incurs a memory reference.*
+
 Apple "thinks different." The above instruction will not pass the
 assembler on a Mac OS machine. Instead, Apple uses two techniques
-which can access labels no matter where they are.
+which can access labels no matter where they are *without incurring
+a reference to memory*.
 
 Apple accomplishes this by splitting the loading of the address of a
 label into two instructions. The first causes the base address of the
 *page* on which the label resides to be loaded. The page number is
 calculated for you based upon the label. The second adds to the base
 address, the offset in the page at which the label can be found.
+
+Both of these values are computed at build time and therefore do not
+need to reference memory. This is a good thing.
 
 Here is how one would load the address of a label which is outside the
 source code module:
