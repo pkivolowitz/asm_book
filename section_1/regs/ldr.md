@@ -13,9 +13,10 @@ the changed value might be stored from a register back to RAM.
 
 ## Loading Data From RAM into Registers
 
-The instructions used to retrieve information from memory are `ldr` and
-`ldp`. The characters `ld` in these mnemonics bring to mind `load`.
-`ldr` is "load a register" while `ldp` is "load a pair of registers".
+The instructions typically used to retrieve information from memory are
+`ldr` and `ldp`. The characters `ld` in these mnemonics bring to mind
+`load`. `ldr` is "load a register (from RAM)" while `ldp` is "load a
+pair of registers (from RAM)".
 
 Both of these instructions possess many variations, only a few of which
 will be described here. Common to all variations of the `ldr` and `ldp`
@@ -40,10 +41,12 @@ Similarly,
 
 loads a *pair* of registers from RAM at the address specified by the
 stack pointer. Any `x` register could also have been used, the `sp` is
-shown here to demonstrate that it too can be used.
+shown here to demonstrate that it too can be used. In fact, loads
+relative to the stack pointer is how compilers implement local
+variables.
 
 What goes inside the `[]` is always a pointer so must be a 64 bit wide
-animal such as any `x` register or the stack *pointer*.
+entity such as any `x` register or the stack *pointer*.
 
 ## Offsets
 
@@ -75,19 +78,22 @@ register either before the actual fetch or after.
 
 Assume `ptr` is a pointer to a `long`:
 
-* Line 2 corresponds to: `*(ptr++)`.
-* Line 3 corresponds to: `*(++ptr)`.
+* Line 2 can correspond to: `*(ptr++)`.
+
+* Line 3 can correspond to: `*(++ptr)`.
 
 Note this is for illustration only in that the `++` syntax in C and C++
 increment by 1. In lines 2 and 3, `#simm` can have values other than 1
 including negative values for decrements.
 
 Also note that when used with the stack pointer `sp`, `#simm` must be a
-multiple of 16.
+multiple of 16. That is, all modifications to the stack pointer must be
+in multiples of 16.
 
 Concerning the restrictions placed on the offsets:
 
 * `simm` can be in the range of -256 to 255 (10 byte signed value).
+
 * `pimm` can be in the range of 0 to 32760 in multiples of 8.
 
 `w` registers are used for `int`, `short` and `char`. When working with
@@ -111,6 +117,9 @@ The AARCH64 ISA includes an even more exotic means of performing mass
 calculation called SVE. We will probably never cover AVE as no generally
 available processor implements it. This includes Apple Silicon.
 
+I wonder how sad this makes certain engineers at ARM. After all, imagine
+if YOU threw an ISA and nobody came.
+
 ## Examples
 
 ### Loading (Storing) Various Sizes of Integers
@@ -125,6 +134,7 @@ available processor implements it. This includes Apple Silicon.
 Notice the following:
 
 * Pointers and longs use `x` registers.
+
 * All other integer sizes use `w` registers where the instruction itself
   specifies the size.
 
@@ -133,15 +143,15 @@ Notice the following:
 Consider this code to sum up the values in an array:
 
 ```c
-long Sum(long * values, long length)                             /* 1 */
-{                                                                /* 2 */
-    long sum = 0;                                                /* 3 */
-    for (long i = 0; i < length; i++)                            /* 4 */
-    {                                                            /* 5 */
-        sum += values[i];                                        /* 6 */
-    }                                                            /* 7 */
-    return sum;                                                  /* 8 */
-}                                                                /* 9 */
+long Sum(long * values, long length)                         /* 1 */
+{                                                            /* 2 */
+    long sum = 0;                                            /* 3 */
+    for (long i = 0; i < length; i++)                        /* 4 */
+    {                                                        /* 5 */
+        sum += values[i];                                    /* 6 */
+    }                                                        /* 7 */
+    return sum;                                              /* 8 */
+}                                                            /* 9 */
 ```
 
 We're not going to translate this to assembly language. Instead, we will
@@ -154,16 +164,16 @@ fantastically inefficient (in this case).
 Consider the following code that performs the same function:
 
 ```c
-long Sum(long * values, long length)                             /* 1 */
-{                                                                /* 2 */
-    long sum = 0;                                                /* 3 */
-    long * end = values + length;                                /* 4 */
-    while (values < end)                                         /* 5 */
-    {                                                            /* 6 */
-        sum += *(values++);                                      /* 7 */
-    }                                                            /* 8 */
-    return sum;                                                  /* 9 */
-}                                                                /* 10 */
+long Sum(long * values, long length)                         /* 1 */
+{                                                            /* 2 */
+    long sum = 0;                                            /* 3 */
+    long * end = values + length;                            /* 4 */
+    while (values < end)                                     /* 5 */
+    {                                                        /* 6 */
+        sum += *(values++);                                  /* 7 */
+    }                                                        /* 8 */
+    return sum;                                              /* 9 */
+}                                                            /* 10 */
 ```
 
 Notice we don't use an index variable any longer. Instead, we use the
@@ -186,40 +196,42 @@ in both `C` and `C++`. It is *similar in spirit* to this in `C++`:
 Here is a hand translation of the above `C` code for function `Sum()`:
 
 ```asm
-    .global Sum                                                    // 1 
-    .text                                                          // 2 
-    .align  4                                                      // 3 
+    .global Sum                                                // 1 
+    .text                                                      // 2 
+    .align  4                                                  // 3 
 
-//  x0 is the pointer to data                                      // 5 
-//  x1 is the length and is reused as `end`                        // 6 
-//  x2 is the sum                                                  // 7 
-//  x3 is the current dereferenced value                           // 8 
+//  x0 is the pointer to data                                  // 5 
+//  x1 is the length and is reused as `end`                    // 6 
+//  x2 is the sum                                              // 7 
+//  x3 is the current dereferenced value                       // 8 
 
-Sum:                                                               // 10 
-    mov     x2, xzr                                                // 11 
-    add     x1, x0, x1, lsl 3                                      // 12 
-    b       2f                                                     // 13 
+Sum:                                                           // 10 
+    mov     x2, xzr                                            // 11 
+    add     x1, x0, x1, lsl 3                                  // 12 
+    b       2f                                                 // 13 
 
-1:  ldr     x3, [x0], 8                                            // 15 
-    add     x2, x2, x3                                             // 16 
-2:  cmp     x0, x1                                                 // 17 
-    blt     1b                                                     // 18 
+1:  ldr     x3, [x0], 8                                        // 15 
+    add     x2, x2, x3                                         // 16 
+2:  cmp     x0, x1                                             // 17 
+    blt     1b                                                 // 18 
 
-    mov     x0, x2                                                 // 20 
-    ret                                                            // 21 
-
-    .end                                                           // 23 
+    mov     x0, x2                                             // 20 
+    ret                                                        // 21 
+`
+    .end                                                       // 23 
 ```
 
 Recall that `Sum(long * values, long length)` means that `x0` has the
 address of the first long in the array.
 
 * We know it's an `x` register because it is an address.
+
 * We know it is the `0` register because it is the first argument.
 
 `x1` contains `length`.
 
 * We know it is an `x` register because it is a `long`.
+
 * We know it is the `1` register because it is the second argument.
 
 `Line 11` shows the first use of a "zero register," in this case `xzr`.
@@ -253,14 +265,14 @@ code is written. We saw how this can save an instruction
 (dereference) but also the *post increment* of the pointer.
 
 ```c
-    sum += *(values++);                                                 /* 7 */
+    sum += *(values++);                                     /* 7 */
 ```
 
 is implemented by both `lines 15` and `16` in the assembly language.
 
 ```asm
-1:  ldr     x3, [x0], 8                                                 // 15 
-    add     x2, x2, x3                                                  // 16 
+1:  ldr     x3, [x0], 8                                     // 15 
+    add     x2, x2, x3                                      // 16 
 ```
 
 `Line 17` compares the pointer to where we are now in the array to the
@@ -294,9 +306,9 @@ is a multiple of 8. This will become apparent when we discuss `structs`.
 
 ### Faster Memory Copy
 
-This is a heavily contrived example. In reality it is a fun challenge to
-write an optimal general purpose `memcpy` function. Or, you can just use
-`memcpy`.
+This is a *heavily* contrived example. In reality it is a fun challenge
+to write an optimal general purpose `memcpy` function. Or, you can just
+use `memcpy`.
 
 For the purposes of this discussion, ignore issues relating to
 alignment.
