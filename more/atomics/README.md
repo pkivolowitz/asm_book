@@ -189,9 +189,11 @@ addition, subtraction and various bitwise operations. These will be
 described below.
 
 For ARMv8 and for later ARM versions (to perform operations other than
-those listed above), there is a general solution that isn't pretty. It
-is an example of Load Linked / Store Conditional. It isn't pretty
-because it involves a loop.
+those listed above), there is a general solution: an is an example of
+Load Linked / Store Conditional. It involves a loop but starvation is
+unlikely because a rescheduled thread is unlikely to be descheduled
+again within the same loop owing to the relatively long time alloted
+to each freshly scheduled entity.
 
 ```asm
         .text                                                 // 1 
@@ -217,8 +219,9 @@ The conditional assembly block from line 4 through line 10 declare the
 label `LoadLinkedStoreConditional` as global for both Linux and Apple
 assemblers. The label itself is also stated.
 
-It is worth explaining that labels marked as global must have an
-underscore prefix for Apple assembly.
+Labels marked as global must have an underscore prefix for Apple
+assembly. This code does not make use of the macro package we have
+written for sake of brevity and clarity.
 
 This function is passed the address of an `int32_t`.
 
@@ -232,8 +235,8 @@ Line 13 puts the potato on the fork. It is a store conditional which may
 or may not actually write anything to memory.
 
 To understand this instruction, [Kristien et
-al](../../reference_material/USENIX2020.pdf) et al. provide this
-amazingly helpful picture:
+al](../../reference_material/USENIX2020.pdf) et al. provide this helpful
+picture:
 
 ![llsc](./llsc.png)
 
@@ -245,16 +248,21 @@ Imagine the following:
 | T1 | T2 |
 | -- | -- |
 | Executes line 11. Gets value *N*. Location is marked. | |
-| T1 is descheduled. | |
-| | Executes line 11. Gets value *N*. Location is marked again. |
+| T1 is descheduled. The code to implement the context switch clears the watch.| |
+| | Executes line 11. Gets value *N*. Location is marked. |
 | | `w1` goes up to *N + 1* on line 12. |
-| | Line 13 succeeds in storing *N + 1* to memory and <br/> the location marking is cleared |
+| | Line 13 succeeds in storing *N + 1* to memory and the location marking is cleared |
 | | T2 is descheduled. |
 | T1 is scheduled - recall it has stale values. | |
 | Executes line 12 making *N + 1* which is now wrong. | |
 | Executes line 13 which fails because the marking is now gone. | |
 | Loops around, this time picking up *N + 1* | |
 | Correctly makes *N + 2* | |
+
+Switching contexts is but one of the ways in which any watches held by
+the descheduled thread are cleared. This is OK and causes the thread to
+loop when it is rescheduled. It is likely to succeed the next time
+around.
 
 ## Implementation of ARMv8.1A and Newer
 
