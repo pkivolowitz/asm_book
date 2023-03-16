@@ -276,7 +276,6 @@ knowledge - how cool is that!
 | 8b | [Defining](./section_1/structs/defining.md) | [Link](./section_1/structs/defining.pdf) |
 | 8c | [Using](./section_1/structs/using.md) | [Link](./section_1/structs/using.pdf) |
 |  9 | [`const`](./section_1/const/README.md) | [Link](./section_1/const/README.pdf) |
-|  10 | [Casting](./section_1/casting/README.md) | [Link](./section_1/casting/README.pdf) |
 
 ### Section 2 - Floating Point
 
