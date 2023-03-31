@@ -149,3 +149,8 @@ main:
         .p2align    2
 \label: .asciz      "\string"
 .endm
+
+.macro  MOD         src_a, src_b, dest, scratch
+        sdiv        \scratch, \src_a, \src_b
+        msub        \dest, \scratch, \src_b, \src_a
+.endm
