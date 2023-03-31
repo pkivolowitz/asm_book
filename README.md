@@ -319,6 +319,7 @@ In this section, we present miscellaneous material.
 | 5 | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
 | 6 | [Calling Assembly Language From Python](./python/) | [Link](./python/README.pdf) |
 | 7 | [Atomic Operations](./more/atomics/README.md) | [Link](./more/atomics/README.pdf) |
+| 8 | [Jump Tables](./more/jump_tables/README.md) | [Link](./more/jump_tables/README.pdf) |
 
 ## Macro Suite
 
