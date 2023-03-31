@@ -148,6 +148,14 @@ main:
 .macro  AASCIZ      label, string
         .p2align    2
 \label: .asciz      "\string"
+<<<<<<< HEAD
+.endm
+
+.macro  MOD         src_a, src_b, dest, scratch
+        sdiv        \scratch, \src_a, \src_b
+        msub        \dest, \scratch, \src_b, \src_a
+=======
+>>>>>>> d64aed10129b1011df2b323fee667ec2a5eeab1b
 .endm
 
 .macro  MOD         src_a, src_b, dest, scratch
