@@ -158,34 +158,34 @@ etc.
 You can easily modify the above techniques to make something like:
 
 ```asm
-jt:     br       func_0
-        br       func_1
-        br       func_2
-        br       func_3
-        br       func_4
-        br       func_5
-        br       func_6
-        br       func_7
+jt:     bl       func_0
+        bl       func_1
+        bl       func_2
+        bl       func_3
+        bl       func_4
+        bl       func_5
+        bl       func_6
+        bl       func_7
 ```
 
 or:
 
 ```asm
-jt:     br       func_0
+jt:     bl       func_0
         b        common_label
-        br       func_1
+        bl       func_1
         b        common_label
-        br       func_2
+        bl       func_2
         b        common_label
-        br       func_3
+        bl       func_3
         b        common_label
-        br       func_4
+        bl       func_4
         b        common_label
-        br       func_5
+        bl       func_5
         b        common_label
-        br       func_6
+        bl       func_6
         b        common_label
-        br       func_7
+        bl       func_7
         b        common_label
         // perhaps some loop control... if none, the preceding
         // b can be removed since can fall through to the common
