@@ -14,7 +14,7 @@ The
 
 [Duff's Device](https://en.wikipedia.org/wiki/Duff%27s_device) shoe
 horned a jump table into the middle of a `while` loop. At the same
-time, it also correctly demonstrates a simple case of *loop unrolling*.
+time, it also demonstrates a simple case of *loop unrolling*.
 It's very creative.
 
 Let's expand on Duff's Device.
@@ -68,7 +68,9 @@ If the result of the `mod` is 0, then the entire table must be executed.
 This is implemented by the `cbz`.
 
 If the result of the `mod` is not 0, then its value must be *flipped*.
-This is the `sub` instruction. See the comment above.
+This is the `sub` instruction. See the comment above. The idea here is
+that if the result of the mod is 5, for example, then the flipped value
+is 3 - this is the number of stragglers left over from full loops of 8.
 
 Finally, we have the computation of the address to where we jump into
 the middle of the table.
@@ -206,7 +208,13 @@ potential indexes are 0 through 6 inclusive and then 8 but never
 In a `switch` statement, this would look like:
 
 ```c++
-switch (index) {
+/* 
+// Ensure index is a valid value before getting here. In this case the
+// valid range is 0 through 8 inclusive (a range of 9 values). To fill
+// out to the next power of 2 (which would be 16), one could put in
+// empty cases plus a default.
+*/
+switch (index & 0xF) {
     case 0: blah blah;
             break;
     case 1: blah blah;
