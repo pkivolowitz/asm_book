@@ -20,7 +20,7 @@ int main() {
 	unsigned char before = buffer[-1];
 	unsigned char after = buffer[BUFFER_SIZE];
 
-	MyMemSet(buffer, 0xF0, BUFFER_SIZE);
+	MyMemSet(buffer, 0xF0, 3);
     
 	if (before != buffer[-1])
 		printf("Bytes prior to buffer are smashed.\n");

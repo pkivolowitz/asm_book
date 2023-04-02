@@ -68,9 +68,10 @@ If the result of the `mod` is 0, then the entire table must be executed.
 This is implemented by the `cbz`.
 
 If the result of the `mod` is not 0, then its value must be *flipped*.
-This is the `sub` instruction. See the comment above. The idea here is
-that if the result of the mod is 5, for example, then the flipped value
-is 3 - this is the number of stragglers left over from full loops of 8.
+The idea here is that if the result of the mod is 5, for example, we
+have 5 stragglers. We want to execute 5 of the sequential instructions
+below. So, we want to jump 3 instructions into the table. Notice that
+3 is 8 - 5.
 
 Finally, we have the computation of the address to where we jump into
 the middle of the table.
@@ -88,9 +89,9 @@ macros*](./apple-linux-convergence.S). It loads the address of the
 beginning of the table.
 
 Next, the `add` instruction multiplies the flipped result of the `mod`
-by 4 (the length of one instruction) THEN adds it to the base address
-of the table. We have calculated *instruction addresses* exactly the
-way we would with array dereferences. Thank you John von Neumann.
+by 4 (the length of one instruction) THEN adds it to the base address of
+the table. We have calculated *instruction addresses* exactly the way we
+would with array dereferences. Thank you John von Neumann.
 
 Finally, we `br` which means branch to an address contained in a
 register.
@@ -120,12 +121,12 @@ you need three instructions per step: multiply by 12.
 
 Suppose some need 3 instruction and some need 2. You must handle this
 because using this technique requires that all steps in the sequence
-of steps must be the same length so that the address arithmetic holds.
+of steps must be the same length so that the address arithmetic works.
 
-Simply insert the occasional `nop` instruction in the indexes that are
-shorter than the others.
+To deal with some cases being shorter than others, insert the occasional
+`nop` instruction in the indexes that are shorter than the others.
 
-### Multiple Instructions by Branch Branch
+### Multiple Instructions by Branch / Branch
 
 Here's another [example of code](./jmptbl.s) that implements a branch or
 jump table:
@@ -141,23 +142,22 @@ jt:     b       0f
         b       7f
 ```
 
-You jump into the middle of the table and then immediately jump some
-place else. This is like:
+You jump into the middle of the table as per above and then immediately
+jump some place else. This is like:
 
 ```c
-if (blah) {
+if (index == 0) {
     blah
-} else if (blah) {
+} else if (index == 1) {
     blah
-} else if (blah) {
+} else if (index == 2) {
     blah
-}
-etc.
+} etc.
 ```
 
-### Multiple Instructions by Branch Call
+### Multiple Instructions by Branch / Call
 
-You can easily modify the above techniques to make something like:
+You can modify the above techniques to make something like:
 
 ```asm
 jt:     bl       func_0
@@ -170,7 +170,7 @@ jt:     bl       func_0
         bl       func_7
 ```
 
-or:
+or to be more similar to a `break` statement coming after each case:
 
 ```asm
 jt:     bl       func_0
@@ -189,14 +189,12 @@ jt:     bl       func_0
         b        common_label
         bl       func_7
         b        common_label
-        // perhaps some loop control... if none, the preceding
+
+        // perhaps  some  loop control... if none, the preceding
         // b can be removed since can fall through to the common
         // label.
-common:
+common_label:
 ```
-
-The above looks like a `switch` statement where each case is terminated
-with a `break` statement.
 
 ## Small Gaps in Sequential Indexes
 
@@ -253,7 +251,7 @@ b_table:    b       label0
             b       label8
 ```
 
-in a Duff's Device where you are executing sequential single
+in the style of Duff's Device where you are executing sequential single
 instructions, it might loop like this:
 
 ```asm
@@ -281,3 +279,19 @@ for (int i = 0; i <= 8; i++) {
     blah blah
 }
 ```
+
+## More about the `switch` statement
+
+`switch` statements are optimized using many techniques than suggested
+here. In fact, the implementation of optimized `switch` statements is
+fascinating. There might be:
+
+* binary searches for large numbers of cases
+
+* separation of ranges where each sub-range is optimized in a different
+way
+
+* degeneration into streams of if / else ifs
+
+and other techniques. The people who work on the compilers we take for
+granted really are due some respect and *free beer*.
