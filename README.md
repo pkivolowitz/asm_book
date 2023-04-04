@@ -308,7 +308,11 @@ What would a book about assembly language be without bit bashing?
 
 ### Section 4 - More Stuff
 
-In this section, we present miscellaneous material.
+In this section, we present miscellaneous material including our "world
+famous lecture" on debugging. This lecture has been invited at several
+colleges and universities. It is intended for audiences working with
+languages like C, C++ and assembly language but some of the lessons
+contained therein are applicable to all languages.
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
@@ -320,6 +324,7 @@ In this section, we present miscellaneous material.
 | 6 | [Calling Assembly Language From Python](./python/) | [Link](./python/README.pdf) |
 | 7 | [Atomic Operations](./more/atomics/README.md) | [Link](./more/atomics/README.pdf) |
 | 8 | [Jump Tables](./more/jump_tables/README.md) | [Link](./more/jump_tables/README.pdf) |
+| - | [Debugging Lecture](./debugging/Discourses%20and%20Dialogs%20on%20Debugging.pptx) | PPTX |
 
 ## Macro Suite
 
