@@ -20,30 +20,32 @@ To load a `float`, you could translate the value to binary and do
 as the following:
 
 ```asm
-        .text                                                       // 1 
-        .global main                                                // 2 
-        .align    2                                                 // 3 
-                                                                    // 4 
-main:   str        x30, [sp, -16]!                                  // 5 
-        ldr        s0, =0x3fc00000                                  // 6 
-        fcvt       d0, s0                                           // 7 
-        ldr        x0, =fmt                                         // 8 
-        bl         printf                                           // 9 
-        ldr        x30, [sp], 16                                    // 10 
-        mov        w0, wzr                                          // 11 
-        ret                                                         // 12 
-                                                                    // 13 
-        .data                                                       // 14 
-fmt:    .asciz    "%f\n"                                            // 15 
-        .end                                                        // 16 
+        .text                                                   // 1 
+        .global main                                            // 2 
+        .align    2                                             // 3 
+                                                                // 4 
+main:   str        x30, [sp, -16]!                              // 5 
+        ldr        s0, =0x3fc00000                              // 6 
+        fcvt       d0, s0                                       // 7 
+        ldr        x0, =fmt                                     // 8 
+        bl         printf                                       // 9 
+        ldr        x30, [sp], 16                                // 10 
+        mov        w0, wzr                                      // 11 
+        ret                                                     // 12 
+                                                                // 13 
+        .data                                                   // 14 
+fmt:    .asciz    "%f\n"                                        // 15 
+        .end                                                    // 16 
 ```
 
-The above code is found [here](./t.s).
+The above code is kind of found [here](./t.s) - the file is used
+for miscellaneous testing.
 
-`Line 6` puts the translated value of 1.5 into `s0` (since the value
-is a `float` it goes in an `s` register). The assembler performs some
-magic getting a 32 bit value seemingly fit into a 32 bit instruction.
-See [below](./literals.md#fitting-32-bits-into-a-32-bit-bag).
+`Line 6` puts the translated value of 1.5 into `s0` (since we are
+thinking of the value as a `float` it goes in an `s` register). The
+assembler performs some magic getting a 32 bit value seemingly fit into
+a 32 bit instruction. See
+[below](./literals.md#fitting-32-bits-into-a-32-bit-bag).
 
 `Line 7` converts the single precision number into a double precision
 number for printing.
@@ -136,6 +138,9 @@ Cool huh?
 
 ## Fitting 32 bits into a 32 bit bag
 
+**This section is currently LINUX-centric - in the future it will
+address both native Apple and Linux equally.***
+
 AARCH64 instructions are 32 bits in width. Yet, `line 6` from
 [this](./t.s) program reads:
 
@@ -195,15 +200,16 @@ Scan downward to find `0x7a0`:
    0x7a0 <main+32>         .inst   0x3fc00000 ; undefined  
 ```
 
-Hey look! Here's our literal float. The `.inst` is an ARM
-specific GNU assembler directive what allows the programmer
-to encode their own instruction. Note, the encoded instruction does not
-have to make any sense - instead the compiler has emitted a make believe
-instruction that happens to have the value of our literal.
+Hey look! Here's our literal float. The `.inst` is an ARM specific GNU
+assembler directive says: `¯\_(-)_/¯`.
+
+Note, the encoded "instruction" does not have to make any sense -
+instead the compiler has emitted a make believe instruction that happens
+to have the value of our literal.
 
 What we're seeing the actual `line 6` doing is reaching ahead a short
-distance to load the value of another "instruction" when really it is
-our constant.
+distance to load the value of another location in memory where our
+constant is really found.
 
 Let us take this explanation further. Notice we see:
 
