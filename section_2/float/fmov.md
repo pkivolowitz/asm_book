@@ -2,26 +2,22 @@
 
 The `fmov` instruction is used to move floating point values in and out
 of floating point registers and to some degree, moving data between
-integer and floating point registers. 
+integer and floating point registers.
 
 ## Loading Floating Point Numbers as Immediate Values
 
-Just as we saw with integer
-registers, some values can be used as immediate values and some cannot.
+Just as we saw with integer registers, some values can be used as
+immediate values and some cannot. It comes down to how many bits are
+necessary to encode the value. Too many bits... not enough room to fit
+in a 4 byte instruction plus the opcode.
 
 For example, this works:
 
-`mov    x0, 65536`
+`mov    x0, 65535`
 
 but this does not:
 
 `mov    x0, 65537`
-
-The reason is that all AARCH64 instructions must fit within a 32 bit
-instruction that must hold the instruction's op code, its flags and
-other bits and bobs plus any immediate value. In the above example we
-can see that the `mov` instruction provides up to 16 bits for an
-immediate value.
 
 The constraints placed on immediate values for `fmov` are much tighter
 because floating point numbers are far more complex than integers.
@@ -40,7 +36,7 @@ Let's take a look at some code:
         fmov        d0, 1.96875     // Zoinks!
 ```
 
-From this we can see that an immediate value for an `fmov` seems to have
+From this we can see that an immediate value for an `fmov` has
 4 bits available for the mantissa. In fact, the only values that work
 as immediate values will be those floating point values whose fractional
 values are combinations of:
@@ -56,6 +52,9 @@ values are combinations of:
 As far as exponents go, `fmov` can accommodate 3 bits. So, exponents of
 plus or minus 2**7 can be used.
 
+A sign bit makes the total number of bits available for immediate moves
+to be 8.
+
 ## Loading / Storing Floating Point Numbers in General
 
 When in doubt, load fixed floating point numbers from memory. This is
@@ -64,11 +63,16 @@ covered [in this chapter](./literals.md).
 ## SIMD
 
 `fmov` can also deal with the more complicated special cases induced by
-SIMD instructions.
+SIMD instructions. `fmov` is able to move values between the various
+register widths such as single precision to double precision. **However,
+no conversion of value is performed - `fmov` just copies bits.**
+
+If you need to change the precision of a floating point value, the
+`fcvt` family of instructions must be used instead.
 
 ## Movement To / From Integer Registers
 
-`fmov` can *bits* between the integer and floating point registers. We
-emphasize the *bits*. No conversions are done using `fmov`. There exist
-other instructions for that. See [this chapter](./rounding.md) for more
-information.
+`fmov` can copy *bits* between the integer and floating point registers.
+We emphasize the *bits*. No conversions are done using `fmov`. There
+exist other instructions for that. See [this chapter](./rounding.md) for
+more information.

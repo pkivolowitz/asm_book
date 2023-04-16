@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-double pi = 3.14159265359;
+double pi = 3.14159265358979323846;
 
 double D2R(double d) {
     return d * pi / 180.0;
 }
 
-long Factorial(int n) {
+double Factorial(int n) {
     long retval = 1;
 
     if (n > 0) {
@@ -15,7 +16,7 @@ long Factorial(int n) {
             retval = retval * n--;
         }
     }
-    return retval;
+    return (double) retval;
 }
 
 double IntegerPower(double b, int e) {
@@ -48,20 +49,20 @@ int main(int argc, char ** argv) {
 
     double r_angle = D2R(angle);
 
+    double toggle = 1.0;
     for (int term = 0, base = 1; term < terms; term++, base += 2) {
-        double toggle = (term & 1) ? -1.0 : 1.0;
-
+		if (toggle > 0) {
+			printf("%+03.8e + %+03.8e / %+03.8e [term %2d is %+03.8e]\n", sin, IntegerPower(r_angle, base),
+				   Factorial(base), term + 1, toggle * IntegerPower(r_angle, base) / Factorial(base));
+		} else {
+			printf("%+03.8e - %+03.8e / %+03.8e [term %2d is %+03.8e]\n", sin, IntegerPower(r_angle, base),
+				   Factorial(base), term + 1, toggle * IntegerPower(r_angle, base) / Factorial(base));
+		}
 		sin += toggle *
 			   IntegerPower(r_angle, base) / Factorial(base);
-        /*
-		if (toggle > 0) {
-			printf("adding      %d p/b intermediate: %f\n", base, sin);
-		} else {
-			printf("subtracting %d p/b intermediate: %f\n", base, sin);
-		}
-        */
+        toggle = toggle * -1;
 	}
-	printf("The sine of %.2f degrees is %f in radians.\n", angle, sin);
+	printf("The sine of %0.4f degrees is %0.10f.\n", angle, sin);
 
     return 0;
 }
