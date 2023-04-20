@@ -316,15 +316,16 @@ contained therein are applicable to all languages.
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
-| 1 | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
-| 2 | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
-| 3 | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
-| 4 | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
-| 5 | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
-| 6 | [Calling Assembly Language From Python](./python/) | [Link](./python/README.pdf) |
-| 7 | [Atomic Operations](./more/atomics/README.md) | [Link](./more/atomics/README.pdf) |
-| 8 | [Jump Tables](./more/jump_tables/README.md) | [Link](./more/jump_tables/README.pdf) |
-| 9 | [argv](./more/argv_example/jess1.S) | ASM CODE |
+| 1  | [Apple Silicon](./more/apple_silicon/README.md) | [Link](./more/apple_silicon/README.pdf) |
+| 2  | [Apple / Linux Convergence](./macros) | [Link](./macros/README.pdf) |
+| 3  | [Variadic Functions](./more/varargs/README.md) | [Link](./more/varargs/README.pdf) |
+| 4  | [Under the hood: System Calls](./more/system_calls/README.md) | [Link](./more/system_calls/README.pdf) |
+| 5  | [Determining string literal lengths for C functions](./more/strlen_for_c/README.md) | [Link](./more/strlen_for_c/README.pdf) |
+| 6  | [Calling Assembly Language From Python](./python/) | [Link](./python/README.pdf) |
+| 7  | [Atomic Operations](./more/atomics/README.md) | [Link](./more/atomics/README.pdf) |
+| 8  | [Jump Tables](./more/jump_tables/README.md) | [Link](./more/jump_tables/README.pdf) |
+| 9  | [argv](./more/argv_example/jess1.S) | ASM CODE |
+| 10 | [spin-locks](./more/spin-lock/) | [Link](./more/spin-lock/README.pdf) |
 | - | [Debugging Lecture](./debugging/Discourses%20and%20Dialogs%20on%20Debugging.pptx) | PPTX |
 
 ## Macro Suite
