@@ -105,25 +105,24 @@ Bummer.
 Here is the source code to the spin-lock for ARM V8.
 
 ```text
-#if defined(__APPLE__)                                            // 1 
-_Lock:                                                            // 2 
-#else                                                             // 3 
-Lock:                                                             // 4 
-#endif                                                            // 5 
-        START_PROC                                                // 6 
-1:      ldaxr       w1, [x0]                                      // 7 
-        cbnz        w1, 1b          // lock taken - spin.         // 8 
-        add         w1, w1, 1                                     // 9 
-        stlxr       w2, w1, [x0]                                  // 10 
-        cbnz        w2, 1b          // shucks - somebody meddled. // 11 
-        // considered using dmb here                              // 12 
-        ret                                                       // 13 
-        END_PROC                                                  // 14
+#if defined(__APPLE__)                                             // 1 
+_Lock:                                                             // 2 
+#else                                                              // 3 
+Lock:                                                              // 4 
+#endif                                                             // 5 
+        START_PROC                                                 // 6 
+        mov         w3, 1                                          // 7 
+1:      ldaxr       w1, [x0]                                       // 8 
+        cbnz        w1, 1b          // lock taken - spin.          // 9 
+        stlxr       w2, w3, [x0]                                   // 10 
+        cbnz        w2, 1b          // shucks - somebody meddled.  // 11 
+        ret                                                        // 12 
+        END_PROC                                                   // 13
 ```
 
-Once again, line 7 does a `ldaxr` dereferencing the lock itself (once
-again an `int32_t`) and marks the location of the lock as being
-hopefully, exclusive.
+Line 8 does a `ldaxr` dereferencing the lock itself (once again an
+`int32_t`) and marks the location of the lock as being hopefully,
+exclusive.
 
 Having gotten the value of the lock, on line 8, its value is inspected
 and if found to be non-zero, we branch back to attempting to get it
@@ -149,7 +148,7 @@ Unlock:                                                           // 4
 #endif                                                            // 5 
         START_PROC                                                // 6 
         str         wzr, [x0]                                     // 7 
-        // considered using dmb here                              // 8 
+        dmb         ish                                           // 8 
         ret                                                       // 9 
         END_PROC                                                  // 10
 ```
@@ -158,6 +157,12 @@ All it does is set to value of the lock to zero. The correct operation
 of the lock requires that no bad actor simply stomps on the lock by
 calling `Unlock` without first owning the lock. Just say no to lock
 stompers.
+
+Line 8 sets up a data memory barrier across each processor - it makes
+sure threads running on different cores see the update correctly. This
+code seemed to work without this line but intuition suggests it could
+be important. In `Lock()` the `stlxr` instruction has an implied data
+memory barrier.
 
 Please see the source code located [here](./spin_lock.S) for some
 additional comments regarding the implementation.

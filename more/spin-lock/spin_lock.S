@@ -33,7 +33,6 @@ Lock:
         cbnz        w1, 1b          // lock taken - spin.
         stlxr       w2, w3, [x0]
         cbnz        w2, 1b          // shucks - somebody meddled.
-        // considered using dmb here
         ret
         END_PROC
 
@@ -44,7 +43,7 @@ Unlock:
 #endif
         START_PROC
         str         wzr, [x0]
-        // considered using dmb here
+        dmb         ish             // ensure all cores are aware.
         ret
         END_PROC
 
