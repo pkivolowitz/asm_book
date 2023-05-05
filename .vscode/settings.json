@@ -76,6 +76,7 @@
 	"files.associations": {
         "ostream": "cpp",
         "iomanip": "cpp",
-        "atomic": "cpp"
+        "atomic": "cpp",
+        "unistd.h": "c"
     }
 }
