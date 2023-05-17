@@ -275,6 +275,7 @@ knowledge - how cool is that!
 | 8a | [Alignment](./section_1/structs/alignment.md) | [Link](./section_1/structs/alignment.pdf) |
 | 8b | [Defining](./section_1/structs/defining.md) | [Link](./section_1/structs/defining.pdf) |
 | 8c | [Using](./section_1/structs/using.md) | [Link](./section_1/structs/using.pdf) |
+| 8d | [What is "this"](./section_1/structs/this.md) | [Link](./section_1/structs/this.pdf) |
 |  9 | [`const`](./section_1/const/README.md) | [Link](./section_1/const/README.pdf) |
 
 ### Section 2 - Floating Point
@@ -410,7 +411,7 @@ please reach out.
 
 Also, check out [Get Off My
 L@wn](https://www.amazon.com/Get-Off-My-Zombie-Novel-ebook/dp/B00DQ26J8G),
-a Zombie novel for coders. 
+a Zombie novel for coders.
 
 You read that right... elite programmer Doug Handsman retires to his
 wife Ruth Ann's native northern Wisconsin. And then, well, the

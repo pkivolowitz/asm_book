@@ -62,9 +62,9 @@ If they don't mind writing code that's buggy, that is.
 
 ```c
 struct {
-	long a;
-	short b;
-	int c;
+    long a;
+    short b;
+    int c;
 };
 ```
 
@@ -91,9 +91,9 @@ Given this:
 
 ```c
 struct Foo {
-	long a;
-	short b;
-	int c;
+    long a;
+    short b;
+    int c;
 };
 
 struct Foo Bar = { 0xaaaaaaaaaaaaaaaa, 0xbbbb, 0xcccccccc };
@@ -114,9 +114,9 @@ Given this:
 
 ```c
 struct Foo {
-	short a;
-	char b;
-	int c;
+    short a;
+    char b;
+    int c;
 };
 
 struct Foo Bar = { 0xaaaa, 0xbb, 0xcccccccc };
@@ -173,4 +173,3 @@ Transpose the two 2 byte groups:
 The discussion on little endian is important if you are
 looking directly at the contents of memory, like when you
 are using `gdb`.
-
