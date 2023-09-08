@@ -45,44 +45,25 @@ an outsized role in determining how assembly language programs are
 constructed. A "calling convention" refers to how functions are called
 and how parameters are passed.
 
-In this book we will use the ARM LINUX conventions. This means:
+Originally, this book taught only the ARM LINUX conventions. However,
+over time, we developed a suite of macros that make it much easier to
+write code once and use it on MacOS or on LINUX.
 
-* You *may* need to run a ARM Linux VM on the Macintosh - even on
-  ARM-based Macs. Why? Apple uses a different calling convention. Keep
-  reading before you get upset.
+The macros are a work in progress. [This link](./macros/) will lead to a
+current copy of them as well as documentation. Macros that make
+programming a bit easier are also included.
 
-  The convention used in this book should work on all ARM Linux
-  machines while the Apple calling convention is specific to Apple
-  Silicon-based machines.
-
-  This necessity for a VM even when running on an Apple Silicon machine
-  did not sit well with some, who made this criticism known. We assessed
-  this to be a valid and constructive criticism and have responded.
-  
-  We now have a chapter devoted to bringing Linux and Apple code
-  together to the degree possible.
-  
-  * The macros are a work in progress. [This link](./macros/) will lead
-    to a current copy of them as well as documentation. Macros that make
-    programming a bit easier are also included.
-
-  * [This chapter](./more/apple_silicon/) provides some additional
-    information about Apple Silicon assembly language programming.
-
-* You will need to run WSL (Windows Subsystem for Linux) on ARM-based
-  Windows machines. These do exist!
-
-* You will need to run an ARM Linux VM on x86-based Windows machines.
-  This is true even if you are on an ARM-based Windows machine as there
-  are so many differences between a Unix-like environment and Windows.
+[This chapter](./more/apple_silicon/) provides some additional
+information about Apple Silicon assembly language programming.
 
 You'll notice that we make use of the C-runtime directly rather than
 make OS system calls. So, for instance, if we want to call `write()`,
-we call `write` from the assembly language. This version of the system
-call `write` is a wrapper function built into the C-runtime (CRT) which
-handles the lower level details of performing a system call. See the
-[here](./more/system_calls/README.md) on what actually happens inside
-these wrapper functions.
+we call `write` from the assembly language. 
+
+This version of the system call `write` is a wrapper function built into
+the C-runtime (CRT) which handles the lower level details of performing
+a system call. See the [here](./more/system_calls/README.md) on what
+actually happens inside these wrapper functions.
 
 The benefit of using the CRT wrappers is that there are details,
 explained in the chapter, that differ from system to system and
