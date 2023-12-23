@@ -86,17 +86,18 @@ knowledge - how cool is that!
 | .... b | [.... Load and Store](./section_1/regs/ldr.md) |
 | .... c | [.... More About `ldr`](./section_1/regs/ldr2.md) |
 | .... d | [.... Register Sizes](./section_1/regs/widths.md) |
-| 5 | Functions |
+| 5 | [`switch`](./section_1/jump_tables/README.md) |
+| 6 | Functions |
 | .... a | [.... Calling and Returning](./section_1/funcs/README.md) |
 | .... b | [.... Passing Parameters](./section_1/funcs/README2.md) |
 | .... c | [.... Calling common C runtime functions](./section_1/funcs/README3.md) |
-| 6 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
-| 7 | Structs |
+| 7 | [FizzBuzz - a Complete Program](./section_1/fizzbuzz/README.md) |
+| 8 | Structs |
 | .... a | [.... Alignment](./section_1/structs/alignment.md) |
 | .... b | [.... Defining](./section_1/structs/defining.md) |
 | .... c | [.... Using](./section_1/structs/using.md) |
-|  8 | [`const`](./section_1/const/README.md)
-|  9 | [Casting](./section_1/casting/README.md) |
+|  9 | [`const`](./section_1/const/README.md)
+|  10 | [Casting](./section_1/casting/README.md) |
 
 ## Section 2 - Floating Point
 
@@ -106,7 +107,7 @@ own section:
 
 | Chapter | Content |
 | ------- | ------- |
-| 10 | Floating Point |
+| 1 | Floating Point |
 | .... a | [.... What Are Floating Point Numbers?](./section_2/float/what.md)
 | .... b | [.... Registers (simplified)](./section_2/float/working.md)
 | .... c | [.... Literals](./section_2/float/literals.md)
@@ -122,7 +123,7 @@ What would a book about assembly language be without bit bashing?
 
 | Chapter | Content |
 | ------- | ------- |
-| 11 | Bit Fields |
+| 1 | Bit Fields |
 | .... a | [.... Without Bit Fields](./section_3/bitfields/README.md) |
 | .... b | [.... With Bit Fields](./section_3/bitfields/with.md) |
 | .... c | [.... Review of Newly Described Instructions](./section_3/bitfields/review.md)
