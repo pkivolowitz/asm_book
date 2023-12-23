@@ -1,4 +1,4 @@
-# Section 1 / Registers (Simplified)
+# Section 2 / Registers (Simplified)
 
 ## Overview
 

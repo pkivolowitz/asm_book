@@ -1,4 +1,4 @@
-# Section 2 / Bit Fields / Review of Newly Described Instructions
+# Section 3 / Bit Fields / Review of Newly Described Instructions
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# Section 1 / Conversion of Floating Point and Integers
+# Section 2 / Conversion of Floating Point and Integers
 
 This chapter has been surprisingly difficult to research and write. Huh?
 All we're talking about is taking a floating point value and turning it

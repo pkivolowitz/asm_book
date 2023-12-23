@@ -1,4 +1,4 @@
-# Section 1 / Floating Point Literals
+# Section 2 / Floating Point Literals
 
 Recall that all AARCH64 instructions are 4 bytes long. Recall also that
 this means that there are constraints on what can be specified as a

@@ -1,4 +1,4 @@
-# Section 1 / What Are Floating Point Numbers?
+# Section 2 / What Are Floating Point Numbers?
 
 Before we introduce floating point instructions in the AARCH64 ISA, it is
 worth going over exactly what a floating point value is. Integers are easy.

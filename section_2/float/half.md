@@ -1,4 +1,4 @@
-# Section 1 / Half Precision Floats
+# Section 2 / Half Precision Floats
 
 TL;DR - don't use these in C and C++ without being willing to wade
 through a great deal of muck. In assembly language, it is more 

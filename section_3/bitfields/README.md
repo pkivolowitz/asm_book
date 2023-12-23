@@ -1,4 +1,4 @@
-# Section 2 / Bit Fields / Without Bit Fields
+# Section 3 / Bit Fields / Without Bit Fields
 
 ## Overview
 
