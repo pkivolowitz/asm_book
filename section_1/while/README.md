@@ -2,13 +2,20 @@
 
 ## Overview
 
-We have already [covered](../if/README.md) the `if` statement. A `while` loop is exactly the same with the addition of at least one branch and a label. It really is that simple.
+We have already [covered](../if/README.md) the `if` statement. A `while`
+loop is exactly the same with the addition of at least one branch and a
+label. It really is that simple.
 
-To illustrate this, here is a flow chart of an `if` statement (on the left) compared to a `while` loop (on the right).
+To illustrate this, here is a flow chart of an `if` statement (on the
+left) compared to a `while` loop (on the right).
 
 ![while loop](./while.jpeg)
 
-The closing brace in an `if` statement is indicated by the red arrow head. This isn't a branch, the code flow simply falls through to the statement beyond the closing brace. In the `while` loop, the behavior of the closing brace changes to be that of a branch back to just before the evaluation of the boolean condition (the "Decision").
+The closing brace in an `if` statement is indicated by the red arrow
+head. This isn't a branch, the code flow simply falls through to the
+statement beyond the closing brace. In the `while` loop, the behavior of
+the closing brace changes to be that of a branch back to just before the
+evaluation of the boolean condition (the "Decision").
 
 A new label is placed before evaluating the "Decision".
 
@@ -18,7 +25,7 @@ For review, consider this C or C++ code:
 
 ```c
 if (a >= b) {
-	// CODE BLOCK
+    // CODE BLOCK
 }
 ```
 
@@ -37,34 +44,41 @@ Now, consider this `while` loop:
 
 ```c
 while (a >= b) {
-	// CODE BLOCK
+    // CODE BLOCK
 }
 ```
 
-Here is the code for the `while` showing the addition of one new label and one new unconditional branch:
+Here is the code for the `while` showing the addition of one new label
+and one new unconditional branch:
 
 ```asm
     // Assume value of a is in x0                                       // 1 
     // Assume value of b is in x1                                       // 2 
                                                                         // 3 
  1: cmp     x0, x1                                                      // 4 
-    ble     2f                                                          // 5 
+    bgt     2f                                                          // 5 
     // CODE BLOCK                                                       // 6 
     b       1b                                                          // 7 
                                                                         // 8 
 2:                                                                      // 9 
 ```
 
-Temporary label `2` on `line 9` takes the place of the line after the closing brace in a `while` loop.
+Temporary label `2` on `line 9` takes the place of the line after the
+closing brace in a `while` loop.
 
-Temporary label `1` on `line 4` is the end point of the red arrow in the right hand
-flow chart above.
+Temporary label `1` on `line 4` is the end point of the red arrow in the
+right hand flow chart above.
 
 ## Summary
 
-A `while` loop is an extension of the `if` statement. A simple `if` contains one conditional branch and one label.
+A `while` loop is an extension of the `if` statement. A simple `if`
+contains one conditional branch and one label.
 
-A `while` loop contains at least two labels, one conditional branch and one unconditional branch. We acknowledge the possibility that the unconditional branch could be made a conditional one, but this is rarely done in assembly language and impossible in higher level languages like C and C++ since the branch is simply the closing `}`.
+A `while` loop contains at least two labels, one conditional branch and
+one unconditional branch. We acknowledge the possibility that the
+unconditional branch could be made a conditional one, but this is rarely
+done in assembly language and impossible in higher level languages like
+C and C++ since the branch is simply the closing `}`.
 
 ## Questions
 

@@ -2,7 +2,8 @@
 
 In this chapter we build the classic tech interview question: FizzBuzz.
 
-The idea is simple. Write a program that enumerates the integers from 0 to some stopping value, perhaps 100.
+The idea is simple. Write a program that enumerates the integers from 0
+to some stopping value, perhaps 100.
 
 For each integer:
 
@@ -45,7 +46,6 @@ language.
 
 [Here is the source code](./fizzbuzz.s).
 
-The video is long but there is much benefit to be had by watching
-and listening to another person's process as they write the code.
-**AND especially** listening and watching to them debug when 
-things go wrong!
+The video is long but there is much benefit to be had by watching and
+listening to another person's process as they write the code. **AND
+especially** listening and watching to them debug when things go wrong!

@@ -22,12 +22,11 @@ void Const1() {                                                         // 3
 
 it is the C++ compiler that enforces the immutable nature of `foo`.
 Looking at the assembly language that is produced from this C++ code,
-you will [see](./const_test.s) that `foo` is implemented like any other 
-variable. Once
-in assembly language you are behind the defenses of the compiler so
-to speak. You can modify a `const` local variable or parameter to your
-heart's content. Should you? That's another question. Will it cause harm?
-It depends.
+you will [see](./const_test.s) that `foo` is implemented like any other
+variable. Once in assembly language you are behind the defenses of the
+compiler so to speak. You can modify a `const` local variable or
+parameter to your heart's content. Should you? That's another question.
+Will it cause harm? It depends.
 
 ## What **IS** Enforced
 

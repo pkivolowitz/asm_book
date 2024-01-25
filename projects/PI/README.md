@@ -36,7 +36,7 @@ If the command line argument is *not* given, use a default of 100000.
 Remember that all AARCH64 instructions are 32 bits long. An implication of this is you can't simply do:
 
 ```text
-	mov			x0, 1000000
+    mov         x0, 1000000
 ```
 
 Since the constant cannot fit along with op codes into four bytes.

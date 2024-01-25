@@ -1,13 +1,16 @@
 {
 	"cSpell.words": [
         "AARCH",
+        "ackward",
         "argc",
         "argv",
         "asciz",
         "cbnz",
+        "CDLL",
         "cout",
         "csel",
         "dptr",
+        "DTMP",
         "FCVTAS",
         "fcvtz",
         "fildes",
@@ -23,6 +26,7 @@
         "lname",
         "lseek",
         "memcpy",
+        "orward",
         "pimm",
         "pseudocode",
         "regs",
@@ -35,6 +39,7 @@
         "strncpy",
         "struct",
         "structs",
+        "Woverflow",
         "wreg",
         "xreg"
     ],

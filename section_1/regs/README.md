@@ -16,7 +16,7 @@ determines how the register is interpreted.
 
 * The `x` registers are for `long` integers and addresses.
 * The `w` registers are used for the narrower integer types. While `w`
-  stands for *word*, these registers are also used for `short` and 
+  stands for *word*, these registers are also used for `short` and
   `char`.
 
 The registers used for floating point types (and vector operations) are coincident:

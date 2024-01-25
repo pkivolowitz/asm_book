@@ -103,17 +103,17 @@ Breakpoint 1 at 0x798: file not_backing_up_x30.s, line 5.
 Starting program: /media/psf/Home/asm_book/section_1/funcs/a.out 
 
 Breakpoint 1, main () at not_backing_up_x30.s:5
-5	main:	ldr		x0, =hw
+5   main:   ldr     x0, =hw
 (gdb) n
-6			bl		puts
+6           bl      puts
 (gdb) n
 Hello World!
-7			ret
+7           ret
 (gdb) n
 ^C
 Program received signal SIGINT, Interrupt.
 main () at not_backing_up_x30.s:7
-7			ret
+7           ret
 ```
 
 The program hung and had to be killed with ^C. Why?

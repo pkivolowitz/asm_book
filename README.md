@@ -58,7 +58,7 @@ information about Apple Silicon assembly language programming.
 
 You'll notice that we make use of the C-runtime directly rather than
 make OS system calls. So, for instance, if we want to call `write()`,
-we call `write` from the assembly language. 
+we call `write` from the assembly language.
 
 This version of the system call `write` is a wrapper function built into
 the C-runtime (CRT) which handles the lower level details of performing

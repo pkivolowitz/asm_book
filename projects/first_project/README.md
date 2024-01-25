@@ -44,7 +44,7 @@ back "Foo" and a new line. Then I hit ^d so the program exited.
 
 ### From redirection
 
-An awsome feature of the command line is the ability to redirect input
+An awesome feature of the command line is the ability to redirect input
 and output. Since the program simply reads from `stdin`, and `stdin` can
 be redirected, you get this feature for free:
 

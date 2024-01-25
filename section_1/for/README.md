@@ -191,7 +191,7 @@ Compare `line 14` of the `break` example to the same line in the `continue` exam
 
 ## Summary
 
-`for` loops typically contain code ordering different from what one might expect. This is done to save an instruction within the loop. While this doesn't sound like much, consider the case where the loop is executed billions of times. In this case, saving one instruction per loop prevents the execution of a billion instructions. 
+`for` loops typically contain code ordering different from what one might expect. This is done to save an instruction within the loop. While this doesn't sound like much, consider the case where the loop is executed billions of times. In this case, saving one instruction per loop prevents the execution of a billion instructions.
 
 The shorter the code block is, the more important it is to save one instruction from within the loop.
 

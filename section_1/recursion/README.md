@@ -1,6 +1,6 @@
 # Section 1 - recursion
 
-Let it be said right from the start: 
+Let it be said right from the start:
 
 *Recursion in assembly language is not the ball of joy that it is in
 higher level languages*.
@@ -12,10 +12,10 @@ this example:
 
 ```c++
 unsigned int FibonacciInC(unsigned int nthNumber) {
-	if (nthNumber <= 1) {
-		return nthNumber;
-	}
-	return FibonacciInC(nthNumber - 1) + FibonacciInC(nthNumber - 2);
+    if (nthNumber <= 1) {
+        return nthNumber;
+    }
+    return FibonacciInC(nthNumber - 1) + FibonacciInC(nthNumber - 2);
 }
 ```
 

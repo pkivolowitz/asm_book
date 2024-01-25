@@ -12,8 +12,8 @@ A single particle looks like this:
 
 ```c++
 struct Particle {
-	int32_t line;
-	int32_t column;
+    int32_t line;
+    int32_t column;
 };
 ```
 
@@ -68,11 +68,11 @@ about writing this project.
 
 ```c++
 struct Particle {
-	int32_t line;
-	int32_t column;
-	void Step();
-	void Render();
-	void Reset();
+    int32_t line;
+    int32_t column;
+    void Step();
+    void Render();
+    void Reset();
 };
 ```
 
@@ -89,7 +89,7 @@ If the particle's `line` exceeds 24, the particle is `Reset()`.
 To draw a particle, `Move()` to its location then print a "\*" all
 without emitting a new line. Before printing the "\*", check to ensure
 both the `line` and `column` are within the boundaries of the default
-terminal window (i.e. line betweeb 1  and 24 and also column
+terminal window (i.e. line between 1  and 24 and also column
 between 1 and 80).
 If the particle's position is outside this range, don't print anything.
 
@@ -138,4 +138,3 @@ output to be flushed to the terminal.
 ## Solution
 
 The solution is [here](./main.s).
-

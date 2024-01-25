@@ -59,7 +59,8 @@ for `c`onsole `out`put. The angle brackets (`<` and `>`) indicate the
 include file `iostream` comes from a language or system supplied
 directory as opposed to an include file written by you.
 
-For an explanation of what an `include` file is and how it fits into the compilation workflow see [here](https://youtu.be/Iv3psS4n9j8).
+For an explanation of what an `include` file is and how it fits into the
+compilation workflow see [here](https://youtu.be/Iv3psS4n9j8).
 
 ### Line 3
 
@@ -221,6 +222,20 @@ fetch what is found at the address specified by `argv`".
 
 That, dear reader, is the address of the string of characters to be
 printed. Or, it is a NULL, telling us to stop.
+
+#### Style warning
+
+Many would argue that the post increment found within the sending of
+output to `cout` is bad style. We would count ourselves among those who
+would consider this ill-considered.
+
+Why? Because a print out isn't a likely place to expect to find
+something that changes the state of the program. The increment found
+here can be considered a *side effect*. Side effects are, in general,
+bad. Try to avoid them. Yes, they can make your code a few lines shorter
+but this comes at the expense of maintainability.
+
+So, do as we say, not as we did.
 
 ### Line 8
 
@@ -464,7 +479,8 @@ the assembly language this looks like:
 
 1. Load the memory address of x into a register.
 
-2. Go out to that memory address and fetch what it contains into a register (a dereference).
+2. Go out to that memory address and fetch what it contains into a
+   register (a dereference).
 
 3. Add one to that value (in the register).
 
@@ -771,7 +787,7 @@ main:
     ret                                                                
 
     .data
-HW: .asciz  "Hello, World"                                                                       
+HW: .asciz  "Hello, World"
     .end                                                              
 ```
 

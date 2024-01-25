@@ -35,7 +35,7 @@ should get a warning or an error. For example:
 test.c:61:12: warning: unsigned conversion from ‘int’ to ‘volatile unsigned char:5’ changes value from ‘345’ to ‘25’ [-Woverflow]
    61 |     bf.c = 345;
       |
-	              ^~~
+                  ^~~
 ```
 
 As for the assembly language that bit field will produce, it depends
@@ -54,4 +54,3 @@ store the byte containing our fields.
 Note that the C version of the bit field setters could be declared
 to be `inline` so that would be closer in performance to equivalent
 code written to use C / C++ bit fields.
-
