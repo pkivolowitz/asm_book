@@ -8,7 +8,7 @@ language.
 At the dawn of time, central processing units (CPUs) could operate upon
 memory directly as both were relatively the same speed. CPUs got smaller
 and faster, leaving the speed of memory in the dust but also memory got
-further and further away. 
+further and further away.
 
 A CPU might be on one board while RAM was on another board and had to be
 accessed over a shared bus. CPUs got still smaller and faster and might
@@ -117,14 +117,29 @@ Every instruction is specified by an mnemonic consisting of some letters
 which the *assembler* converts into numeric *op-codes*.
 
 Most (but not all) AARCH64 instructions have three *operands*. These
-are typically read backwards. For example:
+are read in the following way:
 
 ```asm
-    add    x0, x1, x2
+    op     ra, rb, rc
 ```
 
-means add the 64 bit integer in x2 to the 64 bit integer in x1 and write
-the result into x0.
+means:
+
+```asm
+    ra = rb op rc
+```
+
+For a concrete examples:
+
+```asm
+    sub    x0, x0, x1
+```
+
+means
+
+```asm
+    x0 = x0 - x1
+```
 
 An example of a two operand instruction is:
 
@@ -133,3 +148,94 @@ An example of a two operand instruction is:
 ```
 
 This means *copy* the 64 bit contents of x1 into the 64 bit register x0.
+
+Or:
+
+```asm
+    x0 = x1
+```
+
+## Mixing Register Types
+
+With few exceptions, different register types cannot be part of the same
+instruction. For example adding a 64 bit register to a 32 bit register
+cannot be done. For example:
+
+Given:
+
+```asm
+    mov    w0, 10       // puts 32 bit 10 in w0
+```
+
+You cannot do this:
+
+```asm
+    add    x1, w0, x1   // attempts to add w0 and x1 - BAD
+```
+
+But you can do this:
+
+```asm
+    add    x1, x0, x1   // This is fine
+```
+
+Putting a smaller-than-64-bit value into an integer register zeros out
+the higher order bits (ignoring the sign bit - explained later). So, you
+can safely view the x register when a value was placed into its
+corresponding w register.
+
+## Two Instructions for Dealing with Memory
+
+With minimal exception, the AARCH64 ISA permits operations to be
+performed only on data in registers. Two obvious instruction families
+are those for transferring data from RAM to register(s) and those for
+transferring data from register(s) to RAM.
+
+Both loading and storing instructions must specify:
+
+* The registers involved
+
+* The address in RAM involved (always held in an x register)
+
+Loading has the general form of:
+
+```asm
+    ldr    rn, [xm]
+```
+
+This is like:
+
+```c
+    type * ptr = some address;
+    type var;
+
+    var = *ptr;
+```
+
+Storing has the general form of:
+
+```asm
+   str   rn, [xm]
+```
+
+This is like:
+
+```c
+   type * ptr = some address;
+   type var;
+
+   *ptr = var;
+```
+
+The analogies are not exact but close.
+
+Pairs of registers can also be stored and loaded with the `stp` and
+`ldp` op codes.
+
+Post increment and decrement of the pointer is also supported.
+
+Pre increment and decrement of the pointer is also supported.
+
+## Now You Are Ready to Proceed
+
+Have fun!
