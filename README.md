@@ -233,6 +233,7 @@ knowledge - how cool is that!
 
 | Chapter | Markdown | PDF |
 | ------- | -------- | --- |
+| 0 | [Kickstart](./section_1/kickstart.md) | [Link](./section_1/kickstart.pdf) |
 | 1 | [Hello World](./section_1/hello_world/README.md) | [Link](./section_1/hello_world/README.pdf)  |
 | 2 | [If Statements](./section_1/if/README.md) | [Link](./section_1/if/README.pdf) |
 | 3 | Loops | |
