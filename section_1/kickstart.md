@@ -29,7 +29,12 @@ ARM processors are RISC processors (Reduced Instruction Set Computers).
 The rough idea behind RISC is to make instructions simpler so as to make
 room for more registers. AARCH64 (what we are studying) has a lot of
 registers. Thirty two integer registers and thirty two floating point
-registers. Also, there are thirty two vector or SIMD registers.
+registers.
+
+Also, the floating point registers can also serve as vector or SIMD
+registers (later).
+
+Certain registers are reserved for certain purposes (later).
 
 rn means register "of some type" number n.
 
