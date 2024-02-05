@@ -170,7 +170,7 @@ Somewhere inside the body of the loop, the value of `argv` will be
 changed. If it were not, the loop would not terminate (i.e. an *infinite
 loop*).
 
-#### Line 6 could be redone as a `for` loop
+#### Line 6 could be redone as a `for` loop in more than one way
 
 `Line 6` in this case could have been written using a `for` loop:
 
@@ -185,6 +185,15 @@ to be less than `4`). `index` would be used in figuring out which member
 of `argv` is examined in each loop. We claim `index` is unneeded in this
 case as we have a different way of moving through the `argv` array and,
 most importantly, knowing when to stop.
+
+Or, it could have been rewritten as a `for` loop in this way:
+
+```c++
+for (; argv; argv++)
+```
+
+which is almost identical to the `while` version with added benefit that
+the increment of the `argv` pointer is not a side effect.
 
 ### Line 7
 
@@ -236,6 +245,10 @@ bad. Try to avoid them. Yes, they can make your code a few lines shorter
 but this comes at the expense of maintainability.
 
 So, do as we say, not as we did.
+
+Putting the increment on its own line will make it more clear and remove
+it as a side effect making the code more maintainable. Or, you could use
+the `for` construction described [earlier](#line-6-could-be-redone-as-a-for-loop-in-more-than-one-way).
 
 ### Line 8
 
