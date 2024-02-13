@@ -30,7 +30,7 @@ precision floats within a single double precision floating point
 register.
 
 *NOTE NOTE NOTE* This must be fixed - the picture corresponds to the
-32 bit state - AARCH32![v](url)
+32 bit state - AARCH32!
 
 ![regs](./regs.png)
 
