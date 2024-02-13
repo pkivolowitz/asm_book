@@ -29,6 +29,9 @@ For example, in the following image, note the overlap of two single
 precision floats within a single double precision floating point
 register.
 
+*NOTE NOTE NOTE* This must be fixed - the picture corresponds to the
+32 bit state - AARCH32![v](url)
+
 ![regs](./regs.png)
 
 It is worth noting early and often that you should not mix dealing
