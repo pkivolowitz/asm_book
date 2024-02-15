@@ -16,7 +16,7 @@ be on one chip and RAM on another set of chips.
 
 The idea of registers were introduced a very long time ago as being
 super fast storage that is implemented directly in the CPU. Because they
-are within the CPU, distance isn't really an issue. Similarly, because
+are within the CPU, distance isn'tv really an issue. Similarly, because
 they are in the CPU, they operate as the speed of the CPU itself.
 
 Registers don't have addresses because they are not in memory. Instead
@@ -232,7 +232,7 @@ This is like:
    *ptr = var;
 ```
 
-The analogies are not exact but close.
+**The analogies are not exact but close.**
 
 Pairs of registers can also be stored and loaded with the `stp` and
 `ldp` op codes.

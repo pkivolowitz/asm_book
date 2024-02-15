@@ -29,15 +29,13 @@ For example, in the following image, note the overlap of two single
 precision floats within a single double precision floating point
 register.
 
-*NOTE NOTE NOTE* This must be fixed - the picture corresponds to the
-32 bit state - AARCH32!
+*NOTE NOTE NOTE* To keep to our promise of simplicity for now, consider
+only `B0`, `H0`, `S0` and `D0`. The remainder of the image ([from The
+Eclectic Light Company](https://eclecticlight.co/2021/08/23/code-in-arm-assembly-lanes-and-loads-in-neon/)) deals with SIMD, covered
+later.
 
-![regs](./regs.png)
+![regs](./simdlanes.jpg)
 
 It is worth noting early and often that you should not mix dealing
 with different precisions assuming that because of the overlaps in
 space, you'll get a meaningful result.
-
-The above image does not show the corresponding layout of [half
-precision](./half.md) floating point registers. `H0` sits in the least
- significant bits of `S0` and so on.
