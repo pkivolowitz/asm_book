@@ -1,21 +1,36 @@
-        .global		main
-        .text
-        .align		2
+#include "apple-linux-convergence.S"
 
-main:
-        str			x30, [sp, 16]!
+		GLABEL		main
+		.text
+		.p2align    2
 
-        ldr			x0, =fmt
-        ldr			x1, =Bar
-        ldrh		w2, [x1]
-        ldrb		w3, [x1, 2]
-        ldr			w4, [x1, 4]
-        bl			printf
-        
-        ldr			x30, [sp], 16
-        mov			w0, wzr
-        ret
+MAIN
+        PUSH_P      x29, x30
+        mov         x29, sp
 
-        .data
+		LLD_ADDR	x0, fmt
+		LLD_ADDR	x1, bar
+		ldrh		w2, [x1, 0]
+        ldrb        w3, [x1, 2]
+		ldr         w4, [x1, 4]
+#if defined(__APPLE__)
+        PUSH_P      x3, x4
+        PUSH_P      x1, x2
+        CRT         printf
+        add         sp, sp, 32
+#else
+		CRT         printf
+#endif	
+        POP_P       x29, x30
+		mov			w0, wzr
+		ret
 
-fmt:	.asciz		"%p a: 0x%x b: 0x%x c: 0x%x\n"
+		.data
+
+fmt:    .asciz      "%p a: 0x%lx b: %x c: %x\n"
+bar:    .short      0xaaaa 
+        .byte       0xbb
+        .byte       0               // padding
+        .word       0xcccccccc
+
+        .end
