@@ -2,14 +2,14 @@
 
 How parameters are passed to functions can be different from OS to OS.
 This chapter is written to the standard implemented for Linux. It
-differs from the **calling convention** used on, for example, the Mac in
-that parameters are principally passed via the scratch registers.
+differs from the **calling convention** used on Apple Silicon where
+*variadic* functioned are used, for example.
 
-Up to 8 parameters can be passed directly via registers. Each parameter
-can be up to the size of an address, long or double (8 bytes). If you
-need to pass more than 8 parameters or you need to pass parameters which
-are larger than 8 bytes or are `structs`, you would use a different
-technique described later.
+Up to 8 parameters can be passed directly via scratch registers. Each
+parameter can be up to the size of an address, long or double (8 bytes).
+If you need to pass more than 8 parameters or you need to pass
+parameters which are larger than 8 bytes or are `structs` called by
+value, you would use a different technique described later.
 
 Remember that even large data structures that are passed by reference
 are, in fact, passed via their base address (as a pointer).
@@ -20,7 +20,15 @@ For the purposes of the present discussion, we assume all parameters are
 Up to 8 parameters are passed in the scratch registers (of which there
 are a matching 8). These are `x0` through `x7`. *Scratch* means the
 value of the register can be changed at will without any need to backup
-or restore their values.
+or restore their values across function calls.
+
+**This means that you cannot count on the contents of the scratch
+registers maintaining their value if your function makes any function
+calls.**
+
+**This means that you cannot count on the contents of the scratch
+registers maintaining their value if your function makes any function
+calls.**
 
 **This means that you cannot count on the contents of the scratch
 registers maintaining their value if your function makes any function
@@ -130,7 +138,11 @@ func:   ldr x2, [x0]                                   // 1
         ret                                            // 5 
 ```
 
-The `add` instruction cannot operate on values in memory.
+The value of `x0` on return is, in the general sense, undefined because
+this is a `void` function.
+
+The `add` instruction cannot operate on values in memory. Only upon
+registers.
 
 With little exception, all the *action* takes place in registers, not
 memory. Therefore, the underlying values pointed to by the parameters
@@ -200,32 +212,20 @@ how would the assembly language change?
 Answer: just a little:
 
 ```asm
-func:   ldr x2, [x0]                                   // 1 
-        ldr x3, [x1]                                   // 2 
-        add x2, x2, x3                                 // 3 
-        mov x0, x2                                     // 4 
-        ret                                            // 5 
+func:   ldr x0, [x0]                                   // 1 
+        ldr x1, [x1]                                   // 2 
+        add x0, x0, x1                                 // 3 
+        ret                                            // 4
 ```
+
+Wait, why can we use x0 and x1 for the incoming address AND for holding
+values? Because the memory location housing p1 and p2 are not disturbed
+in this function but p1 was written back to in the previous example.
 
 Passing by reference is also an instruction to the compiler to treat
 pointers a little differently - the differences don't show up here so
 there the only change to our pointer passing version is how we return
 the answer.
-
-But wait...
-
-There is a small optimization we can make here:
-
-```asm
-func:   ldr x0, [x0]                                   // 1 
-        ldr x1, [x1]                                   // 2 
-        add x0, x0, x1                                 // 3 
-        ret                                            // 4 
-```
-
-This time we're not storing anything back to `p1` or `p2` so we can
-reuse `x0` and `x1` since the addresses they contained aren't needed
-again. Smart human!
 
 ## What If We Need More Than Eight Parameters?
 

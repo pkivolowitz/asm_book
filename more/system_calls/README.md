@@ -172,7 +172,16 @@ and returns to us.
 
 System calls are functions implemented inside the operating system.
 
-To get there, at some point perhaps behind a wrapper function, a
-specific system call number is placed in `x8` with other scratch
-registers getting the system call's documented parameters and the `svc`
-instruction is executed.
+To get there, at some point perhaps behind a wrapper function found in
+the CRT (C Run Time library), a distro specific system call number is
+placed in `x8` with other scratch registers getting the system call's
+documented parameters and the `svc` instruction is executed with
+argument 0.
+
+### Preference
+
+We suggest using the CRT wrapper functions where possible because:
+
+* They are easier to code
+
+* They are portable between distributions of the OS

@@ -14,7 +14,7 @@
 
 main:
         stp         x29, x30, [sp, -16]!
-        mov         x0, 3510
+        mov         w0, 256
         mov         x8, 93
         svc         0
         ldp         x29, x30, [sp], 16

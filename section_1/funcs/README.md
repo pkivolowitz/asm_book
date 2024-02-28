@@ -68,8 +68,8 @@ allows the function to `ret`urn.
 Branch-with-link computes the address of the instruction following it.
 
 It places this address into register `x30` and then branches to the
-label provided. It makes one link of breadcrumbs to follow to get back
-following a `ret`.
+label provided. It makes one link of a trail of breadcrumbs to follow to
+get back following a `ret`.
 
 **This is why it is absolutely essential to backup `x30` inside your
 functions if they call other functions themselves.**
@@ -125,19 +125,17 @@ a `bl` instruction. At the moment `main()` entered, the address to
 which it needed to return was sitting in `x30`.
 
 Then, `main()` called a function - in this case `puts()` but which
-function doesn't matter - it called a function. In doing so, it
-overwrote the address to which `main()` needed to return with the
-address of line 7 in the code. That is where `puts()` needs to
-return.
+function is called doesn't matter - it called a function. In doing so,
+it overwrote the address to which `main()` needed to return with the
+address of line 7 in the code. That is where `puts()` needs to return.
 
 So, when line 7 executes it puts the contents of `x30` into the
 program counter and branches to it.
 
 And the problem with this is?
 
-Hint: notice where `gdb` put us after
-the control-C. Still on line 7. An infinite loop of returning to the
-return statement.
+Hint: notice where `gdb` put us after the control-C. Still on line 7. An
+infinite loop of returning to the return statement.
 
 Here is a fixed version of the code:
 
@@ -159,7 +157,7 @@ hw:     .asciz  "Hello World!"                         // 12
 ```
 
 The address to which `main()` should return is pushed onto the stack on
-line 5. It should be safe there.
+line 5. It should be safe there, barring badly written code elsewhere.
 
 It is recovered from the stack on line 8 and used by line 9's `ret`.
 
@@ -182,11 +180,13 @@ that return no value.
 What about functions that do return a value?
 
 In the AARCH64 Linux style calling convention, values are returned in
-`x0` and sometimes also returned in `x1` though this is uncommon.
+`x0` and sometimes also returned in other scratch registers though this
+is uncommon. A function with more than one return value is not supported
+by C or C++ but they can be written in assembly language where the rules
+are yours to break.
 
-Note that `x0` and `x1` could also be `w0` and `w1` or even the first
-and second floating point registers if the function is returning a
-`float` or `double`.
+Note that `x0` could also be `w0` or the first floating point register
+if the function is returning a `float` or `double`.
 
 Here are samples, first in C / C++ then in the corresponding assembly
 language:
