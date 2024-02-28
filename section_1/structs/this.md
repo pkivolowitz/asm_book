@@ -6,18 +6,17 @@ using. The exception to *this*, of course, are methods which are declared
 as `static` which do *not* know which specific instance you are
 referring to - `static` methods are instance-agnostic.
 
-Like many of the cool features of C++, *this* seemingly magical
-self-awareness is accomplished by slight-of-hand. In *this* chapter, we
-examine how *this* is done.
-
-In case the italics used up to now where ever the word *this* has been
-used, the slight-of-hand involves the `this` pointer.
+Like many of the cool features of C++, this seemingly magical
+self-awareness of which instance a non-static method is called with, is
+accomplished by slight-of-hand.
 
 ## `this` pointer
 
-Every non-static method call employs a hidden first parameter. This
-parameter is the `this` pointer which points to the specific instance
-of the class being used.
+Every non-static method call employs a hidden first parameter. That's
+it. That's the slight of hand. The hidden argument is the `this`
+pointer. It points to the base address of the class or struct. Then, the
+particular members of the right instance, are accessed the same way as
+any struct basing memory addresses off a pointer.
 
 Here is the [source code](./this.cpp) to our test harness:
 
