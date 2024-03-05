@@ -59,7 +59,6 @@ perryk@ROCI pk_dirent % ./a.out /
 1152921500312845202  0x0a var
 1152921500311879700  0x04 Library
 1152921500311879701  0x04 System
-1152921500311879696  0x0a .VolumeIcon.icns
 1152921500312809755  0x04 private
 1152921500311879698  0x04 .vol
 1152921500312809676  0x04 Users
@@ -75,8 +74,8 @@ perryk@ROCI pk_dirent %
 ### Output when a bad command line argument is given
 
 ```text
-perryk@ROCI pk_dirent % ./a.out fooble  
-fooble: No such file or directory
+perryk@ROCI pk_dirent % ./a.out does_not_exist  
+does_not_exist: No such file or directory
 perryk@ROCI pk_dirent % 
 ```
 
@@ -104,15 +103,11 @@ man man
 
 "Just" 439 lines.
 
-**DON'T DO THIS FROM A MAC TERMINAL -- WHY? STEVE JOBS THAT'S WHY.**
+**APPLE MAN DIFFERS FROM LINUX MAN -- WHY? APPLE.**
 
-It will be equally pointless to try the above Linux shell commands from
-a Windows command prompt but hey - give it a try. So where should you
-read these `man` pages? In your ARM Linux VM, of course.
-
-The reason to not read the `man` pages on the Mac is that everything
-beyond the name of the functions will be different. You know, "Think
-Different."
+It will be pointless to try the above Linux shell commands from a
+Windows command prompt but hey - give it a try. So where should you read
+these `man` pages? In your ARM Linux VM, of course.
 
 ## `opendir()`
 

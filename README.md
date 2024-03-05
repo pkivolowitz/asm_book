@@ -47,11 +47,11 @@ and how parameters are passed.
 
 Originally, this book taught only the ARM LINUX conventions. However,
 over time, we developed a suite of macros that make it much easier to
-write code once and use it on MacOS or on LINUX.
+write code for use either on MacOS or on LINUX.
 
-The macros are a work in progress. [This link](./macros/) will lead to a
-current copy of them as well as documentation. Macros that make
-programming a bit easier are also included.
+[This link](./macros/) will lead to a current copy of them as well as
+documentation. Macros that make programming a bit easier are also
+included.
 
 [This chapter](./more/apple_silicon/) provides some additional
 information about Apple Silicon assembly language programming.
@@ -65,10 +65,10 @@ the C-runtime (CRT) which handles the lower level details of performing
 a system call. See the [here](./more/system_calls/README.md) on what
 actually happens inside these wrapper functions.
 
-The benefit of using the CRT wrappers is that there are details,
-explained in the chapter, that differ from system to system and
-architecture to architecture even for making the same system call. The
-CRT hides these differences.
+The benefit of using the CRT wrappers is that there are differences
+between the distributions and architectures that are masked by using the
+CRT wrappers. Therefore, when you use the wrappers rather than the
+direct method of making system calls, your code will be more portable.
 
 ### A Lot of Names
 
@@ -104,7 +104,7 @@ On the Macintosh type:
 into a terminal and follow directions. Note that `gdb` is replaced by
 `lldb` with just enough differences to make you cry.
 
-Then you'll need your favorite editor. We currently use `vi` for quick
+Then you'll need your favorite editor. We ourselves use `vi` for quick
 edits and Visual Studio Code for any heavy lifting.
 
 ### How to build an assembly language
@@ -123,9 +123,10 @@ to only one step in a build sequence. What we talk about as being the
   `#include`. These commands are not part of C or C++. Rather they
   are commands to the preprocessor.
 
-  Note that `gcc` will invoke the C preprocessor only if your assembly
-  language file ends in `.S` - capital S. It may not be invoked if your
-  file ends in a lower case s or any other file extension.
+  Note that `gcc` will invoke the C preprocessor if your assembly
+  language file ends in `.S` - capital S. It may or may not be invoked
+  if your file ends in a lower case s or any other file extension
+  depending upon your system.
 
 * The *actual* compiler, whose job it is turn high level languages
   such as C and C++ into assembly language.
@@ -141,8 +142,7 @@ to only one step in a build sequence. What we talk about as being the
 [Here](https://youtu.be/Iv3psS4n9j8) is a video explaining this process.
 
 We use gcc and g++ directly because, being umbrellas, they automate
-the above steps with other benefits such as automatically linking in
-the C runtime.
+the above steps and automatically link with the CRT.
 
 Suppose you've implemented `main()` in a C file (main.c) and want to
 make use of an assembly language file you have written (asm.S). It can
@@ -155,8 +155,8 @@ gcc main.c asm.S
 ```
 
 That's all you need for a minimal build. The resulting program will be
-written to `a.out`. All the intermediate files generated will be
-removed.
+written to `a.out`. All the intermediate files that are generated will
+be removed.
 
 #### Modularly
 
@@ -184,11 +184,14 @@ Often, you will want to enable the debugger `gdb` or `lldb`. Do this:
 gcc -g main.S
 ```
 
+Without the `-g` command line option, your debugger may not properly
+operate.
+
 #### The C Pre-Processor
 
-If you want `gcc` to run your code through the C pre-processor
-(for handing `#include` for example), name your assembly language
-source code files with a capital S. So, on Linux:
+To repeat, if you want `gcc` to run your code through the C
+pre-processor (for handing `#include` for example), name your assembly
+language source code files with a capital S. So, on Linux:
 
 `gcc main.s`
 
@@ -322,7 +325,7 @@ here](./macros/).
 challenge to your growing mastery. Here are very brief descriptions
 presented in alphabetical order.
 
-  Perhaps before you tackle these, check out the fully described
+* Perhaps before you tackle these, check out the fully described
 [FIZZBUZZ](./section_1/fizzbuzz/README.md) program first.
 
 * Then try [this](./projects/first_project/README.md) as your very first
