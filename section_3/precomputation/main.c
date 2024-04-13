@@ -7,11 +7,18 @@ long Iterative(long n);
 long Recursive(long n);
 long Precomputed(long n);
 
+extern long ifact(long);
+extern long rfact(long);
+extern long pfact(long);
+
 int main() {
     long (*func[])(long) = {
         Iterative,
         Recursive,
         Precomputed,
+        ifact,
+        rfact,
+        pfact,
         NULL
     };
 
