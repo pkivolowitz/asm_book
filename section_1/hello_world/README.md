@@ -706,6 +706,45 @@ improve your higher level language coding.
 
 ## Special Bonus - Build on Linux AND Apple Silicon
 
+Apple does things differently. Even in the simple program we have been
+discussing there are differences that must be accounted for. To do this
+on a broad scale we offer a macro suite that abstracts the differences
+between the M series and Linux.
+
+[Here](./no_macros.s), presented first, is the source code adapted for
+the M series without the benefit of our macro suite:
+
+```text
+    .global _main                                                   // 1 
+                                                                    // 2 
+_main:                                                              // 3 
+    stp     x21, x30, [sp, -16]!    // push onto stack              // 4 
+    mov     x21, x1                 // argc -> x0, argv -> x1       // 5 
+                                                                    // 6 
+    top:                                                            // 7 
+    ldr     x0, [x21], 8            // argv++, old value in x0      // 8 
+    cbz     x0, bottom              // if *argv == NULL goto bottom // 9 
+    bl      _puts                    // puts(*argv)                 // 10 
+    b       top                     // goto top                     // 11 
+                                                                    // 12 
+    bottom:                                                         // 13 
+    ldp     x21, x30, [sp], 16      // pop from stack               // 14 
+    mov     x0, xzr                 // return 0                     // 15 
+    ret                                                             // 16 
+                                                                    // 17 
+    .end                                                            // 18 
+```
+
+The only changes are the handling of external symbols like `main` and
+`puts`. Building this program is simply:
+
+`gcc no_macros.s`
+
+This source code will assembly and link correctly on the M series Macs.
+
+Next we'll consider the version using our macro suite which will
+assemble and build on both the M series and ARM-based Linux systems.
+
 [Here](./v6.S) is the source code shown below.
 
 [Here](./apple-linux-convergence.S) is the source code to the macro
