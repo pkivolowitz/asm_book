@@ -740,7 +740,11 @@ The only changes are the handling of external symbols like `main` and
 
 `gcc no_macros.s`
 
-This source code will assembly and link correctly on the M series Macs.
+The code above source code will assembly and link correctly on the M
+series Macs. The suggestion to add the version without the macro suite
+comes from `laurent b` on `github`. They correctly pointed out that
+jumping directly into macros in this first chapter was a pretty jarring
+leap.
 
 Next we'll consider the version using our macro suite which will
 assemble and build on both the M series and ARM-based Linux systems.
