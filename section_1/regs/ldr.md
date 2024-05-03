@@ -114,7 +114,7 @@ instruction. The SIMD instruction set that is / will be covered in this
 book is called NEON.
 
 The AARCH64 ISA includes an even more exotic means of performing mass
-calculation called SVE. We will probably never cover AVE as no generally
+calculation called SVE. We will probably never cover SVE as no generally
 available processor implements it. This includes Apple Silicon.
 
 I wonder how sad this makes certain engineers at ARM. After all, imagine
