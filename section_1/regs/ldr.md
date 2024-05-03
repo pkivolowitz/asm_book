@@ -380,7 +380,7 @@ SillyCopy16:
 
 ### Indexing Through An Array of `struct`
 
-You should read the chapter on `struct` found [here](where?).
+You should read the chapter on `struct` found [here](../structs/alignment.md).
 
 Here is a more elaborate case study. Given this:
 
