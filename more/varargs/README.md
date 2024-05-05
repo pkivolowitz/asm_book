@@ -7,7 +7,7 @@ between Apple and Linux.
 
 ## How Variadic Functions Determine Number of Parameters
 
-The TL;DR is that something among the *initial* arguments tells the
+The TL;DR is that something among the *REQUIRED* arguments tells the
 function how many other arguments to expect. Commonly, it is the very
 first argument that contains this information but it is possible to
 encode this information in a parameter other than the first as long as
@@ -24,8 +24,10 @@ of placeholders. For example:
 | `printf("%d %ld");` | An int and a long |
 | `printf("%p %f");` | A pointer and a double |
 
-The `printf` function figures out how many arguments to expect and what
-types to expect from the first parameter.
+The `printf` function figures out how many arguments to expect by
+counting the number of naked `%` characters and what types to expect for
+each based on the letters coming after the `%`. These are found in the
+string pointed to by the first parameter.
 
 ## Writing Variadic Functions in C or C++
 
@@ -72,3 +74,75 @@ arguments go on the stack in right to left order. There are some other
 restrictions - it is best to refer to
 [this](https://developer.apple.com/documentation/xcode/writing-arm64-code-for-apple-platforms
 ) cryptically written document.
+
+Here is our attempt at explaining variadics on the M series.
+
+First, let's demonstrate what order values go on the stack using `stp`
+and `str`.
+
+```asm
+/*  A program to demonstrate the order in which registers are
+    pushed onto the stack by stp and str. See text.
+*/
+        .text
+        .p2align    2
+        .global     main
+
+main:   stp         xzr, x30, [sp, -16]!
+        mov         x0, 0xF
+        str         x0, [sp, -16]!
+        ldp         xzr, x30, [sp], 16
+        ret
+
+        .end
+```
+
+Here is a `gdb` session showing the execution of the above:
+
+```text
+(gdb) b main
+Breakpoint 1, main () at stack_order.S:8
+8	main:   stp         xzr, x30, [sp, -16]!
+(gdb) s
+9	        mov         x0, 0xF
+(gdb) s
+10	        str         x0, [sp, -16]!
+(gdb) s
+main () at stack_order.S:11
+11	        ldp         xzr, x30, [sp], 16
+(gdb) x/4xg $sp
+0xffffffffef40:	0x000000000000000f	0x0000fffff7e273c0
+0xffffffffef50:	0x0000000000000000	0x0000fffff7e273fc
+(gdb)
+```
+
+Traditionally, diagrams of memory place 0 at the top and higher
+addresses down below. Hence, the saying that "stack grows upwards."
+
+In a diagram the results of `stp xzr, x30, [sp, -16]!` looks like this:
+
+| address | value |
+| ------- | ----- |
+| smaller address | 0 |
+| larger address | x30 |
+
+These can be found in the `gdb` session at the end beginning with
+`0xffffffffef50`. The second argument to `stp` goes on the stack first.
+The first argument to `stp` goes on the stack second.
+
+For the `str` instruction, the lone argument goes on the stack second
+(at the smaller address). Using `str x0, [sp, -16]!`, you see the value
+in x0 (set to 0xF) appearing at the lower address. Surmises can be made
+about the value of the "second" register pushed but you should not
+succumb to the temptation to do so.
+
+The C and C++ compilers on the Mac M series will put the very first
+argument into the zero register as per usual. All arguments past
+the first will go onto the stack from right to left, each argument
+consuming 8 bytes.
+
+Combining the information provided here, you can put together how
+to use `varargs` in assembly language. One last comment: it might
+be easier to use `str` rather than `stp` to control the order going
+onto the stack but remember that there must be a net change in the
+stack pointer which is a multiple of 16.
