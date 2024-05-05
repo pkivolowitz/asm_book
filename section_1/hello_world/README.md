@@ -584,7 +584,7 @@ File this information away as it makes understanding
 series. Note `variadic` functions are an advanced topic.
 
 A previous version of this text contained an error. This new version is
-inspired by `arne` on Github to whome we owe thanks.
+inspired by user `4rnee` on Github to whome we owe thanks.
 
 **The stack pointer in ARM V8 can only be manipulated in multiples of
 16.**
