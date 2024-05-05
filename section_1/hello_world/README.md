@@ -580,7 +580,7 @@ In a diagram the results of `stp x21, x30, [sp, -16]!` looks like this:
 | larger address | x30 |
 
 File this information away as it makes understanding
-[variadics](../../more/varargs/) easier to understand on the Apple M
+[variadics](../../more/varargs/) easier on the Apple M
 series. Note `variadic` functions are an advanced topic.
 
 A previous version of this text contained an error. This new version is
