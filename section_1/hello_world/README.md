@@ -567,7 +567,7 @@ In a higher level language `Line 3` would look like this:
 // Stack grows towards smaller addresses. Traditionally, 
 // diagrams of memory place 0 at the top and higher
 // addresses down below. Hence, the saying that "stack
-// grows upward towards smaller addresses."
+// grows upward upwards."
 *(--sp) = x30;  // the 2nd arg of stp goes on the stack 1st
 *(--sp) = x21;  // the 1st arg of stp goes on the stack 2nd
 ```
