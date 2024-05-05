@@ -564,13 +564,27 @@ copied. Again, this is a predecrement.
 In a higher level language `Line 3` would look like this:
 
 ```c++
-*(--sp) = x21;
-*(--sp) = x30;
+// Stack grows towards smaller addresses. Traditionally, 
+// diagrams of memory place 0 at the top and higher
+// addresses down below. Hence, the saying that "stack
+// grows upward towards smaller addresses."
+*(--sp) = x30;  // the 2nd arg of stp goes on the stack 1st
+*(--sp) = x21;  // the 1st arg of stp goes on the stack 2nd
 ```
 
-That is, subtract 8 from the stack pointer and copy `x21` to that
-location. Then, subtract 8 from the stack pointer and copy `x30` to that
-location.
+In a diagram the results of `stp x21, x30, [sp, -16]!` looks like this:
+
+| address | value |
+| ------- | ----- |
+| smaller address | x21 |
+| larger address | x30 |
+
+File this information away as it makes understanding
+[variadics](../../more/varargs/) easier to understand on the Apple M
+series. Note `variadic` functions are an advanced topic.
+
+A previous version of this text contained an error. This new version is
+inspired by `arne` on Github to whome we owe thanks.
 
 **The stack pointer in ARM V8 can only be manipulated in multiples of
 16.**
