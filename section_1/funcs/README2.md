@@ -271,62 +271,76 @@ This example hurts my brain: 8 9
 In assembly language, this program could be written as:
 
 ```text
-        .text                                          // 1 
-        .global    main                                // 2 
-                                                       // 3 
-SillyFunction:                                         // 4 
-        str        x30, [sp, -16]!                     // 5 
-        ldr        x0, =fmt                            // 6 
-        mov        x1, x7                              // 7 
-        ldr        x2, [sp, 16]                        // 8 
-        bl         printf                              // 9 
-        ldr        x30, [sp], 32                       // 10 
-        ret                                            // 11 
-                                                       // 12 
-main:                                                  // 13 
-        str        x30, [sp, -16]!                     // 14 
-        mov        x0, 9                               // 15 
-        str        x0, [sp, -16]!                      // 16 
-        mov        x0, 1                               // 17 
-        mov        x1, 2                               // 18 
-        mov        x2, 3                               // 19 
-        mov        x3, 4                               // 20 
-        mov        x4, 5                               // 21 
-        mov        x5, 6                               // 22 
-        mov        x6, 7                               // 23 
-        mov        x7, 8                               // 24 
-        bl         SillyFunction                       // 25 
-        ldr        x30, [sp], 32                       // 26 
-        ret                                            // 27 
-                                                       // 28 
-        .data                                          // 29 
-fmt:    .asciz    "This example hurts: %ld %ld\n"      // 30 
-                                                       // 31 
-    
+        .text                                                               // 1 
+        .global    main                                                     // 2 
+                                                                            // 3 
+/*  Demonstration of using  more than 8 arguments to  a function.  This     // 4 
+    demo is LINUX only as APPLE will put all arguments beyond the first     // 5 
+    one on the stack anyway.                                                // 6 
+                                                                            // 7 
+    On LINUX, all parameters to a function beyond  the  eight go on the     // 8 
+    stack.  The first 8 go in registers  x0  through  x7 as normal (for     // 9 
+    LINUX).                                                                 // 10 
+*/                                                                          // 11 
+                                                                            // 12 
+SillyFunction:                                                              // 13 
+        stp        x29, x30, [sp, -16]!    // Changes sp.                   // 14 
+        mov        x29, sp                                                  // 15 
+        ldr        x0, =fmt                                                 // 16 
+        mov        x1, x7                                                   // 17 
+        ldr        x2, [sp, 16]            // This does not alter the sp.   // 18 
+        bl         printf                                                   // 19 
+        ldp        x29, x30, [sp], 16      // Undoes change to sp.          // 20 
+        ret                                                                 // 21 
+                                                                            // 22 
+main:                                                                       // 23 
+        stp        x29, x30, [sp, -16]!    // sp down total of 16.          // 24 
+        mov        x29, sp                                                  // 25 
+        mov        x0, 9                                                    // 26 
+        str        x0, [sp, -16]!          // sp down total of 32.          // 27 
+        mov        x0, 1                                                    // 28 
+        mov        x1, 2                                                    // 29 
+        mov        x2, 3                                                    // 30 
+        mov        x3, 4                                                    // 31 
+        mov        x4, 5                                                    // 32 
+        mov        x5, 6                                                    // 33 
+        mov        x6, 7                                                    // 34 
+        mov        x7, 8                                                    // 35 
+        bl         SillyFunction                                            // 36 
+        add        sp, sp, 16           // undoes change of sp by 16 due    // 37 
+                                        // to function call.                // 38 
+        ldp        x29, x30, [sp], 16   // undoes change to sp of 16.       // 39 
+        ret                                                                 // 40 
+                                                                            // 41 
+        .data                                                               // 42 
+fmt:    .asciz    "This example hurts my brain: %ld %ld\n"                  // 43 
+                                                                            // 44 
+        .end                                                                // 45 
 ```
 
 Notice how `main()` puts the first 8 parameters into the scratch
-registers `x0` through `x7` using `Lines 17` to `24`. But first, it put
+registers `x0` through `x7` using `Lines 28` to `35`. But first, it put
 the ninth parameter onto the stack. It did the stack parameter first so
-that the stack pointer could be manipulated in a scratch register.
+that the stack pointer could be manipulated in a scratch register since
+all the scratch registers are being used for parameters.
 
-After executing `Line 14`, the stack will have:
+After executing `Line 24`, the stack will have:
 
 ```text
 sp + 0    return address for main
-sp + 8    zero
+sp + 8    former contents of frame pointer
 ```
 
-After executing `Line 16`, the stack will have:
+After executing `Line 27`, the stack will have:
 
 ```text
 sp + 0    9
 sp + 8    garbage
 sp + 16   return address for main
-sp + 24   zero
+sp + 24   former contents of frame pointer
 ```
 
-After executing `Line 5`, the stack will have:
+After executing `Line 14`, the stack will have:
 
 ```text
 sp + 0    return address for SillyFunction
@@ -334,30 +348,35 @@ sp + 8    garbage
 sp + 16   9
 sp + 24   garbage
 sp + 32   return address for main
-sp + 40   zero
+sp + 40   former contents of frame pointer
 ```
 
-This means that `Line 8` fetches `p9` from memory and puts its value
+This means that `Line 18` fetches `p9` from memory and puts its value
 into x2 (where it becomes the third argument to `printf()`).
 
 ## A bit of history
 
 The early Unix kernels would abuse the calling convention to
-miraculously pass return values back to calling functions. Early
-versions of C made extensive use of a now obsolete keyword `register`.
-It was an instruction to the compiler to store a certain variable in
-a register and not in memory in the code the compiler produced.
-
+miraculously pass return values back to calling functions.
 Particularly abusive functions would call other functions without
 passing any actual variables but the parameters would indeed be passed!
+
 The coders assumed the compiler would store specific variables in
 specific registers, avoiding the overhead of using the actual calling
 convention they themselves defined. Code that did this had to be
 rewritten once Unix began to be ported to machines beyond the original
-DEC hardware.
+DEC* hardware.
 
 This had the author scratching his head until he figured it out, way
 way back in the day.
+
+(Early versions of C made extensive use of a now obsolete keyword
+`register`. It was an instruction to the compiler to store a certain
+variable in a register and not in memory in the code the compiler
+produced.)
+
+*Trivia: DEC shouldn't be used in place of Digital Equipment Corporation
+after the Dairy Equipment Company asserted its right to "DEC".
 
 Those were the days when the entire Unix kernel would be printed out to
 form a stack of paper less than an inch high. The author knows this
