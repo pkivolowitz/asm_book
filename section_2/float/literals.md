@@ -136,6 +136,10 @@ s1 = fptr[counter];
 
 Cool huh?
 
+On Linux, just as w/x0 through w/x7 are scratch registers and used to
+pass parameters, s/d0 and s/d7 are as well beginning with the 0
+register.
+
 ## Fitting 32 bits into a 32 bit bag
 
 **This section is currently LINUX-centric - in the future it will
