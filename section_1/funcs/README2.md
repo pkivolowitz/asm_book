@@ -380,9 +380,7 @@ after the Dairy Equipment Company asserted its right to "DEC".
 
 Those were the days when the entire Unix kernel would be printed out to
 form a stack of paper less than an inch high. The author knows this
-because [Jishnu
-Mukerji](<https://www.topionetworks.com/people/jishnu-mukerji-5288f3c41dedae1c01000582>)
-presented such a stack to the author the third time the author asked
+because Jishnu Mukerji presented such a stack to the author the third time the author asked
 Jishnu a question about the kernel. He gave the author answers to two
 questions. On the third question, he handed the author the print out and
 said: *"All your answers are in here."* The author deeply appreciates

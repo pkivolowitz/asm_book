@@ -25,12 +25,12 @@ registers.
 We say aliases because, like the integer registers, how you reference a
 floating point register determines how it is interpreted.
 
-*NOTE NOTE NOTE* To keep to our promise of simplicity for now, consider
-only `B0`, `H0`, `S0` and `D0`. The remainder of the image ([from The
-Eclectic Light Company](https://eclecticlight.co/2021/08/23/code-in-arm-assembly-lanes-and-loads-in-neon/)) deals with SIMD, covered
-later.
+*NOTE NOTE NOTE* To keep to our promise of simplicity for now, consider only
+`B0`, `H0`, `S0` and `D0`. The remainder of the image ([from The Eclectic Light
+Company](https://eclecticlight.co/2021/08/23/code-in-arm-assembly-lanes-and-loads-in-neon/))
+deals with SIMD, covered later.
 
-![regs](./simdlanes.jpg)
+![regs](simdlanes.jpg)
 
 It is worth noting early and often that you should not mix dealing
 with different precisions assuming that because of the overlaps in
