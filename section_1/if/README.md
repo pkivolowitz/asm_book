@@ -18,7 +18,7 @@ if (a > b)                                                              // 1
 For simplicity, let us assume that both `a` and `b` are defined as
 `long int`. Being 64 bits in width, this means `x` registers will be used in the assembly
 language. If `a` or `b` are not pointers and are not longs, `w` registers would sneak
-in somewhere. See [Interlude - Registers](./section_1/regs/README.md) for more information.
+in somewhere. See [Interlude - Registers](../regs/README.md) for more information.
 
 ## `if` in `AARCH64`
 
