@@ -56,7 +56,7 @@ and one new unconditional branch:
     // Assume value of b is in x1                                       // 2 
                                                                         // 3 
  1: cmp     x0, x1                                                      // 4 
-    bgt     2f                                                          // 5 
+    blt     2f                                                          // 5 
     // CODE BLOCK                                                       // 6 
     b       1b                                                          // 7 
                                                                         // 8 
