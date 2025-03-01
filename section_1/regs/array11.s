@@ -20,9 +20,9 @@ FindOldestPerson:
         b       10f                 // enter loop
 
 1:      ldr     w5, [x3, p.age]     // fetch loop ptr -> age
-        cmp     w2, w5              // compare to oldest_age
-    	csel	w2, w2, w5, gt      // update based on cmp
-        csel	x0, x0, x3, gt      // update based on cmp
+        cmp     w5, w2              // compare to oldest_age
+    	csel	w2, w5, w2, gt      // update based on cmp
+        csel	x0, x3, x0, gt      // update based on cmp
         add     x3, x3, 24          // increment loop ptr
 10:     cmp     x3, x4              // has loop ptr reached end_ptr?
         blt     1b                  // no, not yet
