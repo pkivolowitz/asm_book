@@ -503,9 +503,9 @@ FindOldestPerson:                                                       // 13
         b       10f                 // enter loop                       // 20 
                                                                         // 21 
 1:      ldr     w5, [x3, p.age]     // fetch loop ptr -> age            // 22 
-        cmp     w2, w5              // compare to oldest_age            // 23 
-        csel    w2, w2, w5, gt      // update based on cmp              // 24 
-        csel    x0, x0, x3, gt      // update based on cmp              // 25 
+        cmp     w5, w2              // compare to oldest_age            // 23 
+        csel    w2, w5, w2, gt      // update based on cmp              // 24 
+        csel    x0, x3, x0, gt      // update based on cmp              // 25 
         add     x3, x3, 24          // increment loop ptr               // 26 
 10:     cmp     x3, x4              // has loop ptr reached end_ptr?    // 27 
         blt     1b                  // no, not yet                      // 28 
@@ -670,15 +670,15 @@ resulted in a less than zero, zero, or more than zero result.
 `Lines 24` and `25` read:
 
 ```asm
-        csel    w2, w2, w5, gt      // update based on cmp         // 24 
-        csel    x0, x0, x3, gt      // update based on cmp         // 25 
+        csel    w2, w5, w2, gt      // update based on cmp         // 24 
+        csel    x0, x3, x0, gt      // update based on cmp         // 25 
 ```
 
 These are identical to this:
 
 ```c
         w2 = (w5 > w2) ? w5 : w2;
-        x0 = (x5 > x2) ? x3 : x0;
+        x0 = (w5 > w2) ? x3 : x0;
 ```
 
 **Remember that the condition or status bits have already been set based
