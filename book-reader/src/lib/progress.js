@@ -82,3 +82,14 @@ export function importProgress(json) {
   if (typeof data !== 'object' || !data || typeof data.solved !== 'object') throw new Error('Not a progress file');
   save({ ...empty(), ...data });
 }
+
+// The last lesson opened, for "Continue where you left off" on the home page.
+export function setLastRead(path) {
+  if (!path) return;
+  const data = load();
+  if (data.lastRead === path) return;
+  data.lastRead = path;
+  save(data);
+}
+
+export function getLastRead() { return load().lastRead || null; }

@@ -1,25 +1,47 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link, useParams, useLocation } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import MarkdownRenderer from './components/MarkdownRenderer';
 import CPULator from './simulator/CPULator';
 import CRunner from './simulator/CRunner';
 import PracticePage from './components/PracticePage';
+import HomePage from './components/HomePage';
+import AboutPage from './components/AboutPage';
+import { lessonUrl, lessonCandidates, isLegacyLessonUrl } from './lib/routes';
+import { useTitle } from './lib/useTitle';
 import { Menu, X, Cpu } from 'lucide-react';
 
 const ReaderView = () => {
-  const { '*': path } = useParams();
-  let decoded = path || '';
-  try { decoded = decodeURIComponent(decoded); } catch { /* malformed %-escape in a hand-typed URL */ }
+  const { '*': slug } = useParams();
+  const location = useLocation();
+  // Old links (/read/section_1%2Fkickstart.md, with the anchor encoded in the
+  // path) are rewritten to the clean form so shared links stay consistent.
+  if (isLegacyLessonUrl(slug)) {
+    let file = slug || '';
+    try { file = decodeURIComponent(file); } catch { /* malformed escape: use as typed */ }
+    const [path, anchor] = file.split('#');
+    const hash = location.hash || (anchor ? `#${anchor}` : '');
+    const target = lessonUrl(path).split('#')[0] + hash;
+    if (target !== location.pathname + location.hash) return <Navigate to={target} replace />;
+  }
+  const candidates = lessonCandidates(slug);
+  let hash = location.hash ? location.hash.slice(1) : null;
+  try { if (hash) hash = decodeURIComponent(hash); } catch { /* keep as typed */ }
   // key: remount per lesson so per-page state (modals, toggles) never leaks across lessons
-  return <MarkdownRenderer key={decoded} path={decoded} />;
+  return <MarkdownRenderer key={candidates[0]} candidates={candidates} hash={hash} />;
 };
 
 // Full-screen simulator; "Full Screen" from a lesson passes its code along.
 const SimulatorView = () => {
   const location = useLocation();
   const code = location.state?.code || null;
+  useTitle('ARM64 simulator');
   return <CPULator key={location.key} initialCode={code} />;
+};
+
+const CSandboxView = () => {
+  useTitle('C sandbox');
+  return <CRunner />;
 };
 
 function App() {
@@ -30,10 +52,10 @@ function App() {
   return (
     <Router>
       <div className="mobile-header">
-        <div className="sidebar-title flex items-center gap-2" style={{ marginBottom: 0 }}>
+        <Link to="/" className="sidebar-title sidebar-home-link flex items-center gap-2" style={{ marginBottom: 0 }} onClick={() => setIsSidebarOpen(false)}>
           <Cpu size={20} className="text-cyan-400" />
           <span>Low-Level Lab</span>
-        </div>
+        </Link>
         <button 
           onClick={toggleSidebar}
           style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}
@@ -47,7 +69,8 @@ function App() {
 
       <main className="main-content">
         <Routes>
-          <Route path="/" element={<Navigate to="/read/section_1%2Fkickstart.md" replace />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/read/*" element={<ReaderView />} />
           <Route path="/simulator" element={
             <div className="full-tool-wrapper">
@@ -65,7 +88,7 @@ function App() {
                 <h2>💻 C Systems Sandbox & Disassembler</h2>
                 <p>Run C code, experiment with pointers and memory representation, and view compiled ARM64 disassembly output.</p>
               </div>
-              <CRunner />
+              <CSandboxView />
             </div>
           } />
           <Route path="*" element={<Navigate to="/" replace />} />

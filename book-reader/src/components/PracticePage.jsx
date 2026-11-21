@@ -6,6 +6,8 @@ import CRunner from '../simulator/CRunner';
 import { LEVELS } from '../data/levels';
 import { C_LABS } from '../data/cLabs';
 import { getProgress, onProgressChange, streak, localDay, exportProgress, importProgress } from '../lib/progress';
+import { lessonUrl } from '../lib/routes';
+import { useTitle } from '../lib/useTitle';
 
 // Deterministic per-day pick so "today's review" is stable across reloads.
 function dayHash(day) {
@@ -15,6 +17,7 @@ function dayHash(day) {
 }
 
 export default function PracticePage() {
+  useTitle('Daily practice');
   const [progress, setProgress] = useState(() => getProgress());
   const [params, setParams] = useSearchParams();
   const [showHints, setShowHints] = useState(false);
@@ -102,7 +105,7 @@ export default function PracticePage() {
             <span className="daily-sub">Clear the editor and solve it again without hints.</span>
           </button>
         )}
-        <Link className="daily-card roadmap" to={`/read/${encodeURIComponent('section_6_mobile/README.md')}`}>
+        <Link className="daily-card roadmap" to={lessonUrl('section_6_mobile/README.md')}>
           <span className="daily-label"><BookOpen size={12} /> Where this leads</span>
           <strong>Mobile security roadmap</strong>
           <span className="daily-sub">ARM64 → Android/iOS internals → fuzzing → kernel</span>
@@ -139,7 +142,7 @@ export default function PracticePage() {
           <div className="level-meta">
             <span>Concept: <strong>{level.concept}</strong></span>
             {level.reference && (
-              <Link to={`/read/${encodeURIComponent(level.reference)}`} className="internal-reader-link">Read the chapter</Link>
+              <Link to={lessonUrl(level.reference)} className="internal-reader-link">Read the chapter</Link>
             )}
           </div>
           <div className="exercise-footer-actions">

@@ -23,6 +23,12 @@ plain text files by default (`core.symlinks=false`), which broke every lesson.
 To add a top-level content directory, add it to `CONTENT_DIRS` in
 `vite.config.js` and add its chapters to `src/manifest.json`.
 
+A lesson file is shown at a clean URL: `section_1/regs/ldr.md` is
+`/read/section_1/regs/ldr`, a folder's `README.md` is the folder
+(`/read/section_1/if`), and anchors are a normal `#hash`. Build links with
+`lessonUrl()` from `src/lib/routes.js`. Old links of the form
+`/read/section_1%2Fkickstart.md` are redirected to the clean form.
+
 `dist/404.html` is a copy of `index.html`, so client-side routes such as
 `/practice` work on static hosts like GitHub Pages.
 

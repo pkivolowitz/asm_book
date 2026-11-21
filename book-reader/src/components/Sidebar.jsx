@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import manifest from '../manifest.json';
 import { LESSON_EXERCISES } from '../data/lessonExercises';
 import { Search, BookOpen, Cpu, Terminal, Sparkles, FolderGit2, Flame, Smartphone } from 'lucide-react';
 import { getProgress, onProgressChange, streak } from '../lib/progress';
+import { lessonUrl } from '../lib/routes';
+
+// A plain entry ("For Loops") is not active while an anchored entry for the
+// same file ("Implementing Continue") is the one being shown.
+const sameFileHasAnchor = (chapter, section, hash) =>
+  !!hash && section.chapters.some(c => c.path === `${chapter.path.split('#')[0]}${hash}`);
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+  const location = useLocation();
   const [filter, setFilter] = useState('all'); // 'all' | 'asm' | 'c' | 'projects'
   const [searchQuery, setSearchQuery] = useState('');
   const [progress, setProgress] = useState(() => getProgress());
@@ -42,10 +49,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       {/* Brand Title */}
       <div className="sidebar-brand-wrapper">
-        <div className="sidebar-title flex items-center gap-2">
+        <NavLink
+          to="/"
+          className="sidebar-title sidebar-home-link flex items-center gap-2"
+          title="Home"
+          onClick={() => { if (window.innerWidth <= 1024) toggleSidebar(); }}
+        >
           <Cpu className="text-cyan-400" size={22} />
           <span>Low-Level Lab</span>
-        </div>
+        </NavLink>
         <span className="sidebar-version-badge">ARM64 + C</span>
       </div>
 
@@ -143,10 +155,14 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             return (
               <NavLink
                 key={`${chapter.id}-${chapter.path}`}
-                to={`/read/${encodeURIComponent(chapter.path)}`}
-                className={({ isActive }) => 
-                  `sidebar-item ${isActive ? 'active' : ''}`
-                }
+                to={lessonUrl(chapter.path)}
+                end
+                className={({ isActive }) => {
+                  // Several entries can share a file (anchors), so the hash must match too.
+                  const chHash = chapter.path.includes('#') ? `#${chapter.path.split('#')[1]}` : '';
+                  const active = isActive && (chHash ? location.hash === chHash : !sameFileHasAnchor(chapter, section, location.hash));
+                  return `sidebar-item ${active ? 'active' : ''}`;
+                }}
                 onClick={() => {
                   if (window.innerWidth <= 1024) toggleSidebar();
                 }}
@@ -162,6 +178,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           })}
         </div>
       ))}
+      <div className="sidebar-footer">
+        <NavLink to="/about" onClick={() => { if (window.innerWidth <= 1024) toggleSidebar(); }}>About, credits and privacy</NavLink>
+      </div>
     </aside>
   );
 };

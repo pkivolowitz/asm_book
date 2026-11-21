@@ -11,6 +11,9 @@ import ChallengeView from './ChallengeView';
 import CPULator from '../simulator/CPULator';
 import CRunner from '../simulator/CRunner';
 import manifest from '../manifest.json';
+import { lessonUrl, chapterFor } from '../lib/routes';
+import { useTitle } from '../lib/useTitle';
+import { setLastRead } from '../lib/progress';
 import { C_LABS } from '../data/cLabs';
 import { LEVELS } from '../data/levels';
 import { 
@@ -25,15 +28,22 @@ import {
   Maximize2 
 } from 'lucide-react';
 
-const MarkdownRenderer = ({ path }) => {
+// `candidates`: the lesson files this URL can mean, most likely first (see
+// lib/routes.js). `hash`: the anchor to scroll to, without '#'.
+const MarkdownRenderer = ({ candidates, hash = null }) => {
+  const [resolvedPath, setResolvedPath] = useState(null);
   const [content, setContent] = useState('');
   const [error, setError] = useState(null);
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [activePracticeModal, setActivePracticeModal] = useState(null); // null | { type: 'cpulator' | 'crunner', code, challenge }
   const navigate = useNavigate();
 
-  const cleanPath = path.split('#')[0];
-  const targetHash = path.includes('#') ? path.split('#')[1] : null;
+  const cleanPath = resolvedPath || candidates[0];
+  const targetHash = hash || null;
+  const path = targetHash ? `${cleanPath}#${targetHash}` : cleanPath;
+  const candidateKey = candidates.join('|');
+  const chapter = chapterFor(path);
+  useTitle(error ? 'Lesson not found' : chapter ? chapter.title.replace(/`/g, '') : cleanPath.replace(/\.md$/, ''));
 
   // Flatten all chapters across sections for prev/next navigation
   const allChapters = manifest.flatMap(section => 
@@ -55,12 +65,23 @@ const MarkdownRenderer = ({ path }) => {
       try {
         setError(null);
         setContent('');
-        const response = await fetch(`/content/${cleanPath}`, { signal: controller.signal });
-        if (!response.ok) throw new Error(`Failed to load content for ${cleanPath} (HTTP ${response.status})`);
-        const text = await response.text();
-        // Static hosts often answer unknown paths with the SPA's index.html (200 OK).
-        if (/^\s*<!doctype html/i.test(text)) throw new Error(`Lesson file not found: ${cleanPath}`);
+        // Try each file this URL can mean. Static hosts often answer unknown
+        // paths with the SPA's index.html (200 OK), so that counts as missing.
+        let text = null; let found = null; let lastStatus = 404;
+        for (const candidate of candidateKey.split('|')) {
+          const response = await fetch(`/content/${candidate}`, { signal: controller.signal });
+          if (!response.ok) { lastStatus = response.status; continue; }
+          const body = await response.text();
+          if (/^\s*<!doctype html/i.test(body)) continue;
+          text = body; found = candidate; break;
+        }
+        const first = candidateKey.split('|')[0];
+        if (text == null) {
+          throw new Error(lastStatus === 404 ? `Lesson not found: ${first}` : `Failed to load ${first} (HTTP ${lastStatus})`);
+        }
         if (cancelled) return;
+        setResolvedPath(found);
+        setLastRead(found);
         setContent(text);
 
         if (targetHash) {
@@ -78,7 +99,7 @@ const MarkdownRenderer = ({ path }) => {
     };
     fetchContent();
     return () => { cancelled = true; controller.abort(); };
-  }, [cleanPath, targetHash]);
+  }, [candidateKey, targetHash]);
 
   // Resolve relative paths for images and internal markdown links
   const resolvePath = (src) => {
@@ -139,10 +160,10 @@ const MarkdownRenderer = ({ path }) => {
         <h3>Unable to load lesson content</h3>
         <p className="text-sm text-slate-400 mt-1">{error}</p>
         <button 
-          onClick={() => navigate('/read/section_1%2Fkickstart.md')}
+          onClick={() => navigate('/')}
           className="cpulator-btn cpulator-btn-primary mt-4"
         >
-          Return to Kickstart
+          Back to the home page
         </button>
       </div>
     );
@@ -316,7 +337,7 @@ const MarkdownRenderer = ({ path }) => {
                 if (!hasExt) cleanTarget = cleanTarget ? `${cleanTarget}/README.md` : 'README.md';
                 if (hrefHash) cleanTarget = `${cleanTarget}#${hrefHash}`;
                 return (
-                  <Link to={`/read/${encodeURIComponent(cleanTarget)}`} className="internal-reader-link" {...props}>
+                  <Link to={lessonUrl(cleanTarget)} className="internal-reader-link" {...props}>
                     {children}
                   </Link>
                 );
@@ -359,7 +380,7 @@ const MarkdownRenderer = ({ path }) => {
       {/* Prev / Next Chapter Navigation Footer */}
       <footer className="chapter-nav-footer">
         {prevChapter ? (
-          <Link to={`/read/${encodeURIComponent(prevChapter.path)}`} className="chapter-nav-btn nav-prev">
+          <Link to={lessonUrl(prevChapter.path)} className="chapter-nav-btn nav-prev">
             <ChevronLeft size={20} />
             <div className="nav-text-col">
               <span className="nav-label">Previous Lesson</span>
@@ -369,7 +390,7 @@ const MarkdownRenderer = ({ path }) => {
         ) : <div />}
 
         {nextChapter && (
-          <Link to={`/read/${encodeURIComponent(nextChapter.path)}`} className="chapter-nav-btn nav-next">
+          <Link to={lessonUrl(nextChapter.path)} className="chapter-nav-btn nav-next">
             <div className="nav-text-col text-right">
               <span className="nav-label">Next Lesson</span>
               <span className="nav-title">{nextChapter.title}</span>
