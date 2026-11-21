@@ -1,0 +1,22 @@
+# Netlify build for the book reader (served at the root of lab.<your-domain>).
+# The build reads lesson Markdown from the repository root (section_*/, c_course/, ...),
+# so the whole repo is checked out and only the build runs inside book-reader/.
+[build]
+  base = "book-reader"
+  command = "npm ci && npm test && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Client-side routes (/practice, /c-sandbox, /read/...) must load the app on refresh.
+# Real files (assets, /content/*.md) are served first; this only catches the rest.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
