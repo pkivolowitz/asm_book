@@ -1,3 +1,4 @@
+import { copyText } from '../lib/clipboard';
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
@@ -10,6 +11,8 @@ import ChallengeView from './ChallengeView';
 import CPULator from '../simulator/CPULator';
 import CRunner from '../simulator/CRunner';
 import manifest from '../manifest.json';
+import { C_LABS } from '../data/cLabs';
+import { LEVELS } from '../data/levels';
 import { 
   Play, 
   Copy, 
@@ -45,12 +48,19 @@ const MarkdownRenderer = ({ path }) => {
   const exercises = getExercisesForChapter(cleanPath);
 
   useEffect(() => {
+    // Ignore responses for a lesson the reader has already navigated away from.
+    let cancelled = false;
+    const controller = new AbortController();
     const fetchContent = async () => {
       try {
         setError(null);
-        const response = await fetch(`/content/${cleanPath}`);
-        if (!response.ok) throw new Error(`Failed to load content for ${cleanPath}`);
+        setContent('');
+        const response = await fetch(`/content/${cleanPath}`, { signal: controller.signal });
+        if (!response.ok) throw new Error(`Failed to load content for ${cleanPath} (HTTP ${response.status})`);
         const text = await response.text();
+        // Static hosts often answer unknown paths with the SPA's index.html (200 OK).
+        if (/^\s*<!doctype html/i.test(text)) throw new Error(`Lesson file not found: ${cleanPath}`);
+        if (cancelled) return;
         setContent(text);
 
         if (targetHash) {
@@ -62,16 +72,20 @@ const MarkdownRenderer = ({ path }) => {
           window.scrollTo(0, 0);
         }
       } catch (err) {
+        if (cancelled || err.name === 'AbortError') return;
         setError(err.message);
       }
     };
     fetchContent();
+    return () => { cancelled = true; controller.abort(); };
   }, [cleanPath, targetHash]);
 
   // Resolve relative paths for images and internal markdown links
   const resolvePath = (src) => {
-    if (src.startsWith('http') || src.startsWith('/') || src.startsWith('#')) return src;
-    const dir = cleanPath.substring(0, cleanPath.lastIndexOf('/'));
+    if (!src) return '';
+    if (/^[a-z][a-z0-9+.-]*:/i.test(src) || src.startsWith('#')) return src;
+    // A leading slash means "relative to the repository root".
+    const dir = src.startsWith('/') ? '' : cleanPath.substring(0, cleanPath.lastIndexOf('/'));
     const parts = dir ? dir.split('/') : [];
     const srcParts = src.split('/');
 
@@ -87,25 +101,37 @@ const MarkdownRenderer = ({ path }) => {
   };
 
   const handleCopyCode = (codeText, idx) => {
-    navigator.clipboard.writeText(codeText);
+    copyText(codeText);
     setCopiedIndex(idx);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
+  // `key` forces a fresh simulator each time, so opening a different snippet
+  // never shows the previous one's code or state.
   const handleOpenSimulator = (starterCode = null, challenge = null) => {
     setActivePracticeModal({
       type: 'cpulator',
       code: starterCode,
-      challenge: challenge
+      challenge: challenge,
+      key: Date.now()
     });
   };
 
   const handleOpenCRunner = (code = null) => {
     setActivePracticeModal({
       type: 'crunner',
-      code: code
+      code: code,
+      key: Date.now()
     });
   };
+
+  // Escape closes the practice drawer.
+  useEffect(() => {
+    if (!activePracticeModal) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setActivePracticeModal(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [activePracticeModal]);
 
   if (error) {
     return (
@@ -250,7 +276,8 @@ const MarkdownRenderer = ({ path }) => {
             },
             img({ src, alt, ...props }) {
               const resolved = resolvePath(src);
-              return <img src={`/content/${resolved}`} alt={alt} {...props} />;
+              const finalSrc = /^[a-z][a-z0-9+.-]*:/i.test(resolved) ? resolved : `/content/${resolved}`;
+              return <img src={finalSrc} alt={alt || ''} loading="lazy" {...props} />;
             },
             a({ href, children, ...props }) {
               if (!href) return children;
@@ -272,12 +299,22 @@ const MarkdownRenderer = ({ path }) => {
                 );
               }
 
-              // Handle internal links to .md files or folders
-              if (href.endsWith('.md') || href.startsWith('./') || href.startsWith('../')) {
-                let cleanTarget = resolvePath(href);
-                if (!cleanTarget.endsWith('.md')) {
-                  cleanTarget = `${cleanTarget}/README.md`;
+              const isExternal = /^[a-z][a-z0-9+.-]*:/i.test(href);
+              // Links to the app's own tools (e.g. "/practice") from lesson text.
+              if (/^\/(practice|simulator|c-sandbox)(\?|$)/.test(href)) {
+                return <Link to={href} className="internal-reader-link" {...props}>{children}</Link>;
+              }
+              if (!isExternal) {
+                const [hrefPath, hrefHash] = href.split('#');
+                let cleanTarget = resolvePath(hrefPath).replace(/\/$/, '');
+                const lastSeg = cleanTarget.split('/').pop() || '';
+                const hasExt = /\.[A-Za-z0-9]+$/.test(lastSeg);
+                // Source files, PDFs, images: open the raw file rather than the reader.
+                if (hasExt && !cleanTarget.endsWith('.md')) {
+                  return <a href={`/content/${cleanTarget}`} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>;
                 }
+                if (!hasExt) cleanTarget = cleanTarget ? `${cleanTarget}/README.md` : 'README.md';
+                if (hrefHash) cleanTarget = `${cleanTarget}#${hrefHash}`;
                 return (
                   <Link to={`/read/${encodeURIComponent(cleanTarget)}`} className="internal-reader-link" {...props}>
                     {children}
@@ -295,9 +332,29 @@ const MarkdownRenderer = ({ path }) => {
 
       {/* Interactive Exercises Section for this Lesson */}
       <ChallengeView 
+        key={cleanPath}
         exercises={exercises} 
         onOpenInSimulator={handleOpenSimulator} 
       />
+
+      {/* Graded practice that belongs to this chapter */}
+      {(() => {
+        const related = [...LEVELS.map(l => ({ ...l, track: 'arm64' })), ...C_LABS.map(l => ({ ...l, track: 'c' }))].filter(l => l.reference === cleanPath);
+        if (!related.length) return null;
+        return (
+          <section className="chapter-labs">
+            <h3>Graded practice for this chapter</h3>
+            <ul>
+              {related.map(l => (
+                <li key={l.id}>
+                  <Link className="internal-reader-link" to={`/practice?${l.track === 'c' ? 'track=c&' : ''}level=${l.id}`}>{l.title}</Link>
+                  <span className="text-xs text-slate-400"> · {l.track === 'c' ? 'C lab' : 'ARM64 level'} · {l.difficulty}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })()}
 
       {/* Prev / Next Chapter Navigation Footer */}
       <footer className="chapter-nav-footer">
@@ -345,8 +402,9 @@ const MarkdownRenderer = ({ path }) => {
                 {activePracticeModal.type === 'cpulator' && (
                   <button 
                     onClick={() => {
+                      const code = activePracticeModal.code;
                       setActivePracticeModal(null);
-                      navigate('/simulator');
+                      navigate('/simulator', { state: { code } });
                     }}
                     className="modal-tool-btn"
                     title="Open Fullscreen Simulator"
@@ -368,17 +426,20 @@ const MarkdownRenderer = ({ path }) => {
 
             <div className="practice-modal-body">
               {activePracticeModal.type === 'cpulator' ? (
-                <CPULator 
+                <CPULator
+                  key={activePracticeModal.key}
                   initialCode={activePracticeModal.code}
                   challenge={activePracticeModal.challenge}
                 />
               ) : (
-                <CRunner 
+                <CRunner
+                  key={activePracticeModal.key}
                   initialCode={activePracticeModal.code}
                   onLoadAsmInCpulator={(asmCode) => {
                     setActivePracticeModal({
                       type: 'cpulator',
-                      code: asmCode
+                      code: asmCode,
+                      key: Date.now()
                     });
                   }}
                 />

@@ -333,6 +333,20 @@ This section adapts the highly regarded ARM32 exploitation tutorials from Azeria
 | 11 | [Glibc Heap Free Bins](./section_5_exploitation/heap_free_bins.md) |
 | 12 | [Heap Exploit Development](./section_5_exploitation/heap_exploit_dev.md) |
 
+### Section 6 - Mobile Security Foundations
+
+A roadmap from ARM64 fluency to Android/iOS native code, fuzzing and the kernel, with a daily practice routine.
+
+| Chapter | Markdown |
+| ------- | -------- |
+| 0 | [Roadmap and Daily Routine](./section_6_mobile/README.md) |
+| 1 | [Building a Mobile Research Lab](./section_6_mobile/01_lab_setup.md) |
+| 2 | [ARM64 Mitigations: PAC, BTI, MTE](./section_6_mobile/02_arm64_mitigations.md) |
+| 3 | [Android Native Internals and JNI](./section_6_mobile/03_android_native_internals.md) |
+| 4 | [Fuzzing Native Code](./section_6_mobile/04_fuzzing_native_code.md) |
+| 5 | [The Kernel Path](./section_6_mobile/05_kernel_path.md) |
+| 6 | [Course Prep Map](./section_6_mobile/06_course_prep_map.md) |
+
 ## Macro Suite
 
 As indicated immediately above, the macro suite [can be found

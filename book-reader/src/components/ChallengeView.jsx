@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getProgress, onProgressChange } from '../lib/progress';
 import { 
   CheckCircle2, 
   HelpCircle, 
@@ -15,6 +16,8 @@ export default function ChallengeView({
 }) {
   const [openHints, setOpenHints] = useState({});
   const [openSolutions, setOpenSolutions] = useState({});
+  const [progress, setProgress] = useState(() => getProgress());
+  useEffect(() => onProgressChange(setProgress), []);
 
   if (!exercises || exercises.length === 0) {
     return (
@@ -71,6 +74,7 @@ export default function ChallengeView({
                       {ex.difficulty}
                     </span>
                     <h3 className="exercise-card-title">{ex.title}</h3>
+                    {progress.solved[ex.id] && <span className="solved-pill">✓ Solved</span>}
                   </div>
                   <p className="exercise-card-desc">{ex.description}</p>
                 </div>

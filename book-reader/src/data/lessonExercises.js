@@ -57,7 +57,7 @@ _start:
     // Linux sys_write(fd=1, buf=msg, count=?)
     mov x0, #1          // stdout
     adr x1, msg         // pointer to string
-    mov x2, #14         // TODO: Set correct string length (14 characters)
+    mov x2, #6          // TODO: set the correct length for your new string
     mov x8, #64         // sys_write syscall number
     svc #0
 
@@ -68,7 +68,7 @@ _start:
 
 .data
 msg:
-    .asciz "ARM64 Hacker!\\n"
+    .asciz "Hello\\n"    // TODO: change the text
 `,
       solutionCode: `.global _start
 .text
@@ -93,8 +93,8 @@ msg:
         'Make sure x0 is set to 1 for stdout and x8 is set to 64 for sys_write'
       ],
       tests: [
-        { type: 'stdout', expected: 'ARM64 Hacker!', description: 'Console output contains "ARM64 Hacker!"' },
-        { type: 'register', reg: 'x0', expected: 0n, radix: 'dec', description: 'Exit status code in X0 is 0' }
+        { type: 'stdout', expected: 'ARM64 Hacker!\n', exact: true, description: 'stdout is exactly "ARM64 Hacker!\\n" (a wrong length prints too much or too little)' },
+        { type: 'exitCode', expected: 0, description: 'Process exits with status 0' }
       ]
     }
   ],
@@ -105,13 +105,12 @@ msg:
       id: 'if-ex1',
       title: 'Exercise: Maximum of Two Numbers',
       difficulty: 'Beginner',
-      description: 'Given X0=78 and X1=92, compare them and place the maximum of the two values into X2. Use CMP and conditional branches (B.GT or B.LE).',
+      description: 'X0 and X1 hold two signed 64-bit numbers (the grader tries several pairs, including negatives and equal values). Place the larger one in X2 using CMP and conditional branches (B.GT / B.LE).',
       starterCode: `.global _start
 .text
 
 _start:
-    mov x0, #78
-    mov x1, #92
+    // X0 and X1 are already set by the grader (try: mov x0, #78 / mov x1, #92 while testing)
 
     // TODO: Compare X0 and X1
     // If X0 > X1, branch to x0_is_max
@@ -128,9 +127,6 @@ done:
 .text
 
 _start:
-    mov x0, #78
-    mov x1, #92
-
     cmp x0, x1
     b.gt x0_is_max
     mov x2, x1
@@ -148,9 +144,14 @@ done:
         'Use `b.gt label` to jump if X0 is strictly greater than X1',
         'Remember to branch unconditionally to `done` after handling the false case to avoid falling through!'
       ],
-      tests: [
-        { type: 'register', reg: 'x2', expected: 92n, radix: 'dec', description: 'X2 should contain 92 (the larger value)' }
-      ]
+      cases: (rng) => {
+        const pairs = [[78, 92], [92, 78], [-5, -9], [7, 7], [rng.int(-1000, 1000), rng.int(-1000, 1000)]];
+        return pairs.map(([a, b]) => ({
+          name: `x0=${a}, x1=${b}`,
+          setup: { regs: { x0: a, x1: b } },
+          tests: [{ type: 'register', reg: 'x2', expected: BigInt(Math.max(a, b)), radix: 'dec', description: `X2 = max(${a}, ${b}) = ${Math.max(a, b)}` }]
+        }));
+      }
     }
   ],
 
@@ -160,13 +161,13 @@ done:
       id: 'while-ex1',
       title: 'Exercise: Compute 5! (Factorial)',
       difficulty: 'Intermediate',
-      description: 'Implement a while loop in ARM64 that computes 5 factorial (5 * 4 * 3 * 2 * 1 = 120). Store the result in X0.',
+      description: 'X1 holds n (the grader tries n = 0, 1, 5 and a random value up to 20). Implement a while loop that computes n! into X0. Remember 0! = 1.',
       starterCode: `.global _start
 .text
 
 _start:
     mov x0, #1      // accumulator (result = 1)
-    mov x1, #5      // counter n = 5
+    // x1 = n is set by the grader
 
 loop:
     // TODO: Compare counter with 1
@@ -184,7 +185,6 @@ done:
 
 _start:
     mov x0, #1
-    mov x1, #5
 
 loop:
     cmp x1, #1
@@ -202,9 +202,10 @@ done:
         'Use `mul x0, x0, x1` to multiply',
         'Use `sub x1, x1, #1` to decrement and `b loop` to repeat'
       ],
-      tests: [
-        { type: 'register', reg: 'x0', expected: 120n, radix: 'dec', description: 'X0 should contain 120 (5!)' }
-      ]
+      cases: (rng) => [0, 1, 5, rng.int(6, 20)].map(n => {
+        let f = 1n; for (let i = 2n; i <= BigInt(n); i++) f *= i;
+        return { name: `n=${n}`, setup: { regs: { x1: n } }, tests: [{ type: 'register', reg: 'x0', expected: f, radix: 'dec', description: `X0 = ${n}! = ${f}` }] };
+      })
     }
   ],
 
@@ -268,13 +269,13 @@ done:
       id: 'widths-ex1',
       title: 'Exercise: 32-bit vs 64-bit Zero Extension',
       difficulty: 'Beginner',
-      description: 'Write 0xFFFFFFFF into X0. Then write 0x1234 into W0. Observe how writing to the 32-bit W0 register automatically zeros out the upper 32 bits of X0 in AArch64!',
+      description: 'Set every bit of X0 (mov x0, #-1). Then write 0x1234 into W0. Observe how writing to the 32-bit W0 register automatically zeros out the upper 32 bits of X0 in AArch64!',
       starterCode: `.global _start
 .text
 
 _start:
-    // Put all 1s in lower 32 bits of X0
-    mov x0, #0xFFFFFFFF
+    // Set all 64 bits of X0
+    mov x0, #-1
 
     // TODO: Write 0x1234 into W0
     // Notice what happens to the upper 32 bits of X0!
@@ -286,7 +287,7 @@ _start:
 .text
 
 _start:
-    mov x0, #0xFFFFFFFF
+    mov x0, #-1
     mov w0, #0x1234
 
     mov x8, #93

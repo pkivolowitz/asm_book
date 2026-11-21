@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import manifest from '../manifest.json';
 import { LESSON_EXERCISES } from '../data/lessonExercises';
-import { Search, BookOpen, Cpu, Terminal, Sparkles, FolderGit2 } from 'lucide-react';
+import { Search, BookOpen, Cpu, Terminal, Sparkles, FolderGit2, Flame, Smartphone } from 'lucide-react';
+import { getProgress, onProgressChange, streak } from '../lib/progress';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [filter, setFilter] = useState('all'); // 'all' | 'asm' | 'c' | 'projects'
   const [searchQuery, setSearchQuery] = useState('');
+  const [progress, setProgress] = useState(() => getProgress());
+  useEffect(() => onProgressChange(setProgress), []);
+  const currentStreak = streak(progress);
 
   // Filter sections based on course category
   const filteredSections = manifest.filter(section => {
     if (filter === 'asm') {
-      return section.title.startsWith('Section');
+      return section.title.startsWith('Section') && !section.title.includes('Mobile');
+    }
+    if (filter === 'mobile') {
+      return section.title.includes('Mobile') || section.title.includes('Exploitation');
     }
     if (filter === 'c') {
       return section.title.includes('C for Systems');
@@ -23,7 +30,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   }).map(section => {
     if (!searchQuery.trim()) return section;
     const filteredChapters = section.chapters.filter(ch => 
-      ch.title.toLowerCase().includes(searchQuery.toLowerCase())
+      ch.title.toLowerCase().includes(searchQuery.trim().toLowerCase())
     );
     return {
       ...section,
@@ -44,6 +51,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
       {/* Direct Tool Links */}
       <div className="sidebar-tools-nav">
+        <NavLink 
+          to="/practice" 
+          className={({ isActive }) => `sidebar-tool-btn ${isActive ? 'tool-active' : ''}`}
+          onClick={() => { if (window.innerWidth <= 1024) toggleSidebar(); }}
+        >
+          <Flame size={16} className="text-amber-400" />
+          <span>Daily Practice</span>
+          <span className="tool-pill" title="Day streak">{currentStreak}🔥</span>
+        </NavLink>
         <NavLink 
           to="/simulator" 
           className={({ isActive }) => `sidebar-tool-btn ${isActive ? 'tool-active' : ''}`}
@@ -87,6 +103,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           C Course
         </button>
         <button 
+          className={`filter-pill ${filter === 'mobile' ? 'pill-active' : ''}`}
+          onClick={() => setFilter('mobile')}
+        >
+          <Smartphone size={12} className="inline mr-1" />
+          Mobile
+        </button>
+        <button 
           className={`filter-pill ${filter === 'projects' ? 'pill-active' : ''}`}
           onClick={() => setFilter('projects')}
         >
@@ -113,11 +136,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           <div className="sidebar-section-title">{section.title}</div>
           {section.chapters.map((chapter) => {
             const cleanPath = chapter.path.split('#')[0].replace(/^\.\//, '');
-            const hasExercises = LESSON_EXERCISES[cleanPath]?.length > 0;
+            const lessonEx = LESSON_EXERCISES[cleanPath] || [];
+            const hasExercises = lessonEx.length > 0;
+            const allSolved = hasExercises && lessonEx.every(ex => progress.solved[ex.id]);
 
             return (
               <NavLink
-                key={chapter.id}
+                key={`${chapter.id}-${chapter.path}`}
                 to={`/read/${encodeURIComponent(chapter.path)}`}
                 className={({ isActive }) => 
                   `sidebar-item ${isActive ? 'active' : ''}`
@@ -127,11 +152,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 }}
               >
                 <span className="chapter-item-title">{chapter.title}</span>
-                {hasExercises && (
-                  <span className="chapter-exercise-indicator" title="Practice exercises available">
-                    ★
-                  </span>
-                )}
+                {hasExercises && (allSolved ? (
+                  <span className="chapter-solved-indicator" title="All exercises solved">✓</span>
+                ) : (
+                  <span className="chapter-exercise-indicator" title="Practice exercises available">★</span>
+                ))}
               </NavLink>
             );
           })}

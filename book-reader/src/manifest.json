@@ -305,6 +305,46 @@
     ]
   },
   {
+    "title": "Section 6 - Mobile Security Foundations",
+    "chapters": [
+      {
+        "id": "m0",
+        "title": "Roadmap & Daily Routine",
+        "path": "section_6_mobile/README.md"
+      },
+      {
+        "id": "m1",
+        "title": "Building a Mobile Research Lab",
+        "path": "section_6_mobile/01_lab_setup.md"
+      },
+      {
+        "id": "m2",
+        "title": "ARM64 Mitigations: PAC, BTI, MTE",
+        "path": "section_6_mobile/02_arm64_mitigations.md"
+      },
+      {
+        "id": "m3",
+        "title": "Android Native Internals & JNI",
+        "path": "section_6_mobile/03_android_native_internals.md"
+      },
+      {
+        "id": "m4",
+        "title": "Fuzzing Native Code",
+        "path": "section_6_mobile/04_fuzzing_native_code.md"
+      },
+      {
+        "id": "m5",
+        "title": "The Kernel Path",
+        "path": "section_6_mobile/05_kernel_path.md"
+      },
+      {
+        "id": "m6",
+        "title": "Course Prep Map (MHL + LLA)",
+        "path": "section_6_mobile/06_course_prep_map.md"
+      }
+    ]
+  },
+  {
     "title": "Projects",
     "chapters": [
       {

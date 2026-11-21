@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "scan": "node scripts/scan-book-sources.mjs",
+    "scan:c": "node scripts/scan-c-sources.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.14.0",
