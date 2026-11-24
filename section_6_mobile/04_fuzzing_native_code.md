@@ -54,7 +54,9 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
 ```
 
 Build it with libFuzzer and AddressSanitizer (clang, on your Linux VM or
-WSL2):
+WSL2). If the flags, `make clean` or the libraries in fuzzing build commands
+are unfamiliar, [C course Module 10](../c_course/10_preprocessor_makefiles_libs.md)
+explains every part, ending with what instrumentation is:
 
 ```text
 clang -g -O1 -fsanitize=fuzzer,address,undefined fuzz_parser.c parser.c -o fuzz_parser

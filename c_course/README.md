@@ -28,7 +28,7 @@ Every reverse engineer, security researcher, and low-level developer eventually 
 | **07** | [Dynamic Memory & Heap Internals](./07_heap_dynamic_memory.md) | `malloc`/`free`, Heap chunks, Memory leaks, Double-free, Use-After-Free (UAF) |
 | **08** | [Function Pointers, Callbacks & Dynamic Dispatch](./08_function_pointers_callbacks.md) | Function pointers, Callbacks, C vtables, Indirect branch hijacking |
 | **09** | [POSIX Systems Programming & System Calls](./09_posix_system_calls.md) | Kernel boundary, File descriptors, `open`/`read`/`write`, `stat`, `errno` |
-| **10** | [Preprocessor, Makefiles & Library Architecture](./10_preprocessor_makefiles_libs.md) | Header guards, Macro pitfalls, Static (`.a`) vs Shared (`.so`) libraries |
+| **10** | [How a C Program Is Built](./10_preprocessor_makefiles_libs.md) | Separate compilation, headers, the preprocessor and `-D`, static and shared libraries, Make, and what instrumenting a fuzzing target means |
 | **11** | [Capstone 1: In-Memory Key-Value Store](./11_capstone_kv_store.md) | Hash tables, Linear probing, Tombstones, Valgrind leak checking |
 | **12** | [Capstone 2: Binary File Header Parser & CLI Tool](./12_capstone_binary_protocol_parser.md) | Magic bytes, Protocol serialization, `getopt()`, Binary reversing |
 

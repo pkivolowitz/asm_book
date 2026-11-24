@@ -434,7 +434,7 @@
       },
       {
         "id": "c10",
-        "title": "Module 10 - Preprocessor, Makefiles & Libraries",
+        "title": "Module 10 - How a C Program Is Built (Headers, Make, Libraries)",
         "path": "c_course/10_preprocessor_makefiles_libs.md"
       },
       {

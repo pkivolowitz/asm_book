@@ -7,6 +7,7 @@ import { SIM_INCLUDES } from './includes';
 import { gradeCLab } from '../lib/cGrader';
 import { markSolved, saveDraft, getDraft } from '../lib/progress';
 import { copyText } from '../lib/clipboard';
+import { splitCodeFiles, primaryFile } from '../lib/codeFiles';
 
 const LINE_HEIGHT = 22;
 const isSource = (n) => /\.(c|h|s|S)$/.test(n);
@@ -28,10 +29,14 @@ export default function CRunner({ initialCode = null, onLoadAsmInCpulator = null
       try { const d = getDraft(draftKey); if (d) { const parsed = JSON.parse(d); if (Array.isArray(parsed) && parsed.length) return parsed; } } catch { /* ignore bad draft */ }
       return toFileList(lab.files);
     }
-    if (initialCode) return [{ name: 'main.c', content: initialCode }];
+    if (initialCode) return splitCodeFiles(initialCode) || [{ name: 'main.c', content: initialCode }];
     return toFileList(C_SAMPLES[0].files);
   });
-  const [active, setActive] = useState(() => (lab ? Object.keys(lab.files)[0] : 'main.c'));
+  const [active, setActive] = useState(() => {
+    if (lab) return Object.keys(lab.files)[0];
+    const project = initialCode ? splitCodeFiles(initialCode) : null;
+    return project ? primaryFile(project) : 'main.c';
+  });
   const [sample, setSample] = useState(lab || initialCode ? 'custom' : C_SAMPLES[0].id);
   const [stdin, setStdin] = useState('');
   const [argsText, setArgsText] = useState('');

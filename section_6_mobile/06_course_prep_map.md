@@ -25,7 +25,7 @@ exercises, so you get a second set of reps on every topic.
 | Arrays, Pointers and Strings | C labs 06-08; [C course 04-05](../c_course/04_pointers_and_memory.md) | fix an off-by-one from an AddressSanitizer report alone |
 | Structs and Memory Management | C labs 09-11; [C course 06-07](../c_course/06_structs_unions_alignment.md) | say who owns every allocation in a program, and prove it with a clean leak check |
 | The Standard Library, File I/O | C lab 12; [C course 09](../c_course/09_posix_system_calls.md) | handle every error path of `fopen`/`read` and report it with `perror` |
-| Multi-File Programs and Build Systems | C sandbox multi-file samples; [C course 10](../c_course/10_preprocessor_makefiles_libs.md) | split a program into `.h`/`.c` with include guards and fix "undefined reference" errors |
+| Multi-File Programs and Build Systems | [C course 10](../c_course/10_preprocessor_makefiles_libs.md) (runnable multi-file projects, Make, libraries) | split a program into `.h`/`.c` with include guards and fix "undefined reference" errors |
 | Project: A Key-Value Store | C labs 14-15; [Capstone 1](../c_course/11_capstone_kv_store.md) | implement linear probing with tombstones and explain why deletion needs them |
 
 Low Level Academy teaches on x86-64. Everything here compiles to ARM64, so

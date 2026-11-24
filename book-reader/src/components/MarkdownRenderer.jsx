@@ -12,6 +12,8 @@ import CPULator from '../simulator/CPULator';
 import CRunner from '../simulator/CRunner';
 import manifest from '../manifest.json';
 import { lessonUrl, chapterFor } from '../lib/routes';
+import { splitCodeFiles } from '../lib/codeFiles';
+import rehypeHeadingIds from '../lib/rehypeHeadingIds';
 import { useTitle } from '../lib/useTitle';
 import { setLastRead } from '../lib/progress';
 import { C_LABS } from '../data/cLabs';
@@ -211,7 +213,7 @@ const MarkdownRenderer = ({ candidates, hash = null }) => {
       <article className="prose">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeRaw]}
+          rehypePlugins={[rehypeRaw, rehypeHeadingIds]}
           components={{
             code({ inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
@@ -230,7 +232,7 @@ const MarkdownRenderer = ({ candidates, hash = null }) => {
                         {isAsm && <Cpu size={14} className="text-cyan-400" />}
                         {isC && <Terminal size={14} className="text-amber-400" />}
                         <span className="code-block-lang">
-                          {isAsm ? 'ARM64 Assembly' : isC ? 'C / C++' : lang.toUpperCase()}
+                          {isAsm ? 'ARM64 Assembly' : isC ? (() => { const p = splitCodeFiles(codeText); return p ? `C project · ${p.map(f => f.name).join(', ')}` : 'C / C++'; })() : lang.toUpperCase()}
                         </span>
                       </div>
 
